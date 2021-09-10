@@ -1,0 +1,43 @@
+header {
+    background-color: #9B4DCA;
+    color: #FFFFFF;
+
+    flex-direction: column !important;
+    justify-content: center;
+    align-content: center !important;
+}
+
+header h1 {
+    text-align: center;
+}
+
+div > img {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+#quiz_buttons_parent {
+    justify-content: center;
+    margin-top: 1vw;
+}
+
+#quiz_buttons_parent a:hover {
+    background-color: #606c76;
+}
+
+#take_quiz, #create_quiz {
+    margin-right: 1vw;
+}
+
+#take_quiz {
+    background-color: #9B4DCA;
+}
+
+#create_quiz {
+    background-color: #E0A458;
+}
+
+#manage_quiz {
+    background-color: #419D78;
+}
