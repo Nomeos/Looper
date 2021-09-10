@@ -23,9 +23,9 @@
     </header>
 
     <div id="quiz_buttons_parent" class="pure-g">
-        <a id="take_quiz" class="pure-u-1-5 pure-button pure-button-primary" href="/quizzes/answering">Take an quiz</a>
-        <a id="create_quiz" class="pure-u-1-5 pure-button pure-button-primary" href="/quizzes/new">Create a quiz</a>
-        <a id="manage_quiz" class="pure-u-1-5 pure-button pure-button-primary" href="/quizzes">Manage a quiz</a>
+        <a id="take_quiz" class="pure-u-1-5 pure-button pure-button-primary" href="/quizzes/answering">TAKE A QUIZ</a>
+        <a id="create_quiz" class="pure-u-1-5 pure-button pure-button-primary" href="/quizzes/new">CREATE A QUIZ</a>
+        <a id="manage_quiz" class="pure-u-1-5 pure-button pure-button-primary" href="/quizzes">MANAGE A QUIZ</a>
     </div>
 
 </body>
