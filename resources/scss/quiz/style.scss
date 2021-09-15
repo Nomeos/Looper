@@ -1,0 +1,35 @@
+@import "../variables";
+@import "header";
+
+#quiz_buttons_parent {
+    justify-content: center;
+    margin-top: 1vw;
+
+    font-weight: bold;
+
+    a:hover {
+        background-color: $button_hover;
+    }
+}
+
+#new_quiz_parent {
+    justify-content: center;
+    margin-top: 1vw;
+
+    font-weight: bold;
+    /* for some reason, spacing is -4... */
+    letter-spacing: normal !important;
+
+    legend {
+        font-size: x-large;
+    }
+
+    button {
+        margin-top: 1vw;
+        background-color: $primary_color;
+
+        &:hover {
+            background-color: $button_hover;
+        }
+    }
+}

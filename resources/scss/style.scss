@@ -1,16 +1,18 @@
+@import "variables";
+
 header {
-    background-color: #9B4DCA;
-    color: #FFFFFF;
+    background-color: $primary_color;
+    color: $white;
 
     flex-direction: column !important;
     justify-content: center;
     align-content: center !important;
 
     height: 50vh;
-}
 
-header h1 {
-    text-align: center;
+    h1 {
+        text-align: center;
+    }
 }
 
 div > img {
@@ -24,10 +26,10 @@ div > img {
     margin-top: 1vw;
 
     font-weight: bold;
-}
 
-#quiz_buttons_parent a:hover {
-    background-color: #606c76;
+    a:hover {
+        background-color: $button_hover;
+    }
 }
 
 #take_quiz, #create_quiz {
@@ -35,17 +37,16 @@ div > img {
 }
 
 #take_quiz {
-    background-color: #9B4DCA;
+    background-color: $primary_color;
 }
 
 #create_quiz {
-    background-color: #E0A458;
+    background-color: $create_quiz;
 }
 
 #manage_quiz {
-    background-color: #419D78;
+    background-color: $manage_quiz;
 }
-
 
 @media only screen and (max-width: 600px) {
     header {
@@ -56,14 +57,14 @@ div > img {
         justify-content: center !important;
         align-content: center;
 
-        margin-top: 5vw;
-    }
+        margin-top: $mobile_index_button_margin;
 
-    #quiz_buttons_parent a {
-        width: 100vw;
+        a {
+            width: 100vw;
+        }
     }
 
     #take_quiz, #create_quiz {
-        margin-bottom: 5vw;
+        margin-bottom: $mobile_index_button_margin;
     }
 }
