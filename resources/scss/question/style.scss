@@ -1,9 +1,6 @@
 @import "../variables";
+@import "../lib/lib";
 @import "header";
-
-.upper-case {
-    text-transform: uppercase;
-}
 
 .parent-center {
     justify-content: center;

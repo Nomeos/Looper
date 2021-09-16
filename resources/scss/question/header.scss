@@ -3,12 +3,13 @@
 header {
     background-color: $create_quiz;
     color: $white;
+    font-size: medium;
 
     flex-direction: column !important;
     justify-content: center;
     align-content: center !important;
 
-    height: 15vh;
+    height: 10vh;
 
     #quiz_title {
         font-weight: bold;
@@ -17,7 +18,7 @@ header {
 }
 
 #logo {
-    height: 15vh;
+    height: 10vh;
 }
 
 @media only screen and (max-width: 600px) {
