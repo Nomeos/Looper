@@ -80,7 +80,7 @@
         margin-top: $mobile_index_button_margin;
     }
 
-    #questions_list_parent, #add_question {
+    #questions_list_parent, #add_question, #update_question_parent {
         width: 80vw;
     }
 
@@ -95,7 +95,7 @@
         margin-bottom: 2vh;
     }
 
-    #question_type {
+    #question_type, #update_question {
         width: 100%;
     }
 }

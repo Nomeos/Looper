@@ -91,7 +91,7 @@ header #quiz_title {
     margin-top: 5vw;
   }
 
-  #questions_list_parent, #add_question {
+  #questions_list_parent, #add_question, #update_question_parent {
     width: 80vw;
   }
 
@@ -105,7 +105,7 @@ header #quiz_title {
     margin-bottom: 2vh;
   }
 
-  #question_type {
+  #question_type, #update_question {
     width: 100%;
   }
 }
