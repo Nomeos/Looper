@@ -2,37 +2,18 @@
 
 require_once(sprintf("%s/config/config.php", dirname($_SERVER['DOCUMENT_ROOT'])));
 require_once("vendor/autoload.php");
+
 require_once("app/controllers/LooperController.php");
 require_once("app/controllers/QuizController.php");
 require_once("app/controllers/QuestionController.php");
 
+require_once("routes/Router.php");
+
 function main()
 {
-    $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
-        $r->addRoute('GET', '/', function() {
-            $controller = new QuizController();
-            $controller->index();
-        });
-
-        $r->addGroup('/quiz', function (FastRoute\RouteCollector $r) {
-            $r->addRoute('GET', '/create', function() {
-                $controller = new QuizController();
-                $controller->create();
-            });
-
-            $r->addRoute('GET', '/{id:\d+}', function() {
-                $controller = new QuizController();
-                $controller->show();
-            });
-        });
-
-        $r->addGroup('/question', function (FastRoute\RouteCollector $r) {
-            $r->addRoute('GET', '/{id:\d+}/edit', function() {
-                $controller = new QuestionController();
-                $controller->edit();
-            });
-        });
-    });
+    // Fetch routes
+    $router = new Router();
+    $dispatcher = $router->getDispatcher();
 
     // Fetch method and URI from somewhere
     $httpMethod = $_SERVER['REQUEST_METHOD'];
@@ -48,6 +29,25 @@ function main()
     switch ($routeInfo[0]) {
         case FastRoute\Dispatcher::NOT_FOUND:
             // ... 404 Not Found
+            http_response_code(404);
+
+            $view = new View();
+            $data = [];
+
+            // get css stylesheets
+            ob_start();
+            require_once("resources/views/error/style.php");
+            $data["head"]["css"] = ob_get_clean();
+
+            // set header title (tab title)
+            $data["head"]["title"] = "Page not found";
+
+            ob_start();
+            require_once("resources/views/error/404.php");
+            $data["body"]["content"] = ob_get_clean();
+
+            // finally, render page
+            $view->render("templates/base.php", $data);
             break;
         case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
             $allowedMethods = $routeInfo[1];
@@ -57,11 +57,10 @@ function main()
             $handler = $routeInfo[1];
             $vars = $routeInfo[2];
 
+            // call handler function (load template)
             $handler($vars);
-            // ... call $handler with $vars
             break;
     }
-
 }
 
 main();
