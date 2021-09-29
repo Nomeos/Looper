@@ -1,35 +1,21 @@
 <?php
 
-require_once("app/controllers/Controller.php");
-require_once("app/lib/View.php");
+require_once("app/lib/ResourceController.php");
 
-class QuizController implements  Controller
+class QuizController extends ResourceController
 {
+    /**
+     * @throws Exception
+     */
     public function index()
     {
-        $view = new View();
-        $data = [];
-
-        // set title
-        $data["head"]["title"] = "Looper";
-
-        // get css stylesheets
-        ob_start();
-        require_once("resources/views/home/style.php");
-        $data["head"]["css"] = ob_get_clean();
-
-        // get body content
-        ob_start();
-        require_once("resources/views/home/home.php");
-        $data["body"]["content"] = ob_get_clean();
-
-        // finally, render page
-        $view->render("templates/base.php", $data);
     }
 
+    /**
+     * @throws Exception
+     */
     public function create()
     {
-        $view = new View();
         $data = [];
 
         // set title
@@ -50,17 +36,34 @@ class QuizController implements  Controller
         $data["body"]["content"] = ob_get_clean();
 
         // finally, render page
-        $view->render("templates/base.php", $data);
+        $this->view->render("templates/base.php", $data);
     }
 
-    public function store()
+    /**
+     * @param HttpRequest $request
+     */
+    public function store(HttpRequest $request)
+    {
+        // TODO: Implement store() method.
+        echo "<pre>";
+        print_r($request->getBodyData());
+        echo "</pre>";
+    }
+
+    /**
+     * @param int $id
+     */
+    public function show(int $id)
     {
         // TODO: Implement store() method.
     }
 
-    public function show()
+    /**
+     * @param int $id
+     * @throws Exception
+     */
+    public function edit(int $id)
     {
-        $view = new View();
         $data = [];
 
         // set title
@@ -90,20 +93,30 @@ class QuizController implements  Controller
         $data["body"]["content"] = ob_get_clean();
 
         // finally, render page
-        $view->render("templates/base.php", $data);
+        $this->view->render("templates/base.php", $data);
     }
 
-    public function edit()
-    {
-        // TODO: Implement edit() method.
-    }
-
-    public function update()
+    /**
+     * @param HttpRequest $request
+     * @param int $id
+     */
+    public function update(HttpRequest $request, int $id)
     {
         // TODO: Implement update() method.
     }
 
-    public function destroy()
+    /**
+     * @param int $id
+     */
+    public function destroy(int $id)
+    {
+        // TODO: Implement destroy() method.
+    }
+
+    /**
+     * @param int $id
+     */
+    public function results(int $id)
     {
         // TODO: Implement destroy() method.
     }

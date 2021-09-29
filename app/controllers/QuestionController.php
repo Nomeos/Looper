@@ -1,9 +1,8 @@
 <?php
 
-require_once("app/controllers/Controller.php");
-require_once("app/lib/View.php");
+require_once("app/lib/ResourceController.php");
 
-class QuestionController implements Controller
+class QuestionController extends ResourceController
 {
 
     public function index()
@@ -16,19 +15,18 @@ class QuestionController implements Controller
         // TODO: Implement create() method.
     }
 
-    public function store()
+    public function store($request)
     {
         // TODO: Implement store() method.
     }
 
-    public function show()
+    public function show(int $id)
     {
         // TODO: Implement show() method.
     }
 
-    public function edit()
+    public function edit(int $id)
     {
-        $view = new View();
         $data = [];
 
         // set title
@@ -49,15 +47,15 @@ class QuestionController implements Controller
         $data["body"]["content"] = ob_get_clean();
 
         // finally, render page
-        $view->render("templates/base.php", $data);
+        $this->view->render("templates/base.php", $data);
     }
 
-    public function update()
+    public function update($request, $id)
     {
         // TODO: Implement update() method.
     }
 
-    public function destroy()
+    public function destroy(int $id)
     {
         // TODO: Implement destroy() method.
     }
