@@ -1,5 +1,6 @@
 <?php
 
+require_once("app/lib/RouteFactory.php");
 require_once("app/lib/Http/HttpRequest.php");
 
 class Router
@@ -19,11 +20,17 @@ class Router
     private function setupDispatcher()
     {
         $this->dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
+            // set index route
             $r->get('/', function () {
-                $controller = new QuizController();
+                $controller = new LooperController();
                 $controller->index();
             });
 
+            // create CRUD routes for both controllers (like Laravel)
+            RouteFactory::fromResourceController('QuizController', $r);
+            RouteFactory::fromResourceController('QuestionController', $r);
+
+            // append extra routes (that are not part of CRUD actions)
             $this->setQuizRoutes($r);
             $this->setQuestionRoutes($r);
         });
@@ -33,43 +40,14 @@ class Router
     {
         $controller = new QuizController();
         $r->addGroup('/quiz', function (FastRoute\RouteCollector $r) use ($controller) {
-            $r->get('/create', function() use ($controller) {
-                $controller->create();
-            });
-
-            $r->post('/store', function() use ($controller) {
-                // a HttpRequest instance is create within this closure
-                // because when a HttpRequest object is instanciated,
-                // its attributes come from the current http request
-                $request = new HttpRequest();
-
-                $controller->store($request);
-            });
-
-            $r->put('/{id:\d+}/update', function($args) use ($controller) {
-                $request = new HttpRequest();
-
-                $controller->update($request, $args["id"]);
-            });
-
-            $r->get('/{id:\d+}/edit', function($args) use ($controller) {
-                $controller->edit($args["id"]);
+            $r->get('/{id:\d+}/results', function($args) use ($controller) {
+                $controller->results($args["id"]);
             });
         });
     }
 
     private function setQuestionRoutes(FastRoute\RouteCollector &$r)
     {
-        $controller = new QuestionController();
-
-        $r->addGroup('/question', function (FastRoute\RouteCollector $r) use ($controller) {
-            $r->get('/{id:\d+}/edit', function ($args) use ($controller) {
-                $controller->edit($args);
-            });
-
-            $r->post('/create', function ($args) use ($controller) {
-                $controller->store($args);
-            });
-        });
+        // DO NOTHING FOR NOW
     }
 }
