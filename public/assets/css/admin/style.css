@@ -1,0 +1,104 @@
+.upper-case {
+  text-transform: uppercase;
+}
+
+header {
+  background-color: #E0A458;
+  color: #FFFFFF;
+  flex-direction: column !important;
+  justify-content: center;
+  align-content: center !important;
+  height: 15vh;
+}
+header #quiz_title {
+  font-weight: bold;
+  margin-left: 1vw;
+}
+
+#logo {
+  height: 15vh;
+}
+
+@media only screen and (max-width: 600px) {
+  header {
+    height: 20vh;
+  }
+}
+.parent-center {
+  justify-content: center;
+}
+
+.action {
+  text-align: right;
+}
+.action a {
+  color: #9B4DCA;
+}
+
+.wrapper {
+  justify-content: center;
+  margin-top: 1vw;
+  margin-left: 2vw;
+  /* for some reason, spacing is -4... */
+  letter-spacing: normal !important;
+}
+.wrapper legend {
+  font-size: x-large;
+}
+.wrapper table {
+  /* by default, tables do not take full width */
+  width: 100%;
+  border: none;
+}
+.wrapper table caption {
+  /* remove default purecss style for table's captions */
+  padding: 0;
+  font-style: normal;
+  text-align: left;
+  font-size: x-large;
+  font-weight: bold;
+  color: #606c76;
+  font-family: "Roboto", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+}
+.wrapper table thead {
+  background-color: transparent;
+}
+.wrapper table tbody {
+  font-weight: normal;
+}
+.wrapper table tbody td {
+  border-bottom: none;
+}
+
+@media only screen and (max-width: 600px) {
+  header {
+    height: 20vh;
+  }
+
+  div:first-of-type {
+    flex-direction: column;
+    justify-content: center !important;
+    align-content: center;
+    margin-top: 5vw;
+  }
+
+  #questions_list_parent, #add_question {
+    width: 80vw;
+  }
+
+  #publish_quiz, #add_question {
+    font-size: small;
+  }
+
+  #publish_quiz {
+    width: 100%;
+    margin-top: 2vh !important;
+    margin-bottom: 2vh;
+  }
+
+  #question_type {
+    width: 100%;
+  }
+}
+
+/*# sourceMappingURL=style.css.map */
