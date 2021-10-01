@@ -1,0 +1,27 @@
+@import "../lib/variables";
+@import "../lib/lib";
+@import "header";
+
+div.wrapper {
+    flex-direction: column;
+    align-content: center;
+    margin: 1vh 1vh 1vh 1vh;
+}
+
+div > label {
+    margin: 1vh;
+}
+
+div.quiz {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #eee;
+    margin-top: 1vh;
+    padding: 1vh 1vh 1vh 1vh;
+}
+
+a {
+    background-color: $primary_color !important;
+    width: 100%;
+}
