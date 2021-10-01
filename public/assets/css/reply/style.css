@@ -1,5 +1,5 @@
 header {
-  background-color: #E0A458;
+  background-color: #9B4DCA;
   color: #FFFFFF;
   flex-direction: column !important;
   justify-content: center;
@@ -38,6 +38,9 @@ header #quiz_title {
 }
 #new_quiz_parent legend {
   font-size: x-large;
+}
+#new_quiz_parent div {
+  font-weight: normal;
 }
 #new_quiz_parent button {
   margin-top: 1vw;

@@ -1,71 +1,27 @@
 @import "../lib/variables";
 @import "../lib/lib";
+@import "header";
 
-header {
-    background-color: $primary_color;
-    color: $white;
-
-    flex-direction: column !important;
-    justify-content: center;
-    align-content: center !important;
-
-    height: 50vh;
-
-    h1 {
-        text-align: center;
-    }
+div.wrapper {
+    flex-direction: column;
+    align-content: center;
+    margin: 1vh 1vh 1vh 1vh;
 }
 
-div > img {
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
+div > label {
+    margin: 1vh;
 }
 
-#quiz_buttons_parent {
-    justify-content: center;
-    margin-top: 1vw;
-
-    font-weight: bold;
-
-    a:hover {
-        background-color: $button_hover;
-    }
+div.quiz {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #eee;
+    margin-top: 1vh;
+    padding: 1vh 1vh 1vh 1vh;
 }
 
-#take_quiz, #create_quiz {
-    margin-right: 1vw;
-}
-
-#take_quiz {
-    background-color: $primary_color;
-}
-
-#create_quiz {
-    background-color: $create_quiz;
-}
-
-#manage_quiz {
-    background-color: $manage_quiz;
-}
-
-@media only screen and (max-width: 600px) {
-    header {
-        height: 60vh;
-    }
-    #quiz_buttons_parent {
-        flex-direction: column;
-        justify-content: center !important;
-        align-content: center;
-
-        margin-top: $mobile_index_button_margin;
-
-        a {
-            width: 100vw;
-        }
-    }
-
-    #take_quiz, #create_quiz {
-        margin-bottom: $mobile_index_button_margin;
-    }
+a {
+    background-color: $primary_color !important;
+    width: 100%;
 }
