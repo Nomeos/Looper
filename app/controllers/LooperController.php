@@ -1,41 +1,34 @@
 <?php
 
-require_once("app/lib/View.php");
+require_once("app/lib/ResourceController.php");
 
 class LooperController
 {
+    private $view;
+
+    public function __construct()
+    {
+        $this->view = new View();
+    }
+
     public function index()
     {
-        $view = new View();
         $data = [];
 
         // set title
-        $data["head"]["title"] = "Edit a quiz";
+        $data["head"]["title"] = "Looper";
 
         // get css stylesheets
         ob_start();
-        require_once("resources/views/quiz/style.php");
-        require_once("resources/views/question/style.php");
+        require_once("resources/views/home/style.php");
         $data["head"]["css"] = ob_get_clean();
-
-        // set header title (next to the logo)
-        $data["header"]["title"] = "New question";
-
-        ob_start();
-        require_once("resources/views/question/list.php");
-        $data["body"]["questions_list"] = ob_get_clean();
-
-        ob_start();
-        require_once("resources/views/question/add.php");
-        $data["body"]["questions_add"] = ob_get_clean();
 
         // get body content
         ob_start();
-        require_once("resources/views/templates/header.php");
-        require_once("resources/views/quiz/update.php");
+        require_once("resources/views/home/home.php");
         $data["body"]["content"] = ob_get_clean();
 
         // finally, render page
-        $view->render("templates/base.php", $data);
+        $this->view->render("templates/base.php", $data);
     }
 }

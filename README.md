@@ -106,22 +106,22 @@ Here's a blank template to get started:
 To get a local copy up and running follow these simple steps.
 
 ### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* npm
+#### Archlinux
+- [composer](https://getcomposer.org/)
   ```sh
-  npm install npm@latest -g
+  $ sudo pacman -S composer
   ```
 
 ### Installation
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/Nomeos/Looper.git
+   $ git clone https://github.com/Nomeos/Looper.git
    ```
-2. Install NPM packages
+2. Install php packages
    ```sh
-   npm install
+   $ cd Looper
+   $ composer install
    ```
 
 
