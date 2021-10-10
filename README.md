@@ -123,8 +123,11 @@ To get a local copy up and running follow these simple steps.
    $ cd Looper
    $ composer install
    ```
-
-
+   
+3. Compile scss files to css
+```sh
+    $ make css
+```
 
 <!-- USAGE EXAMPLES -->
 ## Usage
