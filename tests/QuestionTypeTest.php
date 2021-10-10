@@ -4,6 +4,7 @@ namespace Test;
 require_once("vendor/autoload.php");
 require_once('.env.php');
 
+use ByJG\DbMigration\Database\MySqlDatabase;
 use ByJG\DbMigration\Exception\DatabaseDoesNotRegistered;
 use ByJG\DbMigration\Exception\DatabaseIsIncompleteException;
 use ByJG\DbMigration\Exception\DatabaseNotVersionedException;
@@ -13,6 +14,7 @@ use ByJG\DbMigration\Migration;
 use ByJG\Util\Uri;
 use PHPUnit\Framework\TestCase;
 use App\models\QuestionType;
+use ReflectionException;
 
 class QuestionTypeTest extends TestCase
 {
@@ -31,8 +33,8 @@ class QuestionTypeTest extends TestCase
         $this->migration = new Migration($connectionUri, '.');
 
         // Register the Database or Databases can handle that URI:
-        $this->migration->registerDatabase('mysql', \ByJG\DbMigration\Database\MySqlDatabase::class);
-        $this->migration->registerDatabase('maria', \ByJG\DbMigration\Database\MySqlDatabase::class);
+        $this->migration->registerDatabase('mysql', MySqlDatabase::class);
+        $this->migration->registerDatabase('maria', MySqlDatabase::class);
 
         // Add a callback progress function to receive info from the execution
         $this->migration->addCallbackProgress(function ($action, $currentVersion, $fileInfo) {
@@ -90,7 +92,7 @@ class QuestionTypeTest extends TestCase
     }
 
     /**
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function testSave()
     {
@@ -107,7 +109,7 @@ class QuestionTypeTest extends TestCase
     }
 
     /**
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function testDelete()
     {
