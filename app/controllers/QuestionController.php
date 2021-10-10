@@ -1,6 +1,8 @@
 <?php
 
-require_once("app/lib/ResourceController.php");
+namespace App\controllers;
+
+use App\lib\ResourceController;
 
 class QuestionController extends ResourceController
 {

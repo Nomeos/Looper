@@ -1,10 +1,11 @@
 <?php
 
-require_once("app/lib/ResourceController.php");
+namespace App\controllers;
+use App\lib\View;
 
 class LooperController
 {
-    private $view;
+    private View $view;
 
     public function __construct()
     {

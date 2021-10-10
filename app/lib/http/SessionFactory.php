@@ -1,6 +1,8 @@
 <?php
 
-require_once("app/lib/http/Session.php");
+namespace App\lib\http;
+
+use App\lib\http\Session;
 
 class SessionFactory
 {

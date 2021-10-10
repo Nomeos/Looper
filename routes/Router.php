@@ -1,11 +1,17 @@
 <?php
 
-require_once("app/lib/RouteFactory.php");
-require_once("app/lib/http/HttpRequest.php");
+namespace Route;
+
+use App\controllers\LooperController;
+use App\controllers\QuizController;
+use App\lib\RouteFactory;
+use App\lib\http\HttpRequest;
+use FastRoute\Dispatcher;
+use FastRoute;
 
 class Router
 {
-    private $dispatcher;
+    private Dispatcher $dispatcher;
 
     public function __construct()
     {

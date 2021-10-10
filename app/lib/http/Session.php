@@ -1,5 +1,7 @@
 <?php
 
+namespace App\lib\http;
+
 class Session
 {
     private string $id;

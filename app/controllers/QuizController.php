@@ -1,6 +1,10 @@
 <?php
 
-require_once("app/lib/ResourceController.php");
+namespace App\controllers;
+
+use App\lib\http\HttpRequest;
+use App\lib\ResourceController;
+use Exception;
 
 class QuizController extends ResourceController
 {

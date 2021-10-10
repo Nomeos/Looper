@@ -1,7 +1,10 @@
 <?php
 
-require_once("app/lib/http/Session.php");
-require_once("app/lib/http/SessionFactory.php");
+namespace App\lib\http;
+
+use App\lib\http\Session;
+use App\lib\http\SessionFactory;
+use Exception;
 
 class HttpRequest
 {
@@ -98,7 +101,7 @@ class HttpRequest
     /**
      * @return array
      */
-    public function getBodyData()
+    public function getBodyData(): array
     {
         return $this->bodyData;
     }

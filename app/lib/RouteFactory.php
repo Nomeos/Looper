@@ -1,8 +1,12 @@
 <?php
 
-require_once("app/controllers/QuizController.php");
-require_once("app/controllers/QuestionController.php");
-require_once("app/lib/http/HttpRequest.php");
+namespace App\lib;
+use Exception;
+use FastRoute\RouteCollector;
+
+use App\controllers\QuizController;
+use App\controllers\QuestionController;
+use App\lib\http\HttpRequest;
 
 class RouteFactory
 {
@@ -28,12 +32,15 @@ class RouteFactory
     /**
      * @throws Exception
      */
-    public static function fromResourceController(string $controllerName, FastRoute\RouteCollector &$r)
+    public static function fromResourceController(string $controllerName, RouteCollector &$r)
     {
+        // without specifying the full namespace, composer
+        // will not be able to load the class
+        $controllerName = "App\\controllers\\$controllerName";
         $controller = new $controllerName();
         $controllerRouteName = self::parseControllerName($controllerName);
 
-        $r->addGroup("/$controllerRouteName", function (FastRoute\RouteCollector $r) use ($controller) {
+        $r->addGroup("/$controllerRouteName", function (RouteCollector $r) use ($controller) {
             // route => domain.com/quiz
             $r->get("", function () use ($controller) {
                 $controller->index();

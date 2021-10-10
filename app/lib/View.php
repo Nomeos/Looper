@@ -1,5 +1,10 @@
 <?php
 
+namespace App\lib;
+
+use Exception;
+use RuntimeException;
+
 require_once("config/config.php");
 
 class View

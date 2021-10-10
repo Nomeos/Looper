@@ -1,10 +1,13 @@
 <?php
 
-require_once("app/lib/View.php");
+namespace App\lib;
+
+use App\lib\http\HttpRequest;
+use App\lib\View;
 
 abstract class ResourceController
 {
-    protected $view;
+    protected View $view;
 
     public function __construct()
     {

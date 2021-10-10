@@ -4,11 +4,10 @@ session_start();
 require_once(sprintf("%s/config/config.php", dirname($_SERVER['DOCUMENT_ROOT'])));
 require_once("vendor/autoload.php");
 
-require_once("app/controllers/LooperController.php");
-require_once("app/controllers/QuizController.php");
-require_once("app/controllers/QuestionController.php");
-
-require_once("routes/Router.php");
+use App\controllers\LooperController;
+use App\controllers\QuizController;
+use App\controllers\QuestionController;
+use Route\Router;
 
 function main()
 {
