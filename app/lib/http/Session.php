@@ -2,9 +2,9 @@
 
 class Session
 {
-    private $id;
+    private string $id;
 
-    public function __construct($id)
+    public function __construct(string $id)
     {
         $this->id = $id;
     }
@@ -12,7 +12,7 @@ class Session
     /**
      * @return mixed
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
@@ -20,7 +20,7 @@ class Session
     /**
      * @param mixed $id
      */
-    private function setId($id): void
+    private function setId(string $id): void
     {
         $this->id = $id;
     }

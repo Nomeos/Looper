@@ -1059,7 +1059,7 @@
 											"top": 346,
 											"width": 224.3515625,
 											"height": 13,
-											"text": "-protocolVersion: double",
+											"text": "-protocolVersion: float",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1144,7 +1144,7 @@
 											"top": 414,
 											"width": 224.3515625,
 											"height": 13,
-											"text": "+getHeader(name: string)",
+											"text": "+getHeader(name: string): mixed",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1365,7 +1365,7 @@
 											"top": 609,
 											"width": 224.3515625,
 											"height": 13,
-											"text": "-setUri()",
+											"text": "-setUri(uri: string)",
 											"horizontalAlignment": 0
 										}
 									],
@@ -6175,7 +6175,7 @@
 							},
 							"name": "protocolVersion",
 							"visibility": "private",
-							"type": "double"
+							"type": "float"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -6244,6 +6244,15 @@
 									},
 									"name": "name",
 									"type": "string"
+								},
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAF8a2wHeAP4D9I=",
+									"_parent": {
+										"$ref": "AAAAAAF8av9nD2AE2DU="
+									},
+									"type": "mixed",
+									"direction": "return"
 								}
 							]
 						},
@@ -6464,7 +6473,18 @@
 								"$ref": "AAAAAAF8ZizPBVws7NE="
 							},
 							"name": "setUri",
-							"visibility": "private"
+							"visibility": "private",
+							"parameters": [
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAF8a5IG6qVSVgg=",
+									"_parent": {
+										"$ref": "AAAAAAF8av17Xl/Ipjk="
+									},
+									"name": "uri",
+									"type": "string"
+								}
+							]
 						}
 					]
 				},

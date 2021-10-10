@@ -2,13 +2,14 @@
 
 require_once("app/controllers/QuizController.php");
 require_once("app/controllers/QuestionController.php");
+require_once("app/lib/http/HttpRequest.php");
 
 class RouteFactory
 {
     /**
      * @throws Exception
      */
-    public static function parseControllerName($controllerName)
+    public static function parseControllerName(string $controllerName): string
     {
         $matches = [];
         $regex = '/[a-zA-Z]*(?=Controller)/';
@@ -27,7 +28,7 @@ class RouteFactory
     /**
      * @throws Exception
      */
-    public static function fromResourceController($controllerName, FastRoute\RouteCollector &$r)
+    public static function fromResourceController(string $controllerName, FastRoute\RouteCollector &$r)
     {
         $controller = new $controllerName();
         $controllerRouteName = self::parseControllerName($controllerName);

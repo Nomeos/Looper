@@ -8,14 +8,14 @@ class View
     /**
      * @var string Path to template file.
      */
-    function render($template, $data)
+    public function render(string $template, array $data)
     {
         // add full path to template, so it
         // is easier to load
         $template = sprintf("%s/%s", VIEWS_ROOT, $template);
         
         if (!is_file($template)) {
-            throw new \RuntimeException('Template not found: ' . $template);
+            throw new RuntimeException('Template not found: ' . $template);
         }
 
         // define a closure with a scope for the variable extraction
@@ -24,7 +24,7 @@ class View
             extract($data, EXTR_SKIP);
             try {
                 include $file;
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 ob_end_clean();
                 throw $e;
             }

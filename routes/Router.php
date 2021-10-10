@@ -1,7 +1,7 @@
 <?php
 
 require_once("app/lib/RouteFactory.php");
-require_once("app/lib/Http/HttpRequest.php");
+require_once("app/lib/http/HttpRequest.php");
 
 class Router
 {
