@@ -5,6 +5,7 @@ namespace Test;
 require_once("vendor/autoload.php");
 require_once('.env.php');
 
+use App\models\QuizState;
 use ByJG\DbMigration\Database\MySqlDatabase;
 use ByJG\DbMigration\Exception\DatabaseDoesNotRegistered;
 use ByJG\DbMigration\Exception\DatabaseIsIncompleteException;
@@ -130,5 +131,23 @@ class QuizTest extends TestCase
         $quiz = Quiz::find(3);
         $quiz->delete();
         $this->assertNull(Quiz::find(5));
+    }
+
+    public function testState()
+    {
+        $quiz = Quiz::find(2);
+        $quiz_state = QuizState::find(2);
+
+        $this->assertEquals(
+            $quiz_state->label,
+            $quiz->state()->label
+        );
+
+        $quiz = Quiz::find(1);
+
+        $this->assertNotEquals(
+            $quiz_state->label,
+            $quiz->state()->label
+        );
     }
 }

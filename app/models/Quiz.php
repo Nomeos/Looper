@@ -1,6 +1,7 @@
 <?php
 namespace App\models;
 
+use Thynkon\SimpleOrm\database\DB;
 use Thynkon\SimpleOrm\Model;
 
 class Quiz extends Model
@@ -15,4 +16,17 @@ class Quiz extends Model
     // https://stackoverflow.com/a/64874581
     public int $is_public;
     public int $quiz_state_id;
+
+    public function state()
+    {
+        $query = <<< EOL
+SELECT quiz_state.*
+FROM quiz
+INNER JOIN quiz_state ON quiz_state.id = quiz.quiz_state_id
+WHERE quiz.id = :id;
+EOL;
+
+        $database = DB::getInstance();
+        return $database->selectOne($query, ["id" => $this->id], QuizState::class);
+    }
 }

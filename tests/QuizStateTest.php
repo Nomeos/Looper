@@ -122,4 +122,20 @@ class QuizStateTest extends TestCase
         $this->assertNotNull(QuizState::find(3));
     }
 
+    public function testQuizzes()
+    {
+        $quizzes = QuizState::find(1)->quizzes();
+
+        $this->assertCount(
+            1,
+            $quizzes
+        );
+
+        $quizzes = QuizState::find(2)->quizzes();
+
+        $this->assertNotCount(
+            2,
+            $quizzes
+        );
+    }
 }
