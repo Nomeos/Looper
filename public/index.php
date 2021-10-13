@@ -7,6 +7,7 @@ require_once("vendor/autoload.php");
 use App\controllers\LooperController;
 use App\controllers\QuizController;
 use App\controllers\QuestionController;
+use App\lib\View;
 use Route\Router;
 
 function main()
