@@ -3625,57 +3625,6 @@
 									"subViews": [
 										{
 											"_type": "UMLAttributeView",
-											"_id": "AAAAAAF8ayFVRYRGVsY=",
-											"_parent": {
-												"$ref": "AAAAAAF8ayE0h4OscBU="
-											},
-											"model": {
-												"$ref": "AAAAAAF8ayFVLIQ6EMo="
-											},
-											"font": "Arial;13;0",
-											"left": 1585.9249267578125,
-											"top": 293.5,
-											"width": 397.0205078125,
-											"height": 13,
-											"text": "-dsn: string",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLAttributeView",
-											"_id": "AAAAAAF8ayGLKoSngXg=",
-											"_parent": {
-												"$ref": "AAAAAAF8ayE0h4OscBU="
-											},
-											"model": {
-												"$ref": "AAAAAAF8ayGLGoSbZxI="
-											},
-											"font": "Arial;13;0",
-											"left": 1585.9249267578125,
-											"top": 308.5,
-											"width": 397.0205078125,
-											"height": 13,
-											"text": "-username: string",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLAttributeView",
-											"_id": "AAAAAAF8ayGqyYUI/A4=",
-											"_parent": {
-												"$ref": "AAAAAAF8ayE0h4OscBU="
-											},
-											"model": {
-												"$ref": "AAAAAAF8ayGquYT8AHo="
-											},
-											"font": "Arial;13;0",
-											"left": 1585.9249267578125,
-											"top": 323.5,
-											"width": 397.0205078125,
-											"height": 13,
-											"text": "-password: string",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLAttributeView",
 											"_id": "AAAAAAF8ayH+foY7N5Y=",
 											"_parent": {
 												"$ref": "AAAAAAF8ayE0h4OscBU="
@@ -3685,10 +3634,28 @@
 											},
 											"font": "Arial;13;0",
 											"left": 1585.9249267578125,
-											"top": 338.5,
+											"top": 293.5,
 											"width": 397.0205078125,
 											"height": 13,
 											"text": "-connection: PDO",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAF8edkzWoeLCNM=",
+											"_parent": {
+												"$ref": "AAAAAAF8ayE0h4OscBU="
+											},
+											"model": {
+												"$ref": "AAAAAAF8edkzC4d/8qE="
+											},
+											"font": "Arial;13;0",
+											"left": 1585.9249267578125,
+											"top": 308.5,
+											"width": 397.0205078125,
+											"height": 13,
+											"underline": true,
+											"text": "-instance: DB",
 											"horizontalAlignment": 0
 										}
 									],
@@ -3696,7 +3663,7 @@
 									"left": 1580.9249267578125,
 									"top": 288.5,
 									"width": 407.0205078125,
-									"height": 68
+									"height": 38
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -3719,10 +3686,10 @@
 											},
 											"font": "Arial;13;0",
 											"left": 1585.9249267578125,
-											"top": 361.5,
+											"top": 331.5,
 											"width": 397.0205078125,
 											"height": 13,
-											"text": "+getConnection(): PDO",
+											"text": "-getConnection(): PDO",
 											"horizontalAlignment": 0
 										},
 										{
@@ -3736,7 +3703,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 1585.9249267578125,
-											"top": 376.5,
+											"top": 346.5,
 											"width": 397.0205078125,
 											"height": 13,
 											"text": "+selectOne(string query, array args, string class ): null | array | Model",
@@ -3753,7 +3720,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 1585.9249267578125,
-											"top": 391.5,
+											"top": 361.5,
 											"width": 397.0205078125,
 											"height": 13,
 											"text": "+selectMany(string query, array args, string class): boolean | array",
@@ -3770,7 +3737,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 1585.9249267578125,
-											"top": 406.5,
+											"top": 376.5,
 											"width": 397.0205078125,
 											"height": 13,
 											"text": "+insert(string query, array args): boolean | int",
@@ -3787,7 +3754,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 1585.9249267578125,
-											"top": 421.5,
+											"top": 391.5,
 											"width": 397.0205078125,
 											"height": 13,
 											"text": "+execute(string query, array args): int",
@@ -3796,7 +3763,7 @@
 									],
 									"font": "Arial;13;0",
 									"left": 1580.9249267578125,
-									"top": 356.5,
+									"top": 326.5,
 									"width": 407.0205078125,
 									"height": 83
 								},
@@ -3834,7 +3801,7 @@
 							"left": 1580.9249267578125,
 							"top": 263.5,
 							"width": 407.0205078125,
-							"height": 176,
+							"height": 146,
 							"nameCompartment": {
 								"$ref": "AAAAAAF8ayE0h4On0bM="
 							},
@@ -7209,36 +7176,6 @@
 					"attributes": [
 						{
 							"_type": "UMLAttribute",
-							"_id": "AAAAAAF8ayFVLIQ6EMo=",
-							"_parent": {
-								"$ref": "AAAAAAF8ayE0hYOkhgo="
-							},
-							"name": "dsn",
-							"visibility": "private",
-							"type": "string"
-						},
-						{
-							"_type": "UMLAttribute",
-							"_id": "AAAAAAF8ayGLGoSbZxI=",
-							"_parent": {
-								"$ref": "AAAAAAF8ayE0hYOkhgo="
-							},
-							"name": "username",
-							"visibility": "private",
-							"type": "string"
-						},
-						{
-							"_type": "UMLAttribute",
-							"_id": "AAAAAAF8ayGquYT8AHo=",
-							"_parent": {
-								"$ref": "AAAAAAF8ayE0hYOkhgo="
-							},
-							"name": "password",
-							"visibility": "private",
-							"type": "string"
-						},
-						{
-							"_type": "UMLAttribute",
 							"_id": "AAAAAAF8ayH+boYvCMA=",
 							"_parent": {
 								"$ref": "AAAAAAF8ayE0hYOkhgo="
@@ -7246,6 +7183,19 @@
 							"name": "connection",
 							"visibility": "private",
 							"type": "PDO"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAF8edkzC4d/8qE=",
+							"_parent": {
+								"$ref": "AAAAAAF8ayE0hYOkhgo="
+							},
+							"name": "instance",
+							"visibility": "private",
+							"isStatic": true,
+							"type": {
+								"$ref": "AAAAAAF8ayE0hYOkhgo="
+							}
 						}
 					],
 					"operations": [
@@ -7256,6 +7206,7 @@
 								"$ref": "AAAAAAF8ayE0hYOkhgo="
 							},
 							"name": "getConnection",
+							"visibility": "private",
 							"parameters": [
 								{
 									"_type": "UMLParameter",
