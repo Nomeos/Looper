@@ -5,10 +5,10 @@ use Thynkon\SimpleOrm\Model;
 
 class Answer extends Model
 {
-    static protected string $table = "answer";
+    public static string $table = "answers";
     protected string $primaryKey = "id";
     public int $id;
     public string $value;
     public int $question_id;
-    public string $date;
+    public string $fullfillment_id;
 }

@@ -1,5 +1,4 @@
 <?php
-
 namespace Test;
 
 require_once("vendor/autoload.php");
@@ -15,10 +14,10 @@ use ByJG\DbMigration\Exception\OldVersionSchemaException;
 use ByJG\DbMigration\Migration;
 use ByJG\Util\Uri;
 use PHPUnit\Framework\TestCase;
-use App\models\Answer;
+use App\models\QuestionType;
 use ReflectionException;
 
-class AnswerTest extends TestCase
+class FullfillmentTest extends TestCase
 {
     private Migration $migration;
 
@@ -65,37 +64,32 @@ class AnswerTest extends TestCase
     public function testFind()
     {
         $this->assertEquals(
-            "Answer to question2",
-            Answer::find(2)->value
+            "2021-01-14 10:00:00",
+            Fullfillment::find(2)->date
         );
         $this->assertNotEquals(
-            "Answer to question3",
-            Answer::find(2)->value
+            "2021-02-23 10:00:00",
+            Fullfillment::find(2)->date
         );
+    }
 
+    /**
+     * @covers $question_type->create()
+     */
+    public function testCreate()
+    {
+        $fullfillment = new Fullfillment();
+        $fullfillment->date = "2021-05-30 10:10:00";
+        $this->assertTrue($fullfillment->create());
+        $this->assertFalse($fullfillment->create());
     }
 
     public  function testWhere()
     {
-        $this->assertEquals(1,count(Answer::where("value","Answer to question1")));
-    }
-
-    /**
-     * @covers $answer->create()
-     */
-    public function testCreate()
-    {
-        $fullfillment = New Fullfillment();
-        $fullfillment->date = "2021-09-30 00:00:00";
-        $fullfillment->create();
-
-        $answer = new Answer();
-        $answer->value = "My answer to question 1";
-        $answer->question_id = 1;
-        $answer->fullfillment_id = 3;
-        $this->assertTrue($answer->create());
-        // there is no way to check if an answer is unique
-        // that is why I do not test if $answer->create() returns false
+        $this->assertEquals(
+            1,
+            Fullfillment::where("date", "2021-01-14 09:00:00")[0]->id
+        );
     }
 
     /**
@@ -103,13 +97,13 @@ class AnswerTest extends TestCase
      */
     public function testSave()
     {
-        $answer = Answer::find(1);
-        $answer->value = "Answer toto";
-        $answer->save();
+        $fullfillment = Fullfillment::find(1);
+        $fullfillment->date = "2021-08-13 13:34:12";
+        $fullfillment->save();
 
         $this->assertEquals(
-            "Answer toto",
-            Answer::find(1)->value
+            "2021-08-13 13:34:12",
+            Fullfillment::find(1)->date
         );
 
         // TODO test id update (try to set id to null or 0)
@@ -120,13 +114,8 @@ class AnswerTest extends TestCase
      */
     public function testDelete()
     {
-        $answer = Answer::find(1);
-        $answer->delete();
-        $this->assertNull(Answer::find(1));
-
-        $answer = Answer::find(4);
-
-        $this->assertTrue($answer->delete());
-        $this->assertNull(Answer::find(4));
+        $fullfillment = Fullfillment::find(1);
+        $fullfillment->delete();
+        $this->assertNull(Fullfillment::find(1));
     }
 }

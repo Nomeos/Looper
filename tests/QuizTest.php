@@ -65,7 +65,7 @@ class QuizTest extends TestCase
     public function testFind()
     {
         $this->assertEquals(
-            "Answering form 123",
+            "Answering form",
             Quiz::find(2)->title
         );
         $this->assertNotEquals(
@@ -77,7 +77,7 @@ class QuizTest extends TestCase
 
     public function testWhere()
     {
-        $this->assertEquals(1,count(Quiz::where("title","Building form 123")));
+        $this->assertEquals(1,count(Quiz::where("title","Building form")));
     }
 
     /**

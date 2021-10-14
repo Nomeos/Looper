@@ -6,7 +6,7 @@ use Thynkon\SimpleOrm\Model;
 
 class Quiz extends Model
 {
-    static protected string $table = "quiz";
+    public static string $table = "quizzes";
     protected string $primaryKey = "id";
     public int $id;
     public string $title;
@@ -20,10 +20,10 @@ class Quiz extends Model
     public function state()
     {
         $query = <<< EOL
-SELECT quiz_state.*
-FROM quiz
-INNER JOIN quiz_state ON quiz_state.id = quiz.quiz_state_id
-WHERE quiz.id = :id;
+SELECT quiz_states.*
+FROM quizzes
+INNER JOIN quiz_states ON quiz_states.id = quizzes.quiz_state_id
+WHERE quizzes.id = :id;
 EOL;
 
         $database = DB::getInstance();

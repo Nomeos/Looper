@@ -5,7 +5,7 @@ use Thynkon\SimpleOrm\Model;
 
 class Question extends Model
 {
-    static protected string $table = "question";
+    public static string $table = "questions";
     protected string $primaryKey = "id";
     public int $id;
     public string $label;

@@ -6,7 +6,7 @@ use Thynkon\SimpleOrm\database\DB;
 
 class QuizState extends Model
 {
-    static protected string $table = "quiz_state";
+    public static string $table = "quiz_states";
     protected string $primaryKey = "id";
     public int $id;
     public string $label;
@@ -15,7 +15,7 @@ class QuizState extends Model
     {
         $query = <<< EOL
 SELECT *
-FROM quiz
+FROM quizzes
 WHERE quiz_state_id = :id;
 EOL;
 
