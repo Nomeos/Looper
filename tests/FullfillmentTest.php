@@ -4,7 +4,7 @@ namespace Test;
 require_once("vendor/autoload.php");
 require_once('.env.php');
 
-use App\models\Fullfillment;
+use App\models\Fulfillment;
 use ByJG\DbMigration\Database\MySqlDatabase;
 use ByJG\DbMigration\Exception\DatabaseDoesNotRegistered;
 use ByJG\DbMigration\Exception\DatabaseIsIncompleteException;
@@ -58,18 +58,18 @@ class FullfillmentTest extends TestCase
 
     public function testAll()
     {
-      $this->assertCount(2, Fullfillment::all());
+      $this->assertCount(2, Fulfillment::all());
     }
 
     public function testFind()
     {
         $this->assertEquals(
             "2021-01-14 10:00:00",
-            Fullfillment::find(2)->date
+            Fulfillment::find(2)->date
         );
         $this->assertNotEquals(
             "2021-02-23 10:00:00",
-            Fullfillment::find(2)->date
+            Fulfillment::find(2)->date
         );
     }
 
@@ -78,7 +78,7 @@ class FullfillmentTest extends TestCase
      */
     public function testCreate()
     {
-        $fullfillment = new Fullfillment();
+        $fullfillment = new Fulfillment();
         $fullfillment->date = "2021-05-30 10:10:00";
         $this->assertTrue($fullfillment->create());
         $this->assertFalse($fullfillment->create());
@@ -88,7 +88,7 @@ class FullfillmentTest extends TestCase
     {
         $this->assertEquals(
             1,
-            Fullfillment::where("date", "2021-01-14 09:00:00")[0]->id
+            Fulfillment::where("date", "2021-01-14 09:00:00")[0]->id
         );
     }
 
@@ -97,13 +97,13 @@ class FullfillmentTest extends TestCase
      */
     public function testSave()
     {
-        $fullfillment = Fullfillment::find(1);
+        $fullfillment = Fulfillment::find(1);
         $fullfillment->date = "2021-08-13 13:34:12";
         $fullfillment->save();
 
         $this->assertEquals(
             "2021-08-13 13:34:12",
-            Fullfillment::find(1)->date
+            Fulfillment::find(1)->date
         );
 
         // TODO test id update (try to set id to null or 0)
@@ -114,8 +114,25 @@ class FullfillmentTest extends TestCase
      */
     public function testDelete()
     {
-        $fullfillment = Fullfillment::find(1);
+        $fullfillment = Fulfillment::find(1);
         $fullfillment->delete();
-        $this->assertNull(Fullfillment::find(1));
+        $this->assertNull(Fulfillment::find(1));
+    }
+
+    public function testAnswers()
+    {
+        $fulfillment = Fulfillment::find(1);
+
+        $this->assertCount(
+            5,
+            $fulfillment->answers()
+        );
+
+        $fulfillment = Fulfillment::find(2);
+
+        $this->assertNotCount(
+            6,
+            $fulfillment->answers()
+        );
     }
 }
