@@ -4,6 +4,7 @@ namespace Test;
 require_once("vendor/autoload.php");
 require_once('.env.php');
 
+use App\models\QuestionType;
 use ByJG\DbMigration\Database\MySqlDatabase;
 use ByJG\DbMigration\Exception\DatabaseDoesNotRegistered;
 use ByJG\DbMigration\Exception\DatabaseIsIncompleteException;
@@ -108,6 +109,24 @@ class QuestionTest extends TestCase
         $question = Question::find(4);
         $question->delete();
         $this->assertNull(Question::find(10));
+    }
+
+    public function testType()
+    {
+        $question = Question::find(1);
+        $type = QuestionType::find(1);
+
+        $this->assertEquals(
+            $type->label,
+            $question->type()->label
+        );
+
+        $question = Question::find(2);
+
+        $this->assertNotEquals(
+            $type->label,
+            $question->type()->label
+        );
     }
 
 }
