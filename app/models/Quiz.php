@@ -29,4 +29,16 @@ EOL;
         $database = DB::getInstance();
         return $database->selectOne($query, ["id" => $this->id], QuizState::class);
     }
+
+    public function questions()
+    {
+        $query = <<< EOL
+SELECT *
+FROM questions
+WHERE quiz_id = :id;
+EOL;
+
+        $database = DB::getInstance();
+        return $database->selectMany($query, ["id" => $this->id], Question::class);
+    }
 }

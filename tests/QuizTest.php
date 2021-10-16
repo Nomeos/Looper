@@ -150,4 +150,33 @@ class QuizTest extends TestCase
             $quiz->state()->label
         );
     }
+
+    public function testQuestions()
+    {
+        $quiz = Quiz::find(1);
+        $questions = $quiz->questions();
+
+        $this->assertCount(
+            2,
+            $questions
+        );
+
+        $this->assertEquals(
+            "Question1",
+            $questions[0]->label
+        );
+
+        $quiz = Quiz::find(2);
+        $questions = $quiz->questions();
+
+        $this->assertNotCount(
+            3,
+            $questions
+        );
+
+        $this->assertNotEquals(
+            "Question2",
+            $questions[1]->label
+        );
+    }
 }

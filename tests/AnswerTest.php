@@ -5,7 +5,7 @@ namespace Test;
 require_once("vendor/autoload.php");
 require_once('.env.php');
 
-use App\models\Fullfillment;
+use App\models\Fulfillment;
 use ByJG\DbMigration\Database\MySqlDatabase;
 use ByJG\DbMigration\Exception\DatabaseDoesNotRegistered;
 use ByJG\DbMigration\Exception\DatabaseIsIncompleteException;
@@ -59,7 +59,7 @@ class AnswerTest extends TestCase
 
     public function testAll()
     {
-      $this->assertCount(2, Fullfillment::all());
+      $this->assertCount(2, Fulfillment::all());
     }
 
     public function testFind()
@@ -85,14 +85,14 @@ class AnswerTest extends TestCase
      */
     public function testCreate()
     {
-        $fullfillment = New Fullfillment();
-        $fullfillment->date = "2021-09-30 00:00:00";
-        $fullfillment->create();
+        $fulfillment = New Fulfillment();
+        $fulfillment->date = "2021-09-30 00:00:00";
+        $fulfillment->create();
 
         $answer = new Answer();
         $answer->value = "My answer to question 1";
         $answer->question_id = 1;
-        $answer->fullfillment_id = 3;
+        $answer->fulfillment_id = 3;
         $this->assertTrue($answer->create());
         // there is no way to check if an answer is unique
         // that is why I do not test if $answer->create() returns false
@@ -128,5 +128,22 @@ class AnswerTest extends TestCase
 
         $this->assertTrue($answer->delete());
         $this->assertNull(Answer::find(4));
+    }
+
+    public function testFulfillment()
+    {
+        $answer = Answer::find(1);
+
+        $this->assertEquals(
+            "2021-01-14 09:00:00",
+            $answer->fulfillment()->date
+        );
+
+        $answer = Answer::find(2);
+
+        $this->assertNotEquals(
+            "2021-01-14 11:00:00",
+            $answer->fulfillment()->date
+        );
     }
 }

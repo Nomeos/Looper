@@ -20,19 +20,19 @@ INSERT INTO `looper`.`questions` (`label`, `question_type_id`, `quiz_id`) VALUES
 INSERT INTO `looper`.`questions` (`label`, `question_type_id`, `quiz_id`) VALUES ('Question4->belongs->1', '1', '1');
 INSERT INTO `looper`.`questions` (`label`, `question_type_id`, `quiz_id`) VALUES ('Question5->belongs to 2', '1', '2');
 
--- Fullfillment
-INSERT INTO `looper`.`fullfillments` (`date`) VALUES ('2021-01-14 09:00:00');
-INSERT INTO `looper`.`fullfillments` (`date`) VALUES ('2021-01-14 10:00:00');
+-- Fulfillment
+INSERT INTO `looper`.`fulfillments` (`date`) VALUES ('2021-01-14 09:00:00');
+INSERT INTO `looper`.`fulfillments` (`date`) VALUES ('2021-01-14 10:00:00');
 
 -- Answer
-INSERT INTO `looper`.`answers` (`value`, `question_id`, `fullfillment_id`) VALUES ('Answer to question1', '1', 1);
-INSERT INTO `looper`.`answers` (`value`, `question_id`, `fullfillment_id`) VALUES ('Answer to question2', '2', 1);
-INSERT INTO `looper`.`answers` (`value`, `question_id`, `fullfillment_id`) VALUES ('Answer to question3', '3', 1);
-INSERT INTO `looper`.`answers` (`value`, `question_id`, `fullfillment_id`) VALUES ('Answer to question4', '4', 1);
-INSERT INTO `looper`.`answers` (`value`, `question_id`, `fullfillment_id`) VALUES ('Answer to question5', '5', 1);
+INSERT INTO `looper`.`answers` (`value`, `question_id`, `fulfillment_id`) VALUES ('Answer to question1', '1', '1');
+INSERT INTO `looper`.`answers` (`value`, `question_id`, `fulfillment_id`) VALUES ('Answer to question2', '2', '1');
+INSERT INTO `looper`.`answers` (`value`, `question_id`, `fulfillment_id`) VALUES ('Answer to question3', '3', '1');
+INSERT INTO `looper`.`answers` (`value`, `question_id`, `fulfillment_id`) VALUES ('Answer to question4', '4', '1');
+INSERT INTO `looper`.`answers` (`value`, `question_id`, `fulfillment_id`) VALUES ('Answer to question5', '5', '1');
 
-INSERT INTO `looper`.`answers` (`value`, `question_id`, `fullfillment_id`) VALUES ('', '1', 2);
-INSERT INTO `looper`.`answers` (`value`, `question_id`, `fullfillment_id`) VALUES ('', '2', 2);
-INSERT INTO `looper`.`answers` (`value`, `question_id`, `fullfillment_id`) VALUES ('', '3', 2);
-INSERT INTO `looper`.`answers` (`value`, `question_id`, `fullfillment_id`) VALUES ('', '4', 2);
-INSERT INTO `looper`.`answers` (`value`, `question_id`, `fullfillment_id`) VALUES ('', '5', 2);
+INSERT INTO `looper`.`answers` (`value`, `question_id`, `fulfillment_id`) VALUES ('', '1', '2');
+INSERT INTO `looper`.`answers` (`value`, `question_id`, `fulfillment_id`) VALUES ('', '2', '2');
+INSERT INTO `looper`.`answers` (`value`, `question_id`, `fulfillment_id`) VALUES ('', '3', '2');
+INSERT INTO `looper`.`answers` (`value`, `question_id`, `fulfillment_id`) VALUES ('', '4', '2');
+INSERT INTO `looper`.`answers` (`value`, `question_id`, `fulfillment_id`) VALUES ('', '5', '2');
