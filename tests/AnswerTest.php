@@ -85,14 +85,14 @@ class AnswerTest extends TestCase
      */
     public function testCreate()
     {
-        $fullfillment = New Fulfillment();
-        $fullfillment->date = "2021-09-30 00:00:00";
-        $fullfillment->create();
+        $fulfillment = New Fulfillment();
+        $fulfillment->date = "2021-09-30 00:00:00";
+        $fulfillment->create();
 
         $answer = new Answer();
         $answer->value = "My answer to question 1";
         $answer->question_id = 1;
-        $answer->fullfillment_id = 3;
+        $answer->fulfillment_id = 3;
         $this->assertTrue($answer->create());
         // there is no way to check if an answer is unique
         // that is why I do not test if $answer->create() returns false

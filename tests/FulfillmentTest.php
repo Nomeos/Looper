@@ -14,7 +14,6 @@ use ByJG\DbMigration\Exception\OldVersionSchemaException;
 use ByJG\DbMigration\Migration;
 use ByJG\Util\Uri;
 use PHPUnit\Framework\TestCase;
-use App\models\QuestionType;
 use ReflectionException;
 
 class FulfillmentTest extends TestCase
@@ -78,10 +77,10 @@ class FulfillmentTest extends TestCase
      */
     public function testCreate()
     {
-        $fullfillment = new Fulfillment();
-        $fullfillment->date = "2021-05-30 10:10:00";
-        $this->assertTrue($fullfillment->create());
-        $this->assertFalse($fullfillment->create());
+        $fulfillment = new Fulfillment();
+        $fulfillment->date = "2021-05-30 10:10:00";
+        $this->assertTrue($fulfillment->create());
+        $this->assertFalse($fulfillment->create());
     }
 
     public  function testWhere()
@@ -97,9 +96,9 @@ class FulfillmentTest extends TestCase
      */
     public function testSave()
     {
-        $fullfillment = Fulfillment::find(1);
-        $fullfillment->date = "2021-08-13 13:34:12";
-        $fullfillment->save();
+        $fulfillment = Fulfillment::find(1);
+        $fulfillment->date = "2021-08-13 13:34:12";
+        $fulfillment->save();
 
         $this->assertEquals(
             "2021-08-13 13:34:12",
@@ -114,8 +113,8 @@ class FulfillmentTest extends TestCase
      */
     public function testDelete()
     {
-        $fullfillment = Fulfillment::find(1);
-        $fullfillment->delete();
+        $fulfillment = Fulfillment::find(1);
+        $fulfillment->delete();
         $this->assertNull(Fulfillment::find(1));
     }
 

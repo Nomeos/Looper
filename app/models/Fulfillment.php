@@ -6,7 +6,7 @@ use Thynkon\SimpleOrm\Model;
 
 class Fulfillment extends Model
 {
-    public static string $table = "fullfillments";
+    public static string $table = "fulfillments";
     protected string $primaryKey = "id";
     public string $date;
 
@@ -15,7 +15,7 @@ class Fulfillment extends Model
         $query = <<< EOL
 SELECT *
 FROM answers
-WHERE fullfillment_id = :id;
+WHERE fulfillment_id = :id;
 EOL;
 
         $database = DB::getInstance();

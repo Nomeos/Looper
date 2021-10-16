@@ -11,14 +11,14 @@ class Answer extends Model
     public int $id;
     public string $value;
     public int $question_id;
-    public string $fullfillment_id;
+    public string $fulfillment_id;
 
     public function fulfillment()
     {
         $query = <<< EOL
 SELECT *
 FROM answers
-INNER JOIN fullfillments ON fullfillments.id = answers.fullfillment_id
+INNER JOIN fulfillments ON fulfillments.id = answers.fulfillment_id
 WHERE answers.id = :id;
 EOL;
 
