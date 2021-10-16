@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 use App\models\QuestionType;
 use ReflectionException;
 
-class FullfillmentTest extends TestCase
+class FulfillmentTest extends TestCase
 {
     private Migration $migration;
 

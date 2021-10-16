@@ -25,4 +25,17 @@ EOL;
         $database = DB::getInstance();
         return $database->selectOne($query, ["id" => $this->id], QuestionType::class);
     }
+
+    public function quiz()
+    {
+        $query = <<< EOL
+SELECT *
+FROM questions
+INNER JOIN quizzes ON quizzes.id = questions.quiz_id
+WHERE questions.id = :id;
+EOL;
+
+        $database = DB::getInstance();
+        return $database->selectOne($query, ["id" => $this->id], Quiz::class);
+    }
 }

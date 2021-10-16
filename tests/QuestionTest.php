@@ -129,4 +129,23 @@ class QuestionTest extends TestCase
         );
     }
 
+    public function testQuiz()
+    {
+        $question = Question::find(1);
+        $quiz = $question->quiz();
+
+        $this->assertEquals(
+            "Building form",
+            $quiz->title
+        );
+
+        $question = Question::find(2);
+        $quiz = $question->quiz();
+
+        $this->assertNotEquals(
+            "Closed",
+            $quiz->title
+        );
+    }
+
 }
