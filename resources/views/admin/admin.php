@@ -9,34 +9,18 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-
-                <td>Honda</td>
-                <td class="action">
-                    <a title="Be ready for answers" href=""><i class="fa fa-comment"></i></a>
-                    <a title="Edit" href="/quiz/1234/edit"><i class="fa fa-edit"></i></a>
-                    <a id="delete1" data-confirm="Are you sure?" title="Destroy" rel="nofollow" data-method="delete"
-                       href="/quiz/1234"><i class="fa fa-trash"></i></a>
-                </td>
-            </tr>
-            <tr>
-                <td>Toyota</td>
-                <td class="action">
-                    <a title="Be ready for answers" href=""><i class="fa fa-comment"></i></a>
-                    <a title="Edit" href="/quiz/1234/edit"><i class="fa fa-edit"></i></a>
-                    <a data-confirm="Are you sure?" title="Destroy" rel="nofollow" data-method="delete"
-                       href="/exercises/422/fields/618"><i class="fa fa-trash"></i></a>
-                </td>
-            </tr>
-            <tr>
-                <td>Hyundai</td>
-                <td class="action">
-                    <a title="Be ready for answers" href=""><i class="fa fa-comment"></i></a>
-                    <a title="Edit" href="/quiz/1234/edit"><i class="fa fa-edit"></i></a>
-                    <a data-confirm="Are you sure?" title="Destroy" rel="nofollow" data-method="delete"
-                       href="/exercises/422/fields/618"><i class="fa fa-trash"></i></a>
-                </td>
-            </tr>
+            <?php foreach ($data["body"]["quiz_list"]["building"] as $quiz): ?>
+                <tr>
+                    <td><?= $quiz->title ?></td>
+                    <td class="action">
+                        <a title="Be ready for answers" href=""><i class="fa fa-comment"></i></a>
+                        <a title="Edit" href="/quiz/<?= $quiz->id ?>/edit"><i class="fa fa-edit"></i></a>
+                        <a id="delete1" data-confirm="Are you sure?" title="Destroy" rel="nofollow"
+                           data-method="delete"
+                           href="/quiz/1234"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
             </tbody>
         </table>
     </div>
@@ -50,27 +34,18 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>Honda</td>
-                <td class="action">
-                    <a title="Show results" href="/answer"><i class="fa fa-chart-bar"></i></a>
-                    <a title="Close" rel="nofollow" data-method="put" href="/exercises/388/status/closed"><i class="fa fa-minus-circle"></i></a>
-                </td>
-            </tr>
-            <tr>
-                <td>Toyota</td>
-                <td class="action">
-                    <a title="Show results" href="/answer"><i class="fa fa-chart-bar"></i></a>
-                    <a title="Close" rel="nofollow" data-method="put" href="/exercises/388/status/closed"><i class="fa fa-minus-circle"></i></a>
-                </td>
-            </tr>
-            <tr>
-                <td>Hyundai</td>
-                <td class="action">
-                    <a title="Show results" href="/answer"><i class="fa fa-chart-bar"></i></a>
-                    <a title="Close" rel="nofollow" data-method="put" href="/exercises/388/status/closed"><i class="fa fa-minus-circle"></i></a>
-                </td>
-            </tr>
+            <?php foreach ($data["body"]["quiz_list"]["answering"] as $quiz): ?>
+                <tr>
+                    <td><?= $quiz->title ?></td>
+                    <td class="action">
+                        <a title="Be ready for answers" href=""><i class="fa fa-comment"></i></a>
+                        <a title="Edit" href="/quiz/<?= $quiz->id ?>/edit"><i class="fa fa-edit"></i></a>
+                        <a id="delete1" data-confirm="Are you sure?" title="Destroy" rel="nofollow"
+                           data-method="delete"
+                           href="/quiz/1234"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
             </tbody>
         </table>
     </div>
@@ -84,31 +59,21 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>Honda</td>
-                <td class="action">
-                    <a title="Show results" href="/answer"><i class="fa fa-chart-bar"></i></a>
-                    <a data-confirm="Are you sure?" title="Destroy" rel="nofollow" data-method="delete" href="/quiz/1234"><i class="fa fa-trash"></i></a>
-                </td>
-            </tr>
-            <tr>
-                <td>Toyota</td>
-                <td class="action">
-                    <a title="Show results" href="/answer"><i class="fa fa-chart-bar"></i></a>
-                    <a data-confirm="Are you sure?" title="Destroy" rel="nofollow" data-method="delete"
-                       href="/exercises/422/fields/618"><i class="fa fa-trash"></i></a>
-                </td>
-            </tr>
-            <tr>
-                <td>Hyundai</td>
-                <td class="action">
-                    <a title="Show results" href="/answer"><i class="fa fa-chart-bar"></i></a>
-                    <a data-confirm="Are you sure?" title="Destroy" rel="nofollow" data-method="delete"
-                       href="/exercises/422/fields/618"><i class="fa fa-trash"></i></a>
-                </td>
-            </tr>
+            <?php foreach ($data["body"]["quiz_list"]["closed"] as $quiz): ?>
+                <tr>
+                    <td><?= $quiz->title ?></td>
+                    <td class="action">
+                        <a title="Be ready for answers" href=""><i class="fa fa-comment"></i></a>
+                        <a title="Edit" href="/quiz/<?= $quiz->id ?>/edit"><i class="fa fa-edit"></i></a>
+                        <a id="delete1" data-confirm="Are you sure?" title="Destroy" rel="nofollow"
+                           data-method="delete"
+                           href="/quiz/1234"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
             </tbody>
         </table>
     </div>
 </div>
+
 <script src="/assets/js/js.js"></script>

@@ -157,10 +157,22 @@ class QuizController extends ResourceController
 
     public function admin()
     {
+        $quiz_list = Quiz::all();
         $data = [];
 
         // set title
         $data["head"]["title"] = "Looper";
+
+        // load quiz list into view
+        $data["body"]["quiz_list"]["building"] = array_filter($quiz_list, function($quiz) {
+            return $quiz->state()->label === "Building";
+        });
+        $data["body"]["quiz_list"]["answering"] = array_filter($quiz_list, function($quiz) {
+            return $quiz->state()->label === "Answering";
+        });
+        $data["body"]["quiz_list"]["closed"] = array_filter($quiz_list, function($quiz) {
+            return $quiz->state()->label === "Closed";
+        });
 
         // get css stylesheets
         ob_start();
