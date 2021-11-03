@@ -1,7 +1,7 @@
-@import "../variables";
+@import "../lib/variables";
 
 header {
-    background-color: $create_quiz;
+    background-color: $manage_quiz;
     color: $white;
 
     flex-direction: column !important;

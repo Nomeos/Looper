@@ -2,17 +2,37 @@
 
 namespace App\controllers;
 
-use App\lib\http\HttpRequest;
 use App\lib\ResourceController;
-use Exception;
+use App\lib\http\HttpRequest;
 
-class QuizController extends ResourceController
+class AnswerController extends ResourceController
 {
     /**
      * @throws Exception
      */
     public function index()
     {
+        $data = [];
+
+        // set title
+        $data["head"]["title"] = "Results";
+
+        // get css stylesheets
+        ob_start();
+        require_once("resources/views/admin/style.php");
+        $data["head"]["css"] = ob_get_clean();
+
+        // set header title (next to the logo)
+        $data["header"]["title"] = "Exercice: lapin ou lapin";
+
+        // get body content
+        ob_start();
+        require_once("resources/views/templates/header.php");
+        require_once("resources/views/admin/results.php");
+        $data["body"]["content"] = ob_get_clean();
+
+        // finally, render page
+        $this->view->render("templates/base.php", $data);
     }
 
     /**
@@ -20,27 +40,7 @@ class QuizController extends ResourceController
      */
     public function create()
     {
-        $data = [];
 
-        // set title
-        $data["head"]["title"] = "Looper";
-
-        // get css stylesheets
-        ob_start();
-        require_once("resources/views/quiz/style.php");
-        $data["head"]["css"] = ob_get_clean();
-
-        // set header title (next to the logo)
-        $data["header"]["title"] = "New question";
-
-        // get body content
-        ob_start();
-        require_once("resources/views/templates/header.php");
-        require_once("resources/views/quiz/add.php");
-        $data["body"]["content"] = ob_get_clean();
-
-        // finally, render page
-        $this->view->render("templates/base.php", $data);
     }
 
     /**
@@ -59,7 +59,27 @@ class QuizController extends ResourceController
      */
     public function show(int $id)
     {
-        // TODO: Implement store() method.
+        $data = [];
+
+        // set title
+        $data["head"]["title"] = "Your answer";
+
+        // get css stylesheets
+        ob_start();
+        require_once("resources/views/admin/style.php");
+        $data["head"]["css"] = ob_get_clean();
+
+        // set header title (next to the logo)
+        $data["header"]["title"] = "Exercise: lapin ou lapin";
+
+        // get body content
+        ob_start();
+        require_once("resources/views/templates/header.php");
+        require_once("resources/views/admin/show.php");
+        $data["body"]["content"] = ob_get_clean();
+
+        // finally, render page
+        $this->view->render("templates/base.php", $data);
     }
 
     /**
@@ -71,29 +91,20 @@ class QuizController extends ResourceController
         $data = [];
 
         // set title
-        $data["head"]["title"] = "Edit QUIZ NAME";
+        $data["head"]["title"] = "Edit your answer";
 
         // get css stylesheets
         ob_start();
-        require_once("resources/views/quiz/style.php");
-        require_once("resources/views/question/style.php");
+        require_once("resources/views/reply/style.php");
         $data["head"]["css"] = ob_get_clean();
 
         // set header title (next to the logo)
-        $data["header"]["title"] = "QUIZ NAME";
-
-        ob_start();
-        require_once("resources/views/question/list.php");
-        $data["body"]["questions_list"] = ob_get_clean();
-
-        ob_start();
-        require_once("resources/views/question/add.php");
-        $data["body"]["questions_add"] = ob_get_clean();
+        $data["header"]["title"] = "YOUR ANSWER";
 
         // get body content
         ob_start();
         require_once("resources/views/templates/header.php");
-        require_once("resources/views/quiz/update.php");
+        require_once("resources/views/reply/reply.php");
         $data["body"]["content"] = ob_get_clean();
 
         // finally, render page
@@ -106,6 +117,7 @@ class QuizController extends ResourceController
      */
     public function update(HttpRequest $request, int $id)
     {
+
         // TODO: Implement update() method.
     }
 
@@ -123,34 +135,5 @@ class QuizController extends ResourceController
     public function results(int $id)
     {
         // TODO: Implement destroy() method.
-    }
-
-    public function admin()
-    {
-        $data = [];
-
-        // set title
-        $data["head"]["title"] = "Looper";
-
-        // get css stylesheets
-        ob_start();
-        require_once("resources/views/admin/style.php");
-        $data["head"]["css"] = ob_get_clean();
-
-        ob_start();
-        require_once("public/assets/js/js.js");
-        $data["head"]["js"] = ob_get_clean();
-
-        // set header title (next to the logo)
-        $data["header"]["title"] = "admin view";
-
-        // get body content
-        ob_start();
-        require_once("resources/views/templates/header.php");
-        require_once("resources/views/admin/admin.php");
-        $data["body"]["content"] = ob_get_clean();
-
-        // finally, render page
-        $this->view->render("templates/base.php", $data);
     }
 }
