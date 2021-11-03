@@ -55,6 +55,10 @@ class Router
                 $controller->admin();
             } );
 
+            $r->put("/{id:\d+}/toAnswering", function ($args) use ($controller) {
+                $controller->toAnswering();
+            } );
+
         });
     }
 

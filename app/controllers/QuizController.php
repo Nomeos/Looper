@@ -187,4 +187,8 @@ class QuizController extends ResourceController
         // finally, render page
         $this->view->render("templates/base.php", $data);
     }
+
+    public function toAnswering()
+    {
+    }
 }
