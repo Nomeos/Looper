@@ -4,6 +4,7 @@ namespace App\controllers;
 
 use App\lib\http\HttpRequest;
 use App\lib\ResourceController;
+use App\models\Quiz;
 use Exception;
 
 class QuizController extends ResourceController
@@ -127,19 +128,27 @@ class QuizController extends ResourceController
 
     public function admin()
     {
+        $quiz_list = Quiz::all();
         $data = [];
 
         // set title
         $data["head"]["title"] = "Looper";
 
+        // load quiz list into view
+        $data["body"]["quiz_list"]["building"] = array_filter($quiz_list, function($quiz) {
+            return $quiz->state()->label === "Building";
+        });
+        $data["body"]["quiz_list"]["answering"] = array_filter($quiz_list, function($quiz) {
+            return $quiz->state()->label === "Answering";
+        });
+        $data["body"]["quiz_list"]["closed"] = array_filter($quiz_list, function($quiz) {
+            return $quiz->state()->label === "Closed";
+        });
+
         // get css stylesheets
         ob_start();
         require_once("resources/views/admin/style.php");
         $data["head"]["css"] = ob_get_clean();
-
-        ob_start();
-        require_once("public/assets/js/js.js");
-        $data["head"]["js"] = ob_get_clean();
 
         // set header title (next to the logo)
         $data["header"]["title"] = "admin view";
