@@ -126,7 +126,17 @@ To get a local copy up and running follow these simple steps.
    
 3. Compile scss files to css
 ```sh
-    $ make css
+$ make css
+```
+
+4. Setup database connection
+This projects uses PDO as the database connector. In order to connect to a database, you must
+set the DSN, the username and his password in **.env.php**.
+
+```php
+DEFINE('DSN', 'mysql:dbname=<YOUR_DATABASE_NAME>;host=127.0.0.1');
+DEFINE('USERNAME', '<USERNAME>');
+DEFINE('PASSWORD', '<PASSWORD>');
 ```
 
 <!-- USAGE EXAMPLES -->
@@ -136,14 +146,27 @@ Use this space to show useful examples of how a project can be used. Additional 
 
 _For more examples, please refer to the [Documentation](https://example.com)_
 
-
+## Hacking on the project
+### Tests
+If you have added a feature and you want to test if everything is ok, you can run the unit tests we wrote
+by typing the following:
+```sh
+$ php vendor/bin/phpunit tests
+```
 
 <!-- ROADMAP -->
 ## Roadmap
 
 See the [open issues](https://github.com/Nomeos/Looper/issues) for a list of proposed features (and known issues).
 
+## Documentation
+The documentation about the routing system, class diagrams, database model and the state diagram can be found under the **doc/** folder:
+- [routing system](doc/routes/routes.pdf)
+- [class diagrams](doc/classes/classes.pdf)
+- [database model](doc/db/diagram.pdf)
+- [state diagram](doc/state_diagram.pdf)
 
+We use the [same directory structure as laravel](https://laravel.com/docs/8.x/structure).
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -171,19 +194,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email
 
 Project Link: [https://github.com/gNomeos/Looper](https://github.com/Nomeos/Looper)
-
-
-
-<!-- ACKNOWLEDGEMENTS -->
-## Acknowledgements
-
-* []()
-* []()
-* []()
-
-
-
-
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
