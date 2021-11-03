@@ -69,10 +69,35 @@ class QuizController extends ResourceController
      */
     public function edit(int $id)
     {
+        $quiz = Quiz::find($id);
+
+        // If there is no quiz with 'id', show proper error message
+        if ($quiz === null) {
+            header("HTTP/1.0 404 Not Found");
+            // get css stylesheets
+            ob_start();
+            require_once("resources/views/error/style.php");
+            $data["head"]["css"] = ob_get_clean();
+
+            // set header title (tab title)
+            $data["head"]["title"] = "Page not found";
+
+            ob_start();
+            require_once("resources/views/error/404.php");
+            $data["body"]["content"] = ob_get_clean();
+
+            // finally, render page
+            $this->view->render("templates/base.php", $data);
+            exit;
+        }
+
         $data = [];
 
         // set title
-        $data["head"]["title"] = "Edit QUIZ NAME";
+        $data["head"]["title"] = "Edit {$quiz->title}";
+
+        // load quiz into view
+        $data["body"]["quiz"] = $quiz;
 
         // get css stylesheets
         ob_start();
@@ -81,7 +106,7 @@ class QuizController extends ResourceController
         $data["head"]["css"] = ob_get_clean();
 
         // set header title (next to the logo)
-        $data["header"]["title"] = "QUIZ NAME";
+        $data["header"]["title"] = $quiz->title;
 
         ob_start();
         require_once("resources/views/question/list.php");
