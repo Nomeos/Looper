@@ -3,6 +3,7 @@
 namespace App\controllers;
 
 use App\lib\ResourceController;
+use App\lib\http\HttpRequest;
 
 class QuestionController extends ResourceController
 {

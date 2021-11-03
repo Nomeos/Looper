@@ -35,10 +35,12 @@ class Router
             // create CRUD routes for both controllers (like Laravel)
             RouteFactory::fromResourceController('QuizController', $r);
             RouteFactory::fromResourceController('QuestionController', $r);
+            RouteFactory::fromResourceController('AnswerController', $r);
 
             // append extra routes (that are not part of CRUD actions)
             $this->setQuizRoutes($r);
             $this->setQuestionRoutes($r);
+            $this->setAnswerRoutes($r);
         });
     }
 
@@ -46,9 +48,13 @@ class Router
     {
         $controller = new QuizController();
         $r->addGroup('/quiz', function (FastRoute\RouteCollector $r) use ($controller) {
-            $r->get('/{id:\d+}/results', function($args) use ($controller) {
-                $controller->results($args["id"]);
-            });
+            $r->get('/answering', function() use ($controller) {
+                $controller->index();
+            } );
+            $r->get('/admin', function() use ($controller) {
+                $controller->admin();
+            } );
+
         });
     }
 
@@ -56,4 +62,10 @@ class Router
     {
         // DO NOTHING FOR NOW
     }
+
+    private function setAnswerRoutes(FastRoute\RouteCollector &$r)
+    {
+        // DO NOTHING FOR NOW
+    }
+
 }
