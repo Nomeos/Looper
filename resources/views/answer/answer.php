@@ -1,13 +1,10 @@
 <div class="wrapper pure-g">
-    <div class="quiz pure-u-2-3">
-        <label for="take_quiz">Ex</label>
-        <a class=" pure-button pure-button-primary upper-case" href="/answer/1234/edit">Take a
-            quiz</a>
-    </div>
+    <?php foreach ($data["body"]["quiz_list"]["answering"] as $quizzes) : ?>
+        <div class="quiz pure-u-2-3">
+            <label for="take_quiz"><?= $quizzes->title ?></label>
+            <a class=" pure-button pure-button-primary upper-case" href="/answer/<?= $quizzes->id ?>/edit">Take a
+                quiz</a>
+        </div>
+    <?php endforeach; ?>
 
-    <div class="quiz pure-u-2-3">
-        <label for="take_quiz">Ex</label>
-        <a class=" pure-button pure-button-primary upper-case" href="/answer/1234/edit">Take a
-            quiz</a>
-    </div>
 </div>

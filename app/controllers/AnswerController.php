@@ -4,6 +4,8 @@ namespace App\controllers;
 
 use App\lib\ResourceController;
 use App\lib\http\HttpRequest;
+use App\models\Answer;
+use App\models\Question;
 
 class AnswerController extends ResourceController
 {
@@ -88,6 +90,7 @@ class AnswerController extends ResourceController
      */
     public function edit(int $id)
     {
+        $questions = Question::where("quiz_id", $id);
         $data = [];
 
         // set title
@@ -95,7 +98,7 @@ class AnswerController extends ResourceController
 
         // get css stylesheets
         ob_start();
-        require_once("resources/views/reply/style.php");
+        require_once("resources/views/fulfillment/style.php");
         $data["head"]["css"] = ob_get_clean();
 
         // set header title (next to the logo)
@@ -104,7 +107,7 @@ class AnswerController extends ResourceController
         // get body content
         ob_start();
         require_once("resources/views/templates/header.php");
-        require_once("resources/views/reply/reply.php");
+        require_once("resources/views/fulfillment/fulfillment.php");
         $data["body"]["content"] = ob_get_clean();
 
         // finally, render page

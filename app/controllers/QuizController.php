@@ -4,6 +4,7 @@ namespace App\controllers;
 
 use App\lib\http\HttpRequest;
 use App\lib\ResourceController;
+use App\models\Quiz;
 use Exception;
 
 class QuizController extends ResourceController
@@ -13,6 +14,35 @@ class QuizController extends ResourceController
      */
     public function index()
     {
+        $quiz_list = Quiz::all();
+        $data = [];
+
+        // set title
+        $data["head"]["title"] = "Looper";
+
+        // load quiz list into view
+        $data["body"]["quiz_list"]["answering"] = array_filter($quiz_list, function($quiz) {
+            return $quiz->state()->label === "Answering";
+        });
+        // set title
+        $data["head"]["title"] = "Looper";
+
+        // get css stylesheets
+        ob_start();
+        require_once("resources/views/answer/style.php");
+        $data["head"]["css"] = ob_get_clean();
+
+        // set header title (next to the logo)
+        $data["header"]["title"] = "New question";
+
+        // get body content
+        ob_start();
+        require_once("resources/views/templates/header.php");
+        require_once("resources/views/answer/answer.php");
+        $data["body"]["content"] = ob_get_clean();
+
+        // finally, render page
+        $this->view->render("templates/base.php", $data);
     }
 
     /**
@@ -136,10 +166,6 @@ class QuizController extends ResourceController
         ob_start();
         require_once("resources/views/admin/style.php");
         $data["head"]["css"] = ob_get_clean();
-
-        ob_start();
-        require_once("public/assets/js/js.js");
-        $data["head"]["js"] = ob_get_clean();
 
         // set header title (next to the logo)
         $data["header"]["title"] = "admin view";
