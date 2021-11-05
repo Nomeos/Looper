@@ -11,7 +11,7 @@ class Answer extends Model
     public int $id;
     public string $value;
     public int $question_id;
-    public string $fulfillment_id;
+    public int $fulfillment_id;
 
     public function fulfillment()
     {
