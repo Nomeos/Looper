@@ -97,7 +97,7 @@ Here's a blank template to get started:
 
 * [PHP 8.0](https://www.php.net/releases/8.0/en.php)
 * [Mariadb 10.6.4](https://mariadb.com/kb/en/mariadb-1064-release-notes/)
-* []()
+* [Composer 2.1.11](https://getcomposer.org/download/)
 
 
 
@@ -107,11 +107,16 @@ Here's a blank template to get started:
 To get a local copy up and running follow these simple steps.
 
 ### Prerequisites
-#### Archlinux
-- [composer](https://getcomposer.org/)
-  ```sh
+#### [Composer](https://getcomposer.org/)
+- Archlinux
+```sh
   $ sudo pacman -S composer
-  ```
+```
+
+- NixOS
+```sh
+  $ nix-env -iA nixos php80Packages.composer
+```
 
 ### Installation
 
@@ -127,7 +132,7 @@ To get a local copy up and running follow these simple steps.
    
 3. Compile scss files to css
 ```sh
-$ make css
+$ composer build-css
 ```
 
 4. Setup database connection
@@ -135,9 +140,16 @@ This projects uses PDO as the database connector. In order to connect to a datab
 set the DSN, the username and his password in **.env.php**.
 
 ```php
+<?php
+
 DEFINE('DSN', 'mysql:dbname=<YOUR_DATABASE_NAME>;host=127.0.0.1');
 DEFINE('USERNAME', '<USERNAME>');
 DEFINE('PASSWORD', '<PASSWORD>');
+```
+
+5. Populate the database
+```sh
+$ composer populate-db
 ```
 
 <!-- USAGE EXAMPLES -->
@@ -194,7 +206,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email
 
-Project Link: [https://github.com/gNomeos/Looper](https://github.com/Nomeos/Looper)
+Project Link: [https://github.com/Nomeos/Looper](https://github.com/Nomeos/Looper)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
