@@ -4,6 +4,7 @@ namespace App\controllers;
 
 use App\lib\http\HttpRequest;
 use App\lib\ResourceController;
+use App\models\Answer;
 use App\models\Quiz;
 use Exception;
 
@@ -21,7 +22,7 @@ class QuizController extends ResourceController
         $data["head"]["title"] = "Looper";
 
         // load quiz list into view
-        $data["body"]["quiz_list"]["answering"] = array_filter($quiz_list, function($quiz) {
+        $data["body"]["quiz_list"]["answering"] = array_filter($quiz_list, function ($quiz) {
             return $quiz->state()->label === "Answering";
         });
         // set title
@@ -189,13 +190,13 @@ class QuizController extends ResourceController
         $data["head"]["title"] = "Looper";
 
         // load quiz list into view
-        $data["body"]["quiz_list"]["building"] = array_filter($quiz_list, function($quiz) {
+        $data["body"]["quiz_list"]["building"] = array_filter($quiz_list, function ($quiz) {
             return $quiz->state()->label === "Building";
         });
-        $data["body"]["quiz_list"]["answering"] = array_filter($quiz_list, function($quiz) {
+        $data["body"]["quiz_list"]["answering"] = array_filter($quiz_list, function ($quiz) {
             return $quiz->state()->label === "Answering";
         });
-        $data["body"]["quiz_list"]["closed"] = array_filter($quiz_list, function($quiz) {
+        $data["body"]["quiz_list"]["closed"] = array_filter($quiz_list, function ($quiz) {
             return $quiz->state()->label === "Closed";
         });
 
@@ -219,5 +220,41 @@ class QuizController extends ResourceController
 
     public function toAnswering()
     {
+        echo "I'm in";
+        exit;
+    }
+
+    public function toClosed()
+    {
+
+    }
+
+    /**
+     * @param int $id
+     */
+    public function fulfillment(int $id)
+    {
+        $quiz = Quiz::find($id);
+        $quizFulfillments = $quiz->fulfillments($quiz->id);
+
+        // set title
+        $data["head"]["title"] = "Results";
+
+        // get css stylesheets
+        ob_start();
+        require_once("resources/views/admin/style.php");
+        $data["head"]["css"] = ob_get_clean();
+
+        // set header title (next to the logo)
+        $data["header"]["title"] = "Exercice: {$quiz->title}";
+
+        // get body content
+        ob_start();
+        require_once("resources/views/templates/header.php");
+        require_once("resources/views/admin/results.php");
+        $data["body"]["content"] = ob_get_clean();
+
+        // finally, render page
+        $this->view->render("templates/base.php", $data);
     }
 }

@@ -2,10 +2,12 @@
 
 namespace Route;
 
+use App\controllers\FulfillmentController;
 use App\controllers\LooperController;
 use App\controllers\QuizController;
 use App\lib\RouteFactory;
 use App\lib\http\HttpRequest;
+use App\models\Answer;
 use FastRoute\Dispatcher;
 use FastRoute;
 
@@ -35,7 +37,7 @@ class Router
             // create CRUD routes for both controllers (like Laravel)
             RouteFactory::fromResourceController('QuizController', $r);
             RouteFactory::fromResourceController('QuestionController', $r);
-            RouteFactory::fromResourceController('AnswerController', $r);
+            RouteFactory::fromResourceController('FulfillmentController', $r);
 
             // append extra routes (that are not part of CRUD actions)
             $this->setQuizRoutes($r);
@@ -48,17 +50,23 @@ class Router
     {
         $controller = new QuizController();
         $r->addGroup('/quiz', function (FastRoute\RouteCollector $r) use ($controller) {
-            $r->get('/answering', function() use ($controller) {
+            $r->get('/answering', function () use ($controller) {
                 $controller->index();
-            } );
-            $r->get('/admin', function() use ($controller) {
+            });
+            $r->get('/admin', function () use ($controller) {
                 $controller->admin();
-            } );
+            });
 
             $r->put("/{id:\d+}/toAnswering", function ($args) use ($controller) {
                 $controller->toAnswering();
-            } );
+            });
 
+            $r->put("/{id:\d+}/toClosed", function ($args) use ($controller) {
+                $controller->toClosed();
+            });
+            $r->get("/{id:\d+}/fulfillment", function ($args) use ($controller) {
+                $controller->fulfillment($args["id"]);
+            });
         });
     }
 
@@ -69,7 +77,7 @@ class Router
 
     private function setAnswerRoutes(FastRoute\RouteCollector &$r)
     {
-        // DO NOTHING FOR NOW
+// DO NOTHING FOR NOW
     }
 
 }

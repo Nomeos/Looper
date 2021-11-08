@@ -1,4 +1,5 @@
 <?php
+
 namespace App\models;
 
 use Thynkon\SimpleOrm\database\DB;
@@ -21,4 +22,19 @@ EOL;
         $database = DB::getInstance();
         return $database->selectMany($query, ["id" => $this->id], Answer::class);
     }
+    public function quiz(int $id)
+    {
+        $query = <<< EOL
+SELECT *
+FROM answers
+INNER JOIN fulfillments ON fulfillments.id = answers.fulfillment_id
+INNER JOIN questions ON questions.id = answers.question_id
+INNER JOIN quizzes ON quizzes.id = questions.quiz_id
+WHERE answers.fulfillment_id = :id;
+EOL;
+
+        $database = DB::getInstance();
+        return $database->selectOne($query, ["id" => $id], Answer::class);
+    }
+
 }
