@@ -14,7 +14,7 @@
                     <td><?= $quiz->title ?></td>
                     <td class="action">
                         <?php if (count($quiz->questions()) > 0) : ?>
-                            <a title="Be ready for answers" href="/quiz/<?= $quiz->id ?>/toAnswering"><i
+                            <a data-method="put" title="Be ready for answers" href="/quiz/<?= $quiz->id ?>/toAnswering"><i
                                         class="fa fa-comment"></i></a>
                         <?php endif ?>
                         <a title="Edit" href="/quiz/<?= $quiz->id ?>/edit"><i class="fa fa-edit"></i></a>
@@ -41,7 +41,7 @@
                 <tr>
                     <td><?= $quiz->title ?></td>
                     <td class="action">
-                        <a title="Show results" href="/answer"><i class="fa fa-chart-bar"></i></a>
+                        <a title="Show results" href="/quiz/<?= $quiz->id ?>/fulfillment"><i class="fa fa-chart-bar"></i></a>
                         <a title="Close" rel="nofollow" data-method="put" href="/quiz/<?= $quiz->id ?>/toClosed">
                             <i class="fa fa-minus-circle"></i>
                         </a>
@@ -65,7 +65,7 @@
                 <tr>
                     <td><?= $quiz->title ?></td>
                     <td class="action">
-                        <a title="Show results" href="/answer"><i class="fa fa-chart-bar"></i></a>
+                        <a title="Show results" href="/quiz/<?= $quiz->id ?>/fulfillment"><i class="fa fa-chart-bar"></i></a>
                         <a data-confirm="Are you sure?" title="Destroy" rel="nofollow" data-method="delete"
                            href="/quiz/1234"><i class="fa fa-trash"></i></a>
                     </td>

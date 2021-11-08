@@ -5,36 +5,18 @@ namespace App\controllers;
 use App\lib\ResourceController;
 use App\lib\http\HttpRequest;
 use App\models\Answer;
+use App\models\Fulfillment;
 use App\models\Question;
+use App\models\Quiz;
 
-class AnswerController extends ResourceController
+class FulfillmentController extends ResourceController
 {
     /**
      * @throws Exception
      */
     public function index()
     {
-        $data = [];
 
-        // set title
-        $data["head"]["title"] = "Results";
-
-        // get css stylesheets
-        ob_start();
-        require_once("resources/views/admin/style.php");
-        $data["head"]["css"] = ob_get_clean();
-
-        // set header title (next to the logo)
-        $data["header"]["title"] = "Exercice: lapin ou lapin";
-
-        // get body content
-        ob_start();
-        require_once("resources/views/templates/header.php");
-        require_once("resources/views/admin/results.php");
-        $data["body"]["content"] = ob_get_clean();
-
-        // finally, render page
-        $this->view->render("templates/base.php", $data);
     }
 
     /**
@@ -61,10 +43,15 @@ class AnswerController extends ResourceController
      */
     public function show(int $id)
     {
+        $fulfillment = Fulfillment::find($id);
+        $quiz = $fulfillment->quiz($id);
+        $answers = $fulfillment->answers($id);
         $data = [];
+        $data["body"]["answers"] = $answers;
+        $data["body"]["fulfillment"] = $fulfillment;
 
         // set title
-        $data["head"]["title"] = "Your answer";
+        $data["head"]["title"] = "Looper";
 
         // get css stylesheets
         ob_start();
@@ -72,9 +59,9 @@ class AnswerController extends ResourceController
         $data["head"]["css"] = ob_get_clean();
 
         // set header title (next to the logo)
-        $data["header"]["title"] = "Exercise: lapin ou lapin";
+        $data["header"]["title"] = "Exercise: {$quiz->title}";
 
-        // get body content
+        // get body content3
         ob_start();
         require_once("resources/views/templates/header.php");
         require_once("resources/views/admin/show.php");
@@ -132,11 +119,5 @@ class AnswerController extends ResourceController
         // TODO: Implement destroy() method.
     }
 
-    /**
-     * @param int $id
-     */
-    public function results(int $id)
-    {
-        // TODO: Implement destroy() method.
-    }
+
 }
