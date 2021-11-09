@@ -131,26 +131,25 @@ To get a local copy up and running follow these simple steps.
    ```
    
 3. Compile scss files to css
-```sh
-$ composer build-css
-```
+   ```sh
+   $ composer build-css
+   ```
 
 4. Setup database connection
 This projects uses PDO as the database connector. In order to connect to a database, you must
 set the DSN, the username and his password in **.env.php**.
+   ```php
+   <?php
 
-```php
-<?php
-
-DEFINE('DSN', 'mysql:dbname=<YOUR_DATABASE_NAME>;host=127.0.0.1');
-DEFINE('USERNAME', '<USERNAME>');
-DEFINE('PASSWORD', '<PASSWORD>');
-```
+   DEFINE('DSN', 'mysql:dbname=<YOUR_DATABASE_NAME>;host=127.0.0.1');
+   DEFINE('USERNAME', '<USERNAME>');
+   DEFINE('PASSWORD', '<PASSWORD>');
+   ```
 
 5. Populate the database
-```sh
-$ composer populate-db
-```
+   ```sh
+   $ composer populate-db
+   ```
 
 <!-- USAGE EXAMPLES -->
 ## Usage
@@ -164,7 +163,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 If you have added a feature and you want to test if everything is ok, you can run the unit tests we wrote
 by typing the following:
 ```sh
-$ php vendor/bin/phpunit tests
+$ composer test
 ```
 
 <!-- ROADMAP -->
