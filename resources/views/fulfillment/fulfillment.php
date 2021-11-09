@@ -1,5 +1,5 @@
 <div id="new_quiz_parent" class="pure-g">
-    <form class="pure-u-3-5 pure-form pure-form-stacked" action="/answer/store" method="post">
+    <form class="pure-u-3-5 pure-form pure-form-stacked" action="/fulfillment/store" method="post">
         <fieldset>
             <legend>Your Take</legend>
             <div>If you'd like to come back later to finish, simply submit it with blanks.</div>
