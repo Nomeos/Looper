@@ -41,7 +41,7 @@
     Its goals are to create, manage and delete quizzes.<br/>
     Users can also get some statistics related to the answers.
     <br />
-    <a href="https://github.com/Nomeos/Looper/doc"><strong>Explore the docs »</strong></a>
+    <a href="./doc"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/Nomeos/Looper">View Demo</a>
