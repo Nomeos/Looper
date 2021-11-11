@@ -80,7 +80,9 @@ class FulfillmentTest extends TestCase
         $fulfillment = new Fulfillment();
         $fulfillment->date = "2021-05-30 10:10:00";
         $this->assertTrue($fulfillment->create());
-        $this->assertFalse($fulfillment->create());
+
+        $this->expectException(\PDOException::class);
+        $fulfillment->create();
     }
 
     public  function testWhere()

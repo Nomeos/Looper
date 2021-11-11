@@ -90,7 +90,9 @@ class QuizTest extends TestCase
         $quiz->is_public = 1;
         $quiz->quiz_state_id = 1;
         $this->assertTrue($quiz->create());
-        $this->assertFalse($quiz->create());
+
+        $this->expectException(\PDOException::class);
+        $quiz->create();
     }
 
     /**

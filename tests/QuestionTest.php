@@ -94,7 +94,10 @@ class QuestionTest extends TestCase
             Question::find(1)->label
         );
 
-        // TODO test id update (try to set id to null or 0)
+        $question->id = 0;
+        // event though id is not a valid value
+        // the database server ignores it because it is autoincremented
+        $this->assertFalse($question->save());
     }
 
     /**
