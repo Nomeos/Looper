@@ -12,6 +12,8 @@ use Route\Router;
 
 function main()
 {
+    $view = new View();
+    $data = [];
     // Fetch routes
     $router = new Router();
     $dispatcher = $router->getDispatcher();
@@ -31,9 +33,6 @@ function main()
         case FastRoute\Dispatcher::NOT_FOUND:
             // ... 404 Not Found
             http_response_code(404);
-
-            $view = new View();
-            $data = [];
 
             // get css stylesheets
             ob_start();
@@ -58,9 +57,30 @@ function main()
             $handler = $routeInfo[1];
             $vars = $routeInfo[2];
 
-            // call handler function (load template)
-            $handler($vars);
-            break;
+            try {
+                // call handler function (load template)
+                $handler($vars);
+                break;
+            } catch (PDOException $e) {
+                if ($e->getCode() === 2002) {
+                    $data["body"]["message"] = "Database connection error!";
+                }
+                // get css stylesheets
+                ob_start();
+                require_once("resources/views/error/style.php");
+                $data["head"]["css"] = ob_get_clean();
+
+                // set header title (tab title)
+                $data["head"]["title"] = "Internal error";
+
+                ob_start();
+                require_once("resources/views/error/500.php");
+                $data["body"]["content"] = ob_get_clean();
+
+                // finally, render page
+                $view->render("templates/base.php", $data);
+                exit;
+            }
     }
 }
 
