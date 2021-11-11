@@ -2,10 +2,12 @@
 
 namespace App\controllers;
 
+use App\lib\FlashMessage;
 use App\lib\http\HttpRequest;
 use App\lib\ResourceController;
 use App\models\Answer;
 use App\models\Quiz;
+use App\models\QuizState;
 use Exception;
 
 class QuizController extends ResourceController
@@ -79,10 +81,30 @@ class QuizController extends ResourceController
      */
     public function store(HttpRequest $request)
     {
-        // TODO: Implement store() method.
-        echo "<pre>";
-        print_r($request->getBodyData());
-        echo "</pre>";
+        $quiz = new Quiz();
+        $default_quiz_state = QuizState::where("label", "Building")[0];
+        $form_data = $request->getBodyData();
+
+        $quiz->title = $form_data["quiz_title"];
+        $quiz->is_public = false;
+        $quiz->quiz_state_id = $default_quiz_state->id;
+
+        $url = "/quiz/create";
+        try {
+            $quiz->create();
+            $_SESSION["flash_message"]["type"] = FlashMessage::OK;
+            $_SESSION["flash_message"]["value"] = "Quiz was successfully created!";
+
+            header("Location: $url");
+        } catch (\PDOException $e) {
+            if ($e->getCode() === "23000") {
+                $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+                $_SESSION["flash_message"]["value"] = "Failed to create a new quiz!<br>";
+                $_SESSION["flash_message"]["value"] .= "There already is a quiz named {$quiz->title}!";
+
+                header("Location: $url");
+            }
+        }
     }
 
     /**
@@ -103,7 +125,7 @@ class QuizController extends ResourceController
 
         // If there is no quiz with 'id', show proper error message
         if ($quiz === null) {
-            header("HTTP/1.0 404 Not Found");
+            http_response_code(404);
             // get css stylesheets
             ob_start();
             require_once("resources/views/error/style.php");
@@ -183,8 +205,9 @@ class QuizController extends ResourceController
 
     public function admin()
     {
-        $quiz_list = Quiz::all();
         $data = [];
+
+        $quiz_list = Quiz::all();
 
         // set title
         $data["head"]["title"] = "Looper";
