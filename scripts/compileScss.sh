@@ -3,18 +3,20 @@
 # set -x
 
 main() {
-	local READONLY SCSS_PATH="./resources/scss"
-	local READONLY CSS_PATH="./public/assets/css"
+    local READONLY SCSS_PATH="./resources/scss"
+    local READONLY CSS_PATH="./public/assets/css"
 
-	local scss_files=($(find . -name '*.scss' -type f))
-	local file_path=""
+    local scss_files=($(find . -name '*.scss' -type f))
+    local file_path=""
 
-	[[ -d "${CSS_PATH}" ]] || mkdir -p "${CSS_PATH}"
+    [[ -d "${CSS_PATH}" ]] || mkdir -p "${CSS_PATH}"
 
-	for f in "${scss_files[@]}"; do
-		file_path=${f##${SCSS_PATH}}
-		sass "${f}" "${CSS_PATH}/"${file_path%.*}.css""
-	done
+    killall node
+
+    for f in "${scss_files[@]}"; do
+        file_path=${f##${SCSS_PATH}}
+        sass --watch "${f}" "${CSS_PATH}/${file_path%.*}.css" &
+    done
 
 }
 
