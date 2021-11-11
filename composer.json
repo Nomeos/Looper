@@ -19,6 +19,9 @@
     ],
     "populate-db": [
       "php ./scripts/populateDB.php"
+    ],
+    "test": [
+        "vendor/bin/phpunit --configuration=./phpunit.xml"
     ]
   }
 }
