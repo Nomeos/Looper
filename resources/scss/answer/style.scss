@@ -1,6 +1,9 @@
 @import "../lib/variables";
 @import "../lib/lib";
-@import "header";
+
+header {
+    background-color: $primary_color;
+}
 
 div.wrapper {
     flex-direction: column;

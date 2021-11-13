@@ -1,6 +1,5 @@
 @import "../lib/variables";
 @import "../lib/lib";
-@import "header";
 
 .parent-center {
     justify-content: center;
@@ -12,6 +11,10 @@
     a {
         color: $primary_color;
     }
+}
+
+header {
+    background-color: $manage_quiz;
 }
 
 .wrapper {
