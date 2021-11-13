@@ -32,8 +32,30 @@ class QuestionController extends ResourceController
 
     public function edit(int $id)
     {
-        $question = Question::find($id);
-        $question_types = QuestionType::all();
+        $question = null;
+        $question_types = null;
+        $data = [];
+
+        try {
+            $question = Question::find($id);
+            $question_types = QuestionType::all();
+        } catch (\PDOException $e) {
+            $data["body"]["message"] = "Database connection error!<br>";
+            // get css stylesheets
+            ob_start();
+            require_once("resources/views/error/style.php");
+            $data["head"]["css"] = ob_get_clean();
+
+            // set header title (tab title)
+            $data["head"]["title"] = "Internal error";
+
+            ob_start();
+            require_once("resources/views/error/500.php");
+            $data["body"]["content"] = ob_get_clean();
+
+            // finally, render page
+            $this->view->render("templates/base.php", $data);
+        }
 
         // If there is no question with 'id', show proper error message
         if ($question === null) {

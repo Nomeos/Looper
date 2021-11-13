@@ -17,9 +17,28 @@ class QuizController extends ResourceController
      */
     public function index()
     {
-        $quiz_list = Quiz::all();
+        $quiz_list = null;
         $data = [];
 
+        try {
+            $quiz_list = Quiz::all();
+        } catch (\PDOException $e) {
+            $data["body"]["message"] = "Database connection error!<br>";
+            // get css stylesheets
+            ob_start();
+            require_once("resources/views/error/style.php");
+            $data["head"]["css"] = ob_get_clean();
+
+            // set header title (tab title)
+            $data["head"]["title"] = "Internal error";
+
+            ob_start();
+            require_once("resources/views/error/500.php");
+            $data["body"]["content"] = ob_get_clean();
+
+            // finally, render page
+            $this->view->render("templates/base.php", $data);
+        }
         // set title
         $data["head"]["title"] = "Looper";
 
@@ -36,7 +55,7 @@ class QuizController extends ResourceController
         $data["head"]["css"] = ob_get_clean();
 
         // set header title (next to the logo)
-        $data["header"]["title"] = "New question";
+        $data["header"]["title"] = "Take a quiz";
 
         // get body content
         ob_start();
@@ -121,7 +140,28 @@ class QuizController extends ResourceController
      */
     public function edit(int $id)
     {
-        $quiz = Quiz::find($id);
+        $quiz = null;
+        $data = [];
+
+        try {
+            $quiz = Quiz::find($id);
+        } catch (\PDOException $e) {
+            $data["body"]["message"] = "Database connection error!<br>";
+            // get css stylesheets
+            ob_start();
+            require_once("resources/views/error/style.php");
+            $data["head"]["css"] = ob_get_clean();
+
+            // set header title (tab title)
+            $data["head"]["title"] = "Internal error";
+
+            ob_start();
+            require_once("resources/views/error/500.php");
+            $data["body"]["content"] = ob_get_clean();
+
+            // finally, render page
+            $this->view->render("templates/base.php", $data);
+        }
 
         // If there is no quiz with 'id', show proper error message
         if ($quiz === null) {
@@ -205,9 +245,28 @@ class QuizController extends ResourceController
 
     public function admin()
     {
+        $quiz_list = [];
         $data = [];
 
-        $quiz_list = Quiz::all();
+        try {
+            $quiz_list = Quiz::all();
+        } catch (\PDOException $e) {
+            $data["body"]["message"] = "Database connection error!<br>";
+            // get css stylesheets
+            ob_start();
+            require_once("resources/views/error/style.php");
+            $data["head"]["css"] = ob_get_clean();
+
+            // set header title (tab title)
+            $data["head"]["title"] = "Internal error";
+
+            ob_start();
+            require_once("resources/views/error/500.php");
+            $data["body"]["content"] = ob_get_clean();
+
+            // finally, render page
+            $this->view->render("templates/base.php", $data);
+        }
 
         // set title
         $data["head"]["title"] = "Looper";
@@ -229,7 +288,7 @@ class QuizController extends ResourceController
         $data["head"]["css"] = ob_get_clean();
 
         // set header title (next to the logo)
-        $data["header"]["title"] = "admin view";
+        $data["header"]["title"] = "Admin panel";
 
         // get body content
         ob_start();
@@ -257,8 +316,30 @@ class QuizController extends ResourceController
      */
     public function fulfillment(int $id)
     {
-        $quiz = Quiz::find($id);
-        $quizFulfillments = $quiz->fulfillments($quiz->id);
+        $quiz = null;
+        $quizFulfillments = null;
+        $data = [];
+
+        try {
+            $quiz = Quiz::find($id);
+            $quizFulfillments = $quiz->fulfillments($quiz->id);
+        } catch (\PDOException $e) {
+            $data["body"]["message"] = "Database connection error!<br>";
+            // get css stylesheets
+            ob_start();
+            require_once("resources/views/error/style.php");
+            $data["head"]["css"] = ob_get_clean();
+
+            // set header title (tab title)
+            $data["head"]["title"] = "Internal error";
+
+            ob_start();
+            require_once("resources/views/error/500.php");
+            $data["body"]["content"] = ob_get_clean();
+
+            // finally, render page
+            $this->view->render("templates/base.php", $data);
+        }
 
         // set title
         $data["head"]["title"] = "Results";

@@ -7,6 +7,7 @@ use App\lib\http\HttpRequest;
 use App\models\Answer;
 use App\models\Fulfillment;
 use App\models\Question;
+use App\models\QuestionType;
 use App\models\Quiz;
 
 class FulfillmentController extends ResourceController
@@ -77,8 +78,28 @@ class FulfillmentController extends ResourceController
      */
     public function edit(int $id)
     {
-        $questions = Question::where("quiz_id", $id);
+        $questions = null;
         $data = [];
+
+        try {
+            $questions = Question::where("quiz_id", $id);
+        } catch (\PDOException $e) {
+            $data["body"]["message"] = "Database connection error!<br>";
+            // get css stylesheets
+            ob_start();
+            require_once("resources/views/error/style.php");
+            $data["head"]["css"] = ob_get_clean();
+
+            // set header title (tab title)
+            $data["head"]["title"] = "Internal error";
+
+            ob_start();
+            require_once("resources/views/error/500.php");
+            $data["body"]["content"] = ob_get_clean();
+
+            // finally, render page
+            $this->view->render("templates/base.php", $data);
+        }
 
         // set title
         $data["head"]["title"] = "Edit your answer";
