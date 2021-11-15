@@ -168,9 +168,47 @@ class QuestionController extends ResourceController
         $this->view->render("templates/base.php", $data);
     }
 
-    public function update($request, $id)
+    public function update(HttpRequest $request, int $id)
     {
-        // TODO: Implement update() method.
+        $url = "/question/$id/edit";
+        $request_data = $request->getBodyData();
+
+        $question = Question::find($id);
+        if ($question === null) {
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "Question with id $id does not exist!";
+
+            header("Location: $url");
+        }
+
+        if (isset($request_data["question_label"])) {
+            $question->label = $request_data["question_label"];
+        }
+
+        if (isset($request_data["question_type_id"])) {
+            $question->type_id = $request_data["question_type_id"];
+        }
+        if (isset($request_data["quiz_id"])) {
+            $question->quiz_id = $request_data["quiz_id"];
+        }
+
+        try {
+            $question->save();
+        } catch (\PDOException $e) {
+            if ($e->getCode() === "23000") {
+                $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+                $_SESSION["flash_message"]["value"] = "Failed to update question!<br>";
+                $_SESSION["flash_message"]["value"] .= "There already is a question named {$question->label}!";
+
+                header("Location: $url");
+                exit;
+            }
+        }
+
+        $_SESSION["flash_message"]["type"] = FlashMessage::OK;
+        $_SESSION["flash_message"]["value"] = "Question was successfully updated!";
+
+        header("Location: $url");
     }
 
     public function destroy(int $id)

@@ -97,7 +97,13 @@ class QuestionTest extends TestCase
         $question->id = 0;
         // event though id is not a valid value
         // the database server ignores it because it is autoincremented
-        $this->assertFalse($question->save());
+        $question->save();
+
+        $question2  = Question::find(2);
+        $question2->label = "Question1";
+        $question2->quiz_id = $question->quiz_id;
+        $this->expectException(\PDOException::class);
+        $question2->create();
     }
 
     /**
