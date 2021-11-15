@@ -34,19 +34,11 @@ class HttpRequest
 
         $this->setSession(SessionFactory::fromCookie($_COOKIE));
 
-        $this->fetchProtocolVersion();
-        $this->fetchBodyData();
-
         $this->setUri($_SERVER["REQUEST_URI"]);
         $this->setMethod($_SERVER["REQUEST_METHOD"]);
-    }
 
-    /**
-     * @return mixed
-     */
-    public function getHeaders(): array
-    {
-        return $this->headers;
+        $this->fetchProtocolVersion();
+        $this->fetchBodyData();
     }
 
     /**
@@ -55,6 +47,82 @@ class HttpRequest
     private function setHeaders(array $headers): void
     {
         $this->headers = $headers;
+    }
+
+    /**
+     * @param Session $session
+     */
+    private function setSession(Session $session): void
+    {
+        $this->session = $session;
+    }
+
+    /**
+     * @param string $uri
+     */
+    private function setUri(string $uri): void
+    {
+        $this->uri = $uri;
+    }
+
+    private function setMethod(string $method): void
+    {
+        $this->method = $method;
+    }
+
+    /**
+     *
+     */
+    private function fetchProtocolVersion()
+    {
+        $http_version = $_SERVER["SERVER_PROTOCOL"];
+        $result = explode('/', $http_version);
+
+        if (count($result)) {
+            $this->setProtocolVersion($result[1]);
+        } else {
+            $this->setProtocolVersion(null);
+        }
+    }
+
+    /**
+     * @param float $version
+     */
+    private function setProtocolVersion(float $version): void
+    {
+        $this->version = $version;
+    }
+
+    /**
+     *
+     */
+    private function fetchBodyData()
+    {
+        $data = null;
+
+        parse_str(file_get_contents('php://input'), $data);
+
+        if ($data !== false) {
+            $this->setBodyData($data);
+        } else {
+            $this->setBodyData(null);
+        }
+    }
+
+    /**
+     * @param array $body
+     */
+    private function setBodyData(array $data): void
+    {
+        $this->bodyData = $data;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHeaders(): array
+    {
+        return $this->headers;
     }
 
     public function getHeader(string $name): mixed
@@ -80,22 +148,9 @@ class HttpRequest
         return $this->method;
     }
 
-    private function setMethod(string $method): void
-    {
-        $this->method = $method;
-    }
-
     public function getSession(): Session
     {
         return $this->session;
-    }
-
-    /**
-     * @param Session $session
-     */
-    private function setSession(Session $session): void
-    {
-        $this->session = $session;
     }
 
     /**
@@ -107,34 +162,6 @@ class HttpRequest
     }
 
     /**
-     * @param array $body
-     */
-    private function setBodyData(array $data): void
-    {
-        $this->bodyData = $data;
-    }
-
-    /**
-     *
-     */
-    private function fetchBodyData()
-    {
-        $data = null;
-
-        if (isset($_REQUEST)) {
-            $this->setBodyData($_REQUEST);
-        } else {
-            $data = file_get_contents('php://input');
-
-            if ($data !== false) {
-                $this->setBodyData($data);
-            } else {
-                $this->setBodyData(null);
-            }
-        }
-    }
-
-    /**
      * @return double
      */
     public function getProtocolVersion(): float
@@ -143,41 +170,10 @@ class HttpRequest
     }
 
     /**
-     * @param float $version
-     */
-    private function setProtocolVersion(float $version): void
-    {
-        $this->version = $version;
-    }
-
-    /**
-     *
-     */
-    private function fetchProtocolVersion()
-    {
-        $http_version = $_SERVER["SERVER_PROTOCOL"];
-        $result = explode('/', $http_version);
-
-        if (count($result)) {
-            $this->setProtocolVersion($result[1]);
-        } else {
-            $this->setProtocolVersion(null);
-        }
-    }
-
-    /**
      * @return string
      */
     public function getUri(): string
     {
         return $this->uri;
-    }
-
-    /**
-     * @param string $uri
-     */
-    private function setUri(string $uri): void
-    {
-        $this->uri = $uri;
     }
 }
