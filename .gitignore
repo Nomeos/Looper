@@ -475,3 +475,4 @@ composer.lock
 
 .phpunit.result.cache
 .env.php
+./public/assets/css/*
