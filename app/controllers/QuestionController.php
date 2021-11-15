@@ -2,10 +2,13 @@
 
 namespace App\controllers;
 
+use App\lib\FlashMessage;
 use App\lib\ResourceController;
 use App\lib\http\HttpRequest;
 use App\models\Question;
 use App\models\QuestionType;
+use App\models\Quiz;
+use App\models\QuizState;
 
 class QuestionController extends ResourceController
 {
@@ -20,9 +23,70 @@ class QuestionController extends ResourceController
         // TODO: Implement create() method.
     }
 
-    public function store($request)
+    public function store(HttpRequest $request)
     {
-        // TODO: Implement store() method.
+        $request_data = $request->getBodyData();
+        $quiz = null;
+
+        $url = "/quiz/admin";
+        if (!isset($request_data["quiz_id"])) {
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "Quiz id is missing!";
+
+            header("Location: $url");
+            exit;
+        }
+
+        $quiz = Quiz::find($request_data["quiz_id"]);
+        if ($quiz === null) {
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "There is no quiz with id {$request_data["quiz_id"]}!";
+
+            header("Location: $url");
+            exit;
+        }
+
+        $question = Question::make([
+            "label" => $request_data["question_label"],
+            "question_type_id" => $request_data["question_type_id"],
+            "quiz_id" => $request_data["quiz_id"],
+        ]);
+
+        $url = "/quiz/{$quiz->id}/edit";
+        try {
+            // do not check duplicate entry because there might be multiple questions with the same label
+            $question->create();
+        } catch (\PDOException $e) {
+            $data["body"]["message"] = "Something went wrong while adding a new question to quiz => {$quiz->title}!";
+
+            if ($e->getCode() === "23000") {
+                $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+                $_SESSION["flash_message"]["value"] = "There already is a question named {$question->label} in quiz {$quiz->title}!";
+
+                header("Location: $url");
+            }
+            // get css stylesheets
+            ob_start();
+            require_once("resources/views/error/style.php");
+            $data["head"]["css"] = ob_get_clean();
+
+            // set header title (tab title)
+            $data["head"]["title"] = "Internal error";
+
+            ob_start();
+            require_once("resources/views/error/500.php");
+            $data["body"]["content"] = ob_get_clean();
+
+            // finally, render page
+            $this->view->render("templates/base.php", $data);
+            exit();
+        }
+
+        $_SESSION["flash_message"]["type"] = FlashMessage::OK;
+        $_SESSION["flash_message"]["value"] = "Question => {$question->label} was successfully added to {$quiz->title}!";
+
+        header("Location: $url");
+        exit;
     }
 
     public function show(int $id)

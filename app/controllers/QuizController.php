@@ -6,6 +6,7 @@ use App\lib\FlashMessage;
 use App\lib\http\HttpRequest;
 use App\lib\ResourceController;
 use App\models\Answer;
+use App\models\QuestionType;
 use App\models\Quiz;
 use App\models\QuizState;
 use Exception;
@@ -141,10 +142,12 @@ class QuizController extends ResourceController
     public function edit(int $id)
     {
         $quiz = null;
+        $question_types = null;
         $data = [];
 
         try {
             $quiz = Quiz::find($id);
+            $question_types = QuestionType::all();
         } catch (\PDOException $e) {
             $data["body"]["message"] = "Database connection error!<br>";
             // get css stylesheets
@@ -190,6 +193,7 @@ class QuizController extends ResourceController
 
         // load quiz into view
         $data["body"]["quiz"] = $quiz;
+        $data["body"]["question_types"] = $question_types;
 
         // get css stylesheets
         ob_start();
