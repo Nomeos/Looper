@@ -1,18 +1,18 @@
 { pkgs ? import <nixpkgs> {} }:
 
 let
-    my-python = pkgs.python3;
-    python-with-my-packages = my-python.withPackages (p: with p; [
+    python = pkgs.python3;
+    php-packages = pkgs.php80Packages;
+    python-with-packages = python.withPackages (p: with p; [
         psutil
     ]);
 in
     pkgs.mkShell {
         buildInputs = [
-            python-with-my-packages
-            # other dependencies
+            python-with-packages
+            php-packages.composer
         ];
         shellHook = ''
-            PYTHONPATH=${python-with-my-packages}/${python-with-my-packages.sitePackages}
-            # maybe set more env-vars
+            PYTHONPATH=${python-with-packages}/${python-with-packages.sitePackages}
         '';
     }
