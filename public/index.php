@@ -43,7 +43,7 @@ function main()
             $data["head"]["title"] = "Page not found";
 
             ob_start();
-            require_once("resources/views/error/404.php");
+            require_once("resou rces/views/error/404.php");
             $data["body"]["content"] = ob_get_clean();
 
             // finally, render page

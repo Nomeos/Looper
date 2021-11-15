@@ -232,7 +232,42 @@ class QuizController extends ResourceController
      */
     public function destroy(int $id)
     {
-        // TODO: Implement destroy() method.
+        $quiz = null;
+        $data = [];
+        $url = "/quiz/admin";
+        try {
+            $quiz = Quiz::find($id);
+        } catch (\PDOException $e) {
+            $data["body"]["message"] = "Database connection error!<br>";
+            // get css stylesheets
+            ob_start();
+            require_once("resources/views/error/style.php");
+            $data["head"]["css"] = ob_get_clean();
+
+            // set header title (tab title)
+            $data["head"]["title"] = "Internal error";
+
+            ob_start();
+            require_once("resources/views/error/500.php");
+            $data["body"]["content"] = ob_get_clean();
+
+            // finally, render page
+            $this->view->render("templates/base.php", $data);
+        }
+        if ($quiz === null) {
+
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "Quiz wasn't found!";
+
+            header("Location: $url");
+        }else{
+            $quiz->delete();
+
+            $_SESSION["flash_message"]["type"] = FlashMessage::OK;
+            $_SESSION["flash_message"]["value"] = "Quiz was successfully deleted!";
+
+            header("Location: $url");
+        }
     }
 
     /**
