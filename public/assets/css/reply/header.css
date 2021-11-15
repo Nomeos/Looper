@@ -1,0 +1,24 @@
+header {
+  background-color: #9B4DCA;
+  color: #FFFFFF;
+  flex-direction: column !important;
+  justify-content: center;
+  align-content: center !important;
+  height: 15vh;
+}
+header #quiz_title {
+  font-weight: bold;
+  margin-left: 1vw;
+}
+
+#logo {
+  height: 15vh;
+}
+
+@media only screen and (max-width: 600px) {
+  header {
+    height: 20vh;
+  }
+}
+
+/*# sourceMappingURL=header.css.map */
