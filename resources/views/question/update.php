@@ -18,7 +18,7 @@ $message = FlashMessage::get();
 
                 <fieldset class="pure-group">
                     <label for="question_type">Value type</label>
-                    <select id="question_type" name="question_type">
+                    <select id="question_type" name="question_type_id">
                         <?php foreach ($data["body"]["question_types"] as $type): ?>
                             <option value="<?= $type->id?>" <?php if ($question->type()->label === $type->label) : ?>
                             selected="selected"

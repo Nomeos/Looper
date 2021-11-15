@@ -186,7 +186,15 @@ class QuestionController extends ResourceController
         }
 
         if (isset($request_data["question_type_id"])) {
-            $question->type_id = $request_data["question_type_id"];
+            $question_type = QuestionType::find($request_data["question_type_id"]);
+            if ($question === null) {
+                $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+                $_SESSION["flash_message"]["value"] = "Question type with id $id does not exist!";
+
+                header("Location: $url");
+                exit;
+            }
+            $question->question_type_id = $request_data["question_type_id"];
         }
         if (isset($request_data["quiz_id"])) {
             $question->quiz_id = $request_data["quiz_id"];
