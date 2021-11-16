@@ -339,15 +339,106 @@ class QuizController extends ResourceController
         $this->view->render("templates/base.php", $data);
     }
 
-    public function toAnswering()
+    public function toAnswering(int $id)
     {
-        echo "I'm in";
-        exit;
+        $quiz = null;
+        $data = [];
+        $url = "/quiz/admin";
+        try {
+            $quiz = Quiz::find($id);
+        } catch (\PDOException $e) {
+            $data["body"]["message"] = "Database connection error!<br>";
+            // get css stylesheets
+            ob_start();
+            require_once("resources/views/error/style.php");
+            $data["head"]["css"] = ob_get_clean();
+
+            // set header title (tab title)
+            $data["head"]["title"] = "Internal error";
+
+            ob_start();
+            require_once("resources/views/error/500.php");
+            $data["body"]["content"] = ob_get_clean();
+
+            // finally, render page
+            $this->view->render("templates/base.php", $data);
+        }
+        if ($quiz === null) {
+
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "Quiz wasn't found!";
+
+            header( "Location: $url");
+            exit;
+        }else{
+            $nextState = QuizState::where("label", "Answering");
+            if($nextState[0] !== null){
+                $quiz->quiz_state_id = $nextState[0]->id;
+            }else{
+                $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+                $_SESSION["flash_message"]["value"] = "Quiz state wasn't found!";
+
+                header( "Location: $url");
+                exit;
+            }
+            $quiz->save();
+
+            $_SESSION["flash_message"]["type"] = FlashMessage::OK;
+            $_SESSION["flash_message"]["value"] = "Quiz was successfully changed to Answering!";
+
+            header("Location: $url");
+        }
     }
 
-    public function toClosed()
+    public function toClosed(int $id)
     {
+        $quiz = null;
+        $data = [];
+        $url = "/quiz/admin";
+        try {
+            $quiz = Quiz::find($id);
+        } catch (\PDOException $e) {
+            $data["body"]["message"] = "Database connection error!<br>";
+            // get css stylesheets
+            ob_start();
+            require_once("resources/views/error/style.php");
+            $data["head"]["css"] = ob_get_clean();
 
+            // set header title (tab title)
+            $data["head"]["title"] = "Internal error";
+
+            ob_start();
+            require_once("resources/views/error/500.php");
+            $data["body"]["content"] = ob_get_clean();
+
+            // finally, render page
+            $this->view->render("templates/base.php", $data);
+        }
+        if ($quiz === null) {
+
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "Quiz wasn't found!";
+
+            header( "Location: $url");
+            exit;
+        }else{
+            $nextState = QuizState::where("label", "Closed");
+            if($nextState[0] !== null){
+                $quiz->quiz_state_id = $nextState[0]->id;
+            }else{
+                $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+                $_SESSION["flash_message"]["value"] = "Quiz state wasn't found!";
+
+                header( "Location: $url");
+                exit;
+            }
+            $quiz->save();
+
+            $_SESSION["flash_message"]["type"] = FlashMessage::OK;
+            $_SESSION["flash_message"]["value"] = "Quiz was successfully closed";
+
+            header("Location: $url");
+        }
     }
 
     /**

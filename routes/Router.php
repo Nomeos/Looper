@@ -58,11 +58,11 @@ class Router
             });
 
             $r->put("/{id:\d+}/toAnswering", function ($args) use ($controller) {
-                $controller->toAnswering();
+                $controller->toAnswering($args["id"]);
             });
 
             $r->put("/{id:\d+}/toClosed", function ($args) use ($controller) {
-                $controller->toClosed();
+                $controller->toClosed($args["id"]);
             });
             $r->get("/{id:\d+}/fulfillment", function ($args) use ($controller) {
                 $controller->fulfillment($args["id"]);

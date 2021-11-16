@@ -76,7 +76,7 @@ $message = FlashMessage::get();
                         <a title="Show results" href="/quiz/<?= $quiz->id ?>/fulfillment"><i
                                     class="fa fa-chart-bar"></i></a>
                         <a data-confirm="Are you sure?" title="Destroy" rel="nofollow" data-method="delete"
-                           href="/quiz/1234"><i class="fa fa-trash"></i></a>
+                           href="/quiz/<?= $quiz->id ?>"><i class="fa fa-trash"></i></a>
                     </td>
                 </tr>
             <?php endforeach; ?>
