@@ -9,3 +9,5 @@ $message = FlashMessage::get();
     <?= $data["body"]["questions_list"] ?>
     <?= $data["body"]["questions_add"] ?>
 </div>
+
+<script src="/assets/js/js.js"></script>

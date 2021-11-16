@@ -141,8 +141,6 @@ class QuestionController extends ResourceController
             exit;
         }
 
-        $data = [];
-
         // set title
         $data["head"]["title"] = "Edit {$question->label}";
 
@@ -221,6 +219,36 @@ class QuestionController extends ResourceController
 
     public function destroy(int $id)
     {
-        // TODO: Implement destroy() method.
+        $question = null;
+        $url = null;
+        $quiz_id = null;
+
+        $question = Question::find($id);
+        $url = "/quiz/admin";
+
+        // If there is no question with 'id', show proper error message
+        if ($question === null) {
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "There is not question with id $id!";
+
+            header("Location: $url");
+            exit;
+        }
+
+        $quiz_id = $question->quiz_id;
+        $url = "/quiz/$quiz_id/edit";
+
+        if (!$question->delete()) {
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "Something went wrong while deleting question {$question->label}!";
+
+            header("Location: $url");
+            exit;
+        }
+
+        $_SESSION["flash_message"]["type"] = FlashMessage::OK;
+        $_SESSION["flash_message"]["value"] = "Question was successfully deleted!";
+
+        header("Location: $url");
     }
 }
