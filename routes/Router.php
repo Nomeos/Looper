@@ -64,8 +64,24 @@ class Router
             $r->put("/{id:\d+}/toClosed", function ($args) use ($controller) {
                 $controller->toClosed();
             });
-            $r->get("/{id:\d+}/fulfillment", function ($args) use ($controller) {
-                $controller->fulfillment($args["id"]);
+
+            $r->get("/{id:\d+}/results", function ($args) use ($controller) {
+                $controller->results($args["id"]);
+            });
+
+            $r->get("/{id:\d+}/fullfilment", function ($args) {
+                $controller = new FulfillmentController();
+                $controller->create($args["id"]);
+            });
+
+            $r->post("/{id:\d+}/fullfilment", function ($args) {
+                // a HttpRequest instance is create within this closure
+                // because when a HttpRequest object is instantiated,
+                // its attributes come from the current http request
+                $request = new HttpRequest();
+
+                $controller = new FulfillmentController();
+                $controller->store($args["id"], $request);
             });
         });
     }

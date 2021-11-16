@@ -100,7 +100,6 @@ CREATE TABLE IF NOT EXISTS `looper`.`answers`
     `question_id`    INT(11)     NOT NULL,
     `fulfillment_id` INT(11)     NOT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE INDEX `answers_unique` (`question_id` ASC, `fulfillment_id` ASC) VISIBLE,
     INDEX `fk_answers_questions_idx` (`question_id` ASC) VISIBLE,
     INDEX `fk_answers_fulfillments_idx` (`fulfillment_id` ASC) VISIBLE,
     CONSTRAINT `fk_answers_fulfillments`
