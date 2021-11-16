@@ -6,6 +6,7 @@ function doRequest(button) {
 
 function main() {
     const buttons = document.querySelectorAll('a[data-method]');
+    let current_location = window.location.href;
 
     buttons.forEach(function (button) {
         console.log(button)
@@ -18,7 +19,7 @@ function main() {
                         console.log("ERROR");
                         // ADD ERROR MESSAGE TO HTML PAGE
                     } else {
-                        window.location.replace('/quiz/admin');
+                        window.location.replace(current_location);
                     }
                 })
                 .catch(error => console.log("ERROR"));
