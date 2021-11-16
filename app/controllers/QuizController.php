@@ -264,7 +264,7 @@ class QuizController extends ResourceController
             $_SESSION["flash_message"]["value"] = "Quiz wasn't found!";
 
             header("Location: $url");
-        }else{
+        } else {
             $quiz->delete();
 
             $_SESSION["flash_message"]["type"] = FlashMessage::OK;
@@ -360,17 +360,17 @@ class QuizController extends ResourceController
             $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
             $_SESSION["flash_message"]["value"] = "Quiz wasn't found!";
 
-            header( "Location: $url");
+            header("Location: $url");
             exit;
-        }else{
+        } else {
             $nextState = QuizState::where("label", "Answering");
-            if($nextState[0] !== null){
+            if ($nextState[0] !== null) {
                 $quiz->quiz_state_id = $nextState[0]->id;
-            }else{
+            } else {
                 $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
                 $_SESSION["flash_message"]["value"] = "Quiz state wasn't found!";
 
-                header( "Location: $url");
+                header("Location: $url");
                 exit;
             }
             $quiz->save();
@@ -411,17 +411,17 @@ class QuizController extends ResourceController
             $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
             $_SESSION["flash_message"]["value"] = "Quiz wasn't found!";
 
-            header( "Location: $url");
+            header("Location: $url");
             exit;
-        }else{
+        } else {
             $nextState = QuizState::where("label", "Closed");
-            if($nextState[0] !== null){
+            if ($nextState[0] !== null) {
                 $quiz->quiz_state_id = $nextState[0]->id;
-            }else{
+            } else {
                 $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
                 $_SESSION["flash_message"]["value"] = "Quiz state wasn't found!";
 
-                header( "Location: $url");
+                header("Location: $url");
                 exit;
             }
             $quiz->save();
