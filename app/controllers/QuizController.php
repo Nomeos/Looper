@@ -61,7 +61,7 @@ class QuizController extends ResourceController
         // get body content
         ob_start();
         require_once("resources/views/templates/header.php");
-        require_once("resources/views/answer/answer.php");
+        require_once("resources/views/fulfillment/list.php");
         $data["body"]["content"] = ob_get_clean();
 
         // finally, render page
