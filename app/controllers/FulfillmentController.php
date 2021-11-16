@@ -77,7 +77,7 @@ class FulfillmentController
     }
 
     /**
-     * @param int $quiz_id, HttpRequest $request
+     * @param int $quiz_id , HttpRequest $request
      */
     public function store(int $quiz_id, HttpRequest $request)
     {
@@ -117,7 +117,7 @@ class FulfillmentController
         }
         $connector->commit();
 
-        $url = "/quiz/answering";
+        $url = "/fulfillment/{$fulfillment->id}/edit";
         $_SESSION["flash_message"]["type"] = FlashMessage::OK;
         $_SESSION["flash_message"]["value"] = "Your answers were successfully saved!";
 
@@ -167,7 +167,8 @@ class FulfillmentController
         $data = [];
 
         try {
-            $questions = Question::where("quiz_id", $id);
+            $fulfillment = Fulfillment::find($id);
+            $questions = $fulfillment->questions();
         } catch (\PDOException $e) {
             $data["body"]["message"] = "Database connection error!<br>";
             // get css stylesheets
@@ -185,6 +186,7 @@ class FulfillmentController
             // finally, render page
             $this->view->render("templates/base.php", $data);
         }
+        $data["body"]["fulfillment"] = $fulfillment;
 
         // set title
         $data["head"]["title"] = "Edit your answer";
@@ -200,7 +202,7 @@ class FulfillmentController
         // get body content
         ob_start();
         require_once("resources/views/templates/header.php");
-        require_once("resources/views/fulfillment/create.php");
+        require_once("resources/views/fulfillment/update.php");
         $data["body"]["content"] = ob_get_clean();
 
         // finally, render page
@@ -213,8 +215,56 @@ class FulfillmentController
      */
     public function update(HttpRequest $request, int $id)
     {
+        $form_data = $request->getBodyData();
 
-        // TODO: Implement update() method.
+        // update is a PUT request. we add an hidden input so we can do the request
+        // in js. this removes the http method from the request body so we can
+        // easily parse it and use each element as an answer.
+        if (isset($form_data["_method"])) {
+            unset($form_data["_method"]);
+        }
+
+        $fulfillment = Fulfillment::find($id);
+        if ($fulfillment === null) {
+            $url = "/quiz/answering";
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "There is no fulfillment with id {$fulfillment->id}!";
+
+            header("Location: $url");
+            exit();
+        }
+
+        $connector = DB::getInstance();
+        $connector->beginTransaction();
+
+        // update answers
+        $answer = null;
+        foreach ($form_data as $answer_id => $response) {
+            $answer = Answer::find($answer_id);
+
+            // only update answers whose values were modified
+            // reduces database requests
+            if ($answer->value !== $response) {
+                $answer->value = $response;
+                if (!$answer->save()) {
+                    $connector->rollback();
+                    $url = "/fulfillment/{$fulfillment->id}/edit";
+                    $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+                    $_SESSION["flash_message"]["value"] = "Something went wrong while editing fulfillment!";
+
+                    header("Location: $url");
+                    exit();
+                }
+
+            }
+        }
+        $connector->commit();
+
+        $url = "/fulfillment/{$fulfillment->id}/edit";
+        $_SESSION["flash_message"]["type"] = FlashMessage::OK;
+        $_SESSION["flash_message"]["value"] = "Your answers were successfully updated!";
+
+        header("Location: $url");
     }
 
     /**

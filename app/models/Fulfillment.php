@@ -22,6 +22,7 @@ EOL;
         $database = DB::getInstance();
         return $database->selectMany($query, ["id" => $this->id], Answer::class);
     }
+
     public function quiz(int $id)
     {
         $query = <<< EOL
@@ -35,6 +36,20 @@ EOL;
 
         $database = DB::getInstance();
         return $database->selectOne($query, ["id" => $id], Answer::class);
+    }
+
+    public function questions()
+    {
+        $query = <<< EOL
+SELECT questions.*
+FROM fulfillments
+INNER JOIN answers ON answers.fulfillment_id = fulfillments.id
+INNER JOIN questions ON questions.id = answers.question_id
+WHERE fulfillments.id = :id;
+EOL;
+
+        $database = DB::getInstance();
+        return $database->selectMany($query, ["id" => $this->id], Question::class);
     }
 
 }
