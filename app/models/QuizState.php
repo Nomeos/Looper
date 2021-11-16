@@ -20,6 +20,7 @@ WHERE quiz_state_id = :id;
 EOL;
 
         $database = DB::getInstance();
-        return $database->selectMany($query, ["id" => $this->id], Quiz::class);
+        return $database->selectOne($query, ["id" => $this->id], Quiz::class);
     }
+
 }

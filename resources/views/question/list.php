@@ -21,5 +21,5 @@
         <?php endforeach; ?>
         </tbody>
     </table>
-    <a data-confirm="Are you sure? You won't be able to further edit this exercise" id="publish_quiz" class="pure-input-2-5 pure-button pure-button-primary upper-case" rel="nofollow" data-method="put" href="/exercises/422?exercise%5Bstatus%5D=answering"><i class="fa fa-comment"></i> Complete and be ready for answers</a>
+    <a data-confirm="Are you sure? You won't be able to further edit this exercise" id="publish_quiz" class="pure-input-2-5 pure-button pure-button-primary upper-case" rel="nofollow" data-method="put" href="/quiz/<?= $quiz->id ?>/toAnswering"><i class="fa fa-comment"></i> Complete and be ready for answers</a>
 </div>
