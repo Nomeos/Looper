@@ -48,7 +48,7 @@ $message = FlashMessage::get();
                 <tr>
                     <td><?= $quiz->title ?></td>
                     <td class="action">
-                        <a title="Show results" href="/quiz/<?= $quiz->id ?>/fulfillment"><i
+                        <a title="Show results" href="/quiz/<?= $quiz->id ?>/results"><i
                                     class="fa fa-chart-bar"></i></a>
                         <a title="Close" rel="nofollow" data-method="put" href="/quiz/<?= $quiz->id ?>/toClosed">
                             <i class="fa fa-minus-circle"></i>

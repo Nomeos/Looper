@@ -274,14 +274,6 @@ class QuizController extends ResourceController
         }
     }
 
-    /**
-     * @param int $id
-     */
-    public function results(int $id)
-    {
-        // TODO: Implement destroy() method.
-    }
-
     public function admin()
     {
         $quiz_list = [];
@@ -444,7 +436,7 @@ class QuizController extends ResourceController
     /**
      * @param int $id
      */
-    public function fulfillment(int $id)
+    public function results(int $id)
     {
         $quiz = null;
         $quizFulfillments = null;

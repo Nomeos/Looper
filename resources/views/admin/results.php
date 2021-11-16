@@ -11,7 +11,7 @@
             <tbody>
             <?php foreach ($quizFulfillments as $fulfillment): ?>
                 <tr>
-                    <td><a href="/fulfillment/<?= $fulfillment->fulfillment_id ?>"><?= $fulfillment->date ?></a></td>
+                    <td><a href="/fulfillment/<?= $fulfillment->fulfillment_id ?>"><?= $fulfillment->date ?> UTC</a></td>
                     <td class="answer"><i class="fa fa-check short"></i></td>
                 </tr>
             <?php endforeach; ?>
