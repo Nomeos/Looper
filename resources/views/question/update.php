@@ -39,6 +39,8 @@ $message = FlashMessage::get();
                     </select>
                 </fieldset>
 
+                <input type="hidden" id="csrf_token" name="csrf_token" value="<?= $data["body"]["csrf_token"] ?>"/>
+
                 <button id="update_question" type="submit"
                         class="pure-input-2-5 pure-button pure-button-primary upper-case">Update question
                 </button>

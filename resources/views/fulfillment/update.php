@@ -32,7 +32,9 @@ $message = FlashMessage::get();
                     <br>
                 <?php endif; ?>
             <?php endforeach; ?>
-            <input type="hidden" name="_method" value="PUT">
+            <input type="hidden" name="_method" value="PUT"/>
+            <input type="hidden" id="csrf_token" name="csrf_token" value="<?= $data["body"]["csrf_token"] ?>"/>
+
             <button type="submit" class="pure-u-1-1 pure-button pure-button-primary">SAVE</button>
         </fieldset>
     </form>

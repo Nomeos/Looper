@@ -3,7 +3,9 @@
 namespace App\controllers;
 
 use App\lib\FlashMessage;
+use App\lib\http\CsrfToken;
 use App\lib\http\HttpRequest;
+use App\lib\http\Session;
 use App\lib\ResourceController;
 use App\models\Answer;
 use App\models\QuestionType;
@@ -55,7 +57,12 @@ class QuizController extends ResourceController
      */
     public function create()
     {
+        $csrf_token = CsrfToken::generate();
+        $session = new Session();
+        $session->set("csrf_token", $csrf_token);
+
         $data = [];
+        $data["body"]["csrf_token"] = $csrf_token;
 
         // set title
         $data["head"]["title"] = "Looper";
@@ -83,9 +90,21 @@ class QuizController extends ResourceController
      */
     public function store(HttpRequest $request)
     {
+        $session = $request->getSession();
+
         $quiz = new Quiz();
         $default_quiz_state = QuizState::where("label", "Building")[0];
         $form_data = $request->getBodyData();
+
+        $url = "/quiz/create";
+        if (!isset($form_data["csrf_token"]) || !hash_equals($form_data["csrf_token"], $session->get("csrf_token"))) {
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "Access denied!<br>";
+            $_SESSION["flash_message"]["value"] .= "You token is either missing of was modified!";
+
+            header("Location: $url");
+            exit;
+        }
 
         $quiz->title = $form_data["quiz_title"];
         $quiz->is_public = false;
@@ -125,10 +144,16 @@ class QuizController extends ResourceController
     {
         $quiz = null;
         $question_types = null;
-        $data = [];
+
+        $csrf_token = CsrfToken::generate();
+        $session = new Session();
+        $session->set("csrf_token", $csrf_token);
 
         $quiz = Quiz::find($id);
         $question_types = QuestionType::all();
+
+        $data = [];
+        $data["body"]["csrf_token"] = $csrf_token;
 
         // If there is no quiz with 'id', show proper error message
         if ($quiz === null) {
@@ -149,8 +174,6 @@ class QuizController extends ResourceController
             $this->view->render("templates/base.php", $data);
             exit;
         }
-
-        $data = [];
 
         // set title
         $data["head"]["title"] = "Edit {$quiz->title}";

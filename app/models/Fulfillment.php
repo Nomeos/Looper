@@ -9,6 +9,7 @@ class Fulfillment extends Model
 {
     public static string $table = "fulfillments";
     protected string $primaryKey = "id";
+    public int $id;
     public string $date;
 
     public function answers()

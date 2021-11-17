@@ -32,7 +32,7 @@ class HttpRequest
             }, ARRAY_FILTER_USE_KEY)
         );
 
-        $this->setSession(SessionFactory::fromCookie($_COOKIE));
+        $this->setSession(new Session());
 
         $this->setUri($_SERVER["REQUEST_URI"]);
         $this->setMethod($_SERVER["REQUEST_METHOD"]);

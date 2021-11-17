@@ -3,6 +3,8 @@
 namespace App\controllers;
 
 use App\lib\FlashMessage;
+use App\lib\http\CsrfToken;
+use App\lib\http\Session;
 use App\lib\ResourceController;
 use App\lib\http\HttpRequest;
 use App\models\Question;
@@ -26,11 +28,13 @@ class QuestionController extends ResourceController
 
     public function store(HttpRequest $request)
     {
-        $request_data = $request->getBodyData();
+        $form_data = $request->getBodyData();
+        $session = $request->getSession();
+
         $quiz = null;
 
         $url = "/quiz/admin";
-        if (!isset($request_data["quiz_id"])) {
+        if (!isset($form_data["quiz_id"])) {
             $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
             $_SESSION["flash_message"]["value"] = "Quiz id is missing!";
 
@@ -38,19 +42,29 @@ class QuestionController extends ResourceController
             exit;
         }
 
-        $quiz = Quiz::find($request_data["quiz_id"]);
+        $url = "/quiz/{$form_data["quiz_id"]}/edit";
+        if (!isset($form_data["csrf_token"]) || !hash_equals($form_data["csrf_token"], $session->get("csrf_token"))) {
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "Access denied!<br>";
+            $_SESSION["flash_message"]["value"] .= "You token is either missing of was modified!";
+
+            header("Location: $url");
+            exit;
+        }
+
+        $quiz = Quiz::find($form_data["quiz_id"]);
         if ($quiz === null) {
             $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-            $_SESSION["flash_message"]["value"] = "There is no quiz with id {$request_data["quiz_id"]}!";
+            $_SESSION["flash_message"]["value"] = "There is no quiz with id {$form_data["quiz_id"]}!";
 
             header("Location: $url");
             exit;
         }
 
         $question = Question::make([
-            "label" => $request_data["question_label"],
-            "question_type_id" => $request_data["question_type_id"],
-            "quiz_id" => $request_data["quiz_id"],
+            "label" => $form_data["question_label"],
+            "question_type_id" => $form_data["question_type_id"],
+            "quiz_id" => $form_data["quiz_id"],
         ]);
 
         $url = "/quiz/{$quiz->id}/edit";
@@ -65,6 +79,7 @@ class QuestionController extends ResourceController
                 $_SESSION["flash_message"]["value"] = "There already is a question named {$question->label} in quiz {$quiz->title}!";
 
                 header("Location: $url");
+                exit;
             }
 
             // let index.php to show generic error message
@@ -87,7 +102,13 @@ class QuestionController extends ResourceController
     {
         $question = null;
         $question_types = null;
+
+        $csrf_token = CsrfToken::generate();
+        $session = new Session();
+        $session->set("csrf_token", $csrf_token);
+
         $data = [];
+        $data["body"]["csrf_token"] = $csrf_token;
 
         $question = Question::find($id);
         $question_types = QuestionType::all();
@@ -140,7 +161,8 @@ class QuestionController extends ResourceController
     public function update(HttpRequest $request, int $id)
     {
         $url = "/question/$id/edit";
-        $request_data = $request->getBodyData();
+        $form_data = $request->getBodyData();
+        $session = $request->getSession();
 
         $question = Question::find($id);
         if ($question === null) {
@@ -150,12 +172,21 @@ class QuestionController extends ResourceController
             header("Location: $url");
         }
 
-        if (isset($request_data["question_label"])) {
-            $question->label = $request_data["question_label"];
+        if (!isset($form_data["csrf_token"]) || !hash_equals($form_data["csrf_token"], $session->get("csrf_token"))) {
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "Access denied!<br>";
+            $_SESSION["flash_message"]["value"] .= "You token is either missing of was modified!";
+
+            header("Location: $url");
+            exit;
         }
 
-        if (isset($request_data["question_type_id"])) {
-            $question_type = QuestionType::find($request_data["question_type_id"]);
+        if (isset($form_data["question_label"])) {
+            $question->label = $form_data["question_label"];
+        }
+
+        if (isset($form_data["question_type_id"])) {
+            $question_type = QuestionType::find($form_data["question_type_id"]);
             if ($question === null) {
                 $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
                 $_SESSION["flash_message"]["value"] = "Question type with id $id does not exist!";
@@ -163,10 +194,10 @@ class QuestionController extends ResourceController
                 header("Location: $url");
                 exit;
             }
-            $question->question_type_id = $request_data["question_type_id"];
+            $question->question_type_id = $form_data["question_type_id"];
         }
-        if (isset($request_data["quiz_id"])) {
-            $question->quiz_id = $request_data["quiz_id"];
+        if (isset($form_data["quiz_id"])) {
+            $question->quiz_id = $form_data["quiz_id"];
         }
 
         try {
