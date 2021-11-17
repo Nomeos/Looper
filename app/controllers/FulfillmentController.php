@@ -220,7 +220,6 @@ class FulfillmentController
                     header("Location: $url");
                     exit();
                 }
-
             }
         }
         $connector->commit();

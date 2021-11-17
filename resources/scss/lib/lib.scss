@@ -2,14 +2,41 @@
   text-transform: uppercase;
 }
 
-.error {
+.flash_message {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
   text-align: center;
-  background-color: #ea7b7b;
-  color: white;
+  height: 5vw;
 }
 
 .ok {
-  text-align: center;
+  @extend .flash_message;
   background-color: #b5f766;
   color: white;
+}
+
+.info {
+  @extend .flash_message;
+  color: #00529B;
+  background-color: #BDE5F8;
+}
+
+.success {
+  @extend .flash_message;
+  color: #4F8A10;
+  background-color: #DFF2BF;
+}
+
+.warning {
+  @extend .flash_message;
+  color: #9F6000;
+  background-color: #FEEFB3;
+}
+
+.error {
+  @extend .flash_message;
+  color: #D8000C;
+  background-color: #FFD2D2;
 }
