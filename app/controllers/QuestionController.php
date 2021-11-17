@@ -9,6 +9,7 @@ use App\models\Question;
 use App\models\QuestionType;
 use App\models\Quiz;
 use App\models\QuizState;
+use function PHPUnit\Framework\throwException;
 
 class QuestionController extends ResourceController
 {
@@ -65,21 +66,9 @@ class QuestionController extends ResourceController
 
                 header("Location: $url");
             }
-            // get css stylesheets
-            ob_start();
-            require_once("resources/views/error/style.php");
-            $data["head"]["css"] = ob_get_clean();
 
-            // set header title (tab title)
-            $data["head"]["title"] = "Internal error";
-
-            ob_start();
-            require_once("resources/views/error/500.php");
-            $data["body"]["content"] = ob_get_clean();
-
-            // finally, render page
-            $this->view->render("templates/base.php", $data);
-            exit();
+            // let index.php to show generic error message
+            throwException($e);
         }
 
         $_SESSION["flash_message"]["type"] = FlashMessage::OK;
@@ -100,26 +89,8 @@ class QuestionController extends ResourceController
         $question_types = null;
         $data = [];
 
-        try {
-            $question = Question::find($id);
-            $question_types = QuestionType::all();
-        } catch (\PDOException $e) {
-            $data["body"]["message"] = "Database connection error!<br>";
-            // get css stylesheets
-            ob_start();
-            require_once("resources/views/error/style.php");
-            $data["head"]["css"] = ob_get_clean();
-
-            // set header title (tab title)
-            $data["head"]["title"] = "Internal error";
-
-            ob_start();
-            require_once("resources/views/error/500.php");
-            $data["body"]["content"] = ob_get_clean();
-
-            // finally, render page
-            $this->view->render("templates/base.php", $data);
-        }
+        $question = Question::find($id);
+        $question_types = QuestionType::all();
 
         // If there is no question with 'id', show proper error message
         if ($question === null) {
