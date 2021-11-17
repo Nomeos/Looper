@@ -5,6 +5,7 @@ namespace Test;
 require_once("vendor/autoload.php");
 require_once('.env.php');
 
+use App\lib\db\Seeder;
 use App\models\QuizState;
 use ByJG\DbMigration\Database\MySqlDatabase;
 use ByJG\DbMigration\Exception\DatabaseDoesNotRegistered;
@@ -14,6 +15,7 @@ use ByJG\DbMigration\Exception\InvalidMigrationFile;
 use ByJG\DbMigration\Exception\OldVersionSchemaException;
 use ByJG\DbMigration\Migration;
 use ByJG\Util\Uri;
+use Db\seeders\DatabaseSeeder;
 use PHPUnit\Framework\TestCase;
 use App\models\Quiz;
 use ReflectionException;
@@ -21,6 +23,7 @@ use ReflectionException;
 class QuizTest extends TestCase
 {
     private Migration $migration;
+    private Seeder $seeder;
 
     /**
      * @throws InvalidMigrationFile
@@ -28,6 +31,8 @@ class QuizTest extends TestCase
     public function __construct(?string $name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
+
+        $this->seeder = new DatabaseSeeder();
 
         $connectionUri = new Uri(sprintf('mysql://%s:%s@localhost/looper', USERNAME, PASSWORD));
 
@@ -54,7 +59,7 @@ class QuizTest extends TestCase
     public function setUp(): void
     {
         $this->migration->reset();
-        $this->migration->up(1);
+        $this->seeder->run();
     }
 
     public function testAll()
