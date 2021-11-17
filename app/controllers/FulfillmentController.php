@@ -32,26 +32,8 @@ class FulfillmentController
         $quiz = null;
         $data = [];
 
-        try {
-            $questions = Question::where("quiz_id", $quiz_id);
-            $quiz = Quiz::find($quiz_id);
-        } catch (\PDOException $e) {
-            $data["body"]["message"] = "Database connection error!<br>";
-            // get css stylesheets
-            ob_start();
-            require_once("resources/views/error/style.php");
-            $data["head"]["css"] = ob_get_clean();
-
-            // set header title (tab title)
-            $data["head"]["title"] = "Internal error";
-
-            ob_start();
-            require_once("resources/views/error/500.php");
-            $data["body"]["content"] = ob_get_clean();
-
-            // finally, render page
-            $this->view->render("templates/base.php", $data);
-        }
+        $questions = Question::where("quiz_id", $quiz_id);
+        $quiz = Quiz::find($quiz_id);
 
         $data["body"]["quiz"] = $quiz;
 
@@ -166,26 +148,9 @@ class FulfillmentController
         $questions = null;
         $data = [];
 
-        try {
-            $fulfillment = Fulfillment::find($id);
-            $questions = $fulfillment->questions();
-        } catch (\PDOException $e) {
-            $data["body"]["message"] = "Database connection error!<br>";
-            // get css stylesheets
-            ob_start();
-            require_once("resources/views/error/style.php");
-            $data["head"]["css"] = ob_get_clean();
+        $fulfillment = Fulfillment::find($id);
+        $questions = $fulfillment->questions();
 
-            // set header title (tab title)
-            $data["head"]["title"] = "Internal error";
-
-            ob_start();
-            require_once("resources/views/error/500.php");
-            $data["body"]["content"] = ob_get_clean();
-
-            // finally, render page
-            $this->view->render("templates/base.php", $data);
-        }
         $data["body"]["fulfillment"] = $fulfillment;
 
         // set title
@@ -255,7 +220,6 @@ class FulfillmentController
                     header("Location: $url");
                     exit();
                 }
-
             }
         }
         $connector->commit();
@@ -274,6 +238,4 @@ class FulfillmentController
     {
         // TODO: Implement destroy() method.
     }
-
-
 }
