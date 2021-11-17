@@ -1,5 +1,10 @@
 @import "../lib/variables";
-@import "header";
+@import "../lib/lib";
+
+header {
+    background-color: $primary_color;
+    color: $white;
+}
 
 #quiz_buttons_parent {
     justify-content: center;
