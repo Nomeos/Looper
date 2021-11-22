@@ -3,7 +3,9 @@
 namespace App\controllers;
 
 use App\lib\FlashMessage;
+use App\lib\http\CsrfToken;
 use App\lib\http\HttpRequest;
+use App\lib\http\Session;
 use App\lib\ResourceController;
 use App\models\Answer;
 use App\models\QuestionType;
@@ -21,25 +23,7 @@ class QuizController extends ResourceController
         $quiz_list = null;
         $data = [];
 
-        try {
-            $quiz_list = Quiz::all();
-        } catch (\PDOException $e) {
-            $data["body"]["message"] = "Database connection error!<br>";
-            // get css stylesheets
-            ob_start();
-            require_once("resources/views/error/style.php");
-            $data["head"]["css"] = ob_get_clean();
-
-            // set header title (tab title)
-            $data["head"]["title"] = "Internal error";
-
-            ob_start();
-            require_once("resources/views/error/500.php");
-            $data["body"]["content"] = ob_get_clean();
-
-            // finally, render page
-            $this->view->render("templates/base.php", $data);
-        }
+        $quiz_list = Quiz::all();
         // set title
         $data["head"]["title"] = "Looper";
 
@@ -73,7 +57,12 @@ class QuizController extends ResourceController
      */
     public function create()
     {
+        $csrf_token = CsrfToken::generate();
+        $session = new Session();
+        $session->set("csrf_token", $csrf_token);
+
         $data = [];
+        $data["body"]["csrf_token"] = $csrf_token;
 
         // set title
         $data["head"]["title"] = "Looper";
@@ -101,9 +90,21 @@ class QuizController extends ResourceController
      */
     public function store(HttpRequest $request)
     {
+        $session = $request->getSession();
+
         $quiz = new Quiz();
         $default_quiz_state = QuizState::where("label", "Building")[0];
         $form_data = $request->getBodyData();
+
+        $url = "/quiz/create";
+        if (!isset($form_data["csrf_token"]) || !hash_equals($form_data["csrf_token"], $session->get("csrf_token"))) {
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "Access denied!<br>";
+            $_SESSION["flash_message"]["value"] .= "You token is either missing of was modified!";
+
+            header("Location: $url");
+            exit;
+        }
 
         $quiz->title = $form_data["quiz_title"];
         $quiz->is_public = false;
@@ -143,28 +144,16 @@ class QuizController extends ResourceController
     {
         $quiz = null;
         $question_types = null;
+
+        $csrf_token = CsrfToken::generate();
+        $session = new Session();
+        $session->set("csrf_token", $csrf_token);
+
+        $quiz = Quiz::find($id);
+        $question_types = QuestionType::all();
+
         $data = [];
-
-        try {
-            $quiz = Quiz::find($id);
-            $question_types = QuestionType::all();
-        } catch (\PDOException $e) {
-            $data["body"]["message"] = "Database connection error!<br>";
-            // get css stylesheets
-            ob_start();
-            require_once("resources/views/error/style.php");
-            $data["head"]["css"] = ob_get_clean();
-
-            // set header title (tab title)
-            $data["head"]["title"] = "Internal error";
-
-            ob_start();
-            require_once("resources/views/error/500.php");
-            $data["body"]["content"] = ob_get_clean();
-
-            // finally, render page
-            $this->view->render("templates/base.php", $data);
-        }
+        $data["body"]["csrf_token"] = $csrf_token;
 
         // If there is no quiz with 'id', show proper error message
         if ($quiz === null) {
@@ -185,8 +174,6 @@ class QuizController extends ResourceController
             $this->view->render("templates/base.php", $data);
             exit;
         }
-
-        $data = [];
 
         // set title
         $data["head"]["title"] = "Edit {$quiz->title}";
@@ -239,39 +226,21 @@ class QuizController extends ResourceController
         $quiz = null;
         $data = [];
         $url = "/quiz/admin";
-        try {
-            $quiz = Quiz::find($id);
-        } catch (\PDOException $e) {
-            $data["body"]["message"] = "Database connection error!<br>";
-            // get css stylesheets
-            ob_start();
-            require_once("resources/views/error/style.php");
-            $data["head"]["css"] = ob_get_clean();
+        $quiz = Quiz::find($id);
 
-            // set header title (tab title)
-            $data["head"]["title"] = "Internal error";
-
-            ob_start();
-            require_once("resources/views/error/500.php");
-            $data["body"]["content"] = ob_get_clean();
-
-            // finally, render page
-            $this->view->render("templates/base.php", $data);
-        }
         if ($quiz === null) {
-
             $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
             $_SESSION["flash_message"]["value"] = "Quiz wasn't found!";
 
             header("Location: $url");
-        } else {
-            $quiz->delete();
-
-            $_SESSION["flash_message"]["type"] = FlashMessage::OK;
-            $_SESSION["flash_message"]["value"] = "Quiz was successfully deleted!";
-
-            header("Location: $url");
         }
+
+        $quiz->delete();
+
+        $_SESSION["flash_message"]["type"] = FlashMessage::OK;
+        $_SESSION["flash_message"]["value"] = "Quiz was successfully deleted!";
+
+        header("Location: $url");
     }
 
     public function admin()
@@ -279,25 +248,7 @@ class QuizController extends ResourceController
         $quiz_list = [];
         $data = [];
 
-        try {
-            $quiz_list = Quiz::all();
-        } catch (\PDOException $e) {
-            $data["body"]["message"] = "Database connection error!<br>";
-            // get css stylesheets
-            ob_start();
-            require_once("resources/views/error/style.php");
-            $data["head"]["css"] = ob_get_clean();
-
-            // set header title (tab title)
-            $data["head"]["title"] = "Internal error";
-
-            ob_start();
-            require_once("resources/views/error/500.php");
-            $data["body"]["content"] = ob_get_clean();
-
-            // finally, render page
-            $this->view->render("templates/base.php", $data);
-        }
+        $quiz_list = Quiz::all();
 
         // set title
         $data["head"]["title"] = "Looper";
@@ -335,26 +286,10 @@ class QuizController extends ResourceController
     {
         $quiz = null;
         $data = [];
+
         $url = "/quiz/admin";
-        try {
-            $quiz = Quiz::find($id);
-        } catch (\PDOException $e) {
-            $data["body"]["message"] = "Database connection error!<br>";
-            // get css stylesheets
-            ob_start();
-            require_once("resources/views/error/style.php");
-            $data["head"]["css"] = ob_get_clean();
+        $quiz = Quiz::find($id);
 
-            // set header title (tab title)
-            $data["head"]["title"] = "Internal error";
-
-            ob_start();
-            require_once("resources/views/error/500.php");
-            $data["body"]["content"] = ob_get_clean();
-
-            // finally, render page
-            $this->view->render("templates/base.php", $data);
-        }
         if ($quiz === null) {
 
             $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
@@ -362,24 +297,24 @@ class QuizController extends ResourceController
 
             header("Location: $url");
             exit;
+        }
+
+        $nextState = QuizState::where("label", "Answering");
+        if ($nextState[0] !== null) {
+            $quiz->quiz_state_id = $nextState[0]->id;
         } else {
-            $nextState = QuizState::where("label", "Answering");
-            if ($nextState[0] !== null) {
-                $quiz->quiz_state_id = $nextState[0]->id;
-            } else {
-                $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-                $_SESSION["flash_message"]["value"] = "Quiz state wasn't found!";
-
-                header("Location: $url");
-                exit;
-            }
-            $quiz->save();
-
-            $_SESSION["flash_message"]["type"] = FlashMessage::OK;
-            $_SESSION["flash_message"]["value"] = "Quiz was successfully changed to Answering!";
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "Quiz state wasn't found!";
 
             header("Location: $url");
+            exit;
         }
+        $quiz->save();
+
+        $_SESSION["flash_message"]["type"] = FlashMessage::OK;
+        $_SESSION["flash_message"]["value"] = "Quiz was successfully changed to Answering!";
+
+        header("Location: $url");
     }
 
     public function toClosed(int $id)
@@ -387,25 +322,9 @@ class QuizController extends ResourceController
         $quiz = null;
         $data = [];
         $url = "/quiz/admin";
-        try {
-            $quiz = Quiz::find($id);
-        } catch (\PDOException $e) {
-            $data["body"]["message"] = "Database connection error!<br>";
-            // get css stylesheets
-            ob_start();
-            require_once("resources/views/error/style.php");
-            $data["head"]["css"] = ob_get_clean();
 
-            // set header title (tab title)
-            $data["head"]["title"] = "Internal error";
+        $quiz = Quiz::find($id);
 
-            ob_start();
-            require_once("resources/views/error/500.php");
-            $data["body"]["content"] = ob_get_clean();
-
-            // finally, render page
-            $this->view->render("templates/base.php", $data);
-        }
         if ($quiz === null) {
 
             $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
@@ -413,24 +332,24 @@ class QuizController extends ResourceController
 
             header("Location: $url");
             exit;
+        }
+
+        $nextState = QuizState::where("label", "Closed");
+        if ($nextState[0] !== null) {
+            $quiz->quiz_state_id = $nextState[0]->id;
         } else {
-            $nextState = QuizState::where("label", "Closed");
-            if ($nextState[0] !== null) {
-                $quiz->quiz_state_id = $nextState[0]->id;
-            } else {
-                $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-                $_SESSION["flash_message"]["value"] = "Quiz state wasn't found!";
-
-                header("Location: $url");
-                exit;
-            }
-            $quiz->save();
-
-            $_SESSION["flash_message"]["type"] = FlashMessage::OK;
-            $_SESSION["flash_message"]["value"] = "Quiz was successfully closed";
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "Quiz state wasn't found!";
 
             header("Location: $url");
+            exit;
         }
+        $quiz->save();
+
+        $_SESSION["flash_message"]["type"] = FlashMessage::OK;
+        $_SESSION["flash_message"]["value"] = "Quiz was successfully closed";
+
+        header("Location: $url");
     }
 
     /**
@@ -442,26 +361,8 @@ class QuizController extends ResourceController
         $quizFulfillments = null;
         $data = [];
 
-        try {
-            $quiz = Quiz::find($id);
-            $quizFulfillments = $quiz->fulfillments($quiz->id);
-        } catch (\PDOException $e) {
-            $data["body"]["message"] = "Database connection error!<br>";
-            // get css stylesheets
-            ob_start();
-            require_once("resources/views/error/style.php");
-            $data["head"]["css"] = ob_get_clean();
-
-            // set header title (tab title)
-            $data["head"]["title"] = "Internal error";
-
-            ob_start();
-            require_once("resources/views/error/500.php");
-            $data["body"]["content"] = ob_get_clean();
-
-            // finally, render page
-            $this->view->render("templates/base.php", $data);
-        }
+        $quiz = Quiz::find($id);
+        $quizFulfillments = $quiz->fulfillments($quiz->id);
 
         // set title
         $data["head"]["title"] = "Results";

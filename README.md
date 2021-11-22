@@ -20,7 +20,6 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
@@ -71,7 +70,6 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
     <li><a href="#hacking-on-the-project">Hacking on the project</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#documentation">Documentation</a></li>
@@ -108,31 +106,31 @@ To get a local copy up and running follow these simple steps.
 
 ### Prerequisites
 #### [Composer](https://getcomposer.org/)
-- Archlinux
-```sh
-  $ sudo pacman -S composer
-```
+- [Archlinux](https://archlinux.org)
+  ```sh
+  sudo pacman -S composer
+  ```
 
-- NixOS
-```sh
-  $ nix-env -iA nixos php80Packages.composer
-```
+- [NixOS](https://nixos.org)
+  ```sh
+  nix-shell shell.nix
+  ```
 
 ### Installation
 
 1. Clone the repo
    ```sh
-   $ git clone https://github.com/Nomeos/Looper.git
+   git clone https://github.com/Nomeos/Looper.git
    ```
 2. Install php packages
    ```sh
-   $ cd Looper
-   $ composer install
+   cd Looper
+   composer install
    ```
    
 3. Compile scss files to css
    ```sh
-   $ composer build-css
+   composer build-css
    ```
 
 4. Setup database connection
@@ -148,22 +146,15 @@ set the DSN, the username and his password in **.env.php**.
 
 5. Populate the database
    ```sh
-   $ composer populate-db
+   composer populate-db
    ```
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
 
 ## Hacking on the project
 ### Tests
 If you have added a feature and you want to test if everything is ok, you can run the unit tests we wrote
 by typing the following:
 ```sh
-$ composer test
+composer test
 ```
 
 <!-- ROADMAP -->
@@ -209,13 +200,11 @@ Project Link: [https://github.com/Nomeos/Looper](https://github.com/Nomeos/Loope
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/Nomeos/repo.svg?style=for-the-badge
-[contributors-url]: https://github.com/Nomeos/Looper/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/Nomeos/repo.svg?style=for-the-badge
+[forks-shield]: https://img.shields.io/github/forks/Nomeos/Looper
 [forks-url]: https://github.com/Nomeos/Looper/network/members
-[stars-shield]: https://img.shields.io/github/stars/Nomeos/repo.svg?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/Nomeos/Looper
 [stars-url]: https://github.com/Nomeos/Looper/stargazers
-[issues-shield]: https://img.shields.io/github/issues/Nomeos/repo.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/Nomeos/Looper
 [issues-url]: https://github.com/Nomeos/Looper/issues
-[license-shield]: https://img.shields.io/github/license/Nomeos/repo.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/Nomeos/Looper
 [license-url]: https://github.com/Nomeos/Looper/blob/master/LICENSE

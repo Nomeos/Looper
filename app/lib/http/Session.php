@@ -2,13 +2,12 @@
 
 namespace App\lib\http;
 
-class Session
+class Session implements SessionInterface
 {
-    private string $id;
 
-    public function __construct(string $id)
+    public function __construct()
     {
-        $this->id = $id;
+        session_start();
     }
 
     /**
@@ -17,6 +16,38 @@ class Session
     public function getId(): string
     {
         return $this->id;
+    }
+
+    public function get(string $key)
+    {
+        if ($this->has($key)) {
+            return $_SESSION[$key];
+        }
+
+        return null;
+    }
+
+    public function has(string $key): bool
+    {
+        return array_key_exists($key, $_SESSION);
+    }
+
+    public function set(string $key, $value): SessionInterface
+    {
+        $_SESSION[$key] = $value;
+        return $this;
+    }
+
+    public function remove(string $key): void
+    {
+        if ($this->has($key)) {
+            unset($_SESSION[$key]);
+        }
+    }
+
+    public function clear(): void
+    {
+        session_unset();
     }
 
     /**

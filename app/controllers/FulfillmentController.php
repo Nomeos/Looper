@@ -3,6 +3,8 @@
 namespace App\controllers;
 
 use App\lib\FlashMessage;
+use App\lib\http\CsrfToken;
+use App\lib\http\Session;
 use App\lib\ResourceController;
 use App\lib\http\HttpRequest;
 use App\lib\View;
@@ -30,28 +32,16 @@ class FulfillmentController
     {
         $questions = null;
         $quiz = null;
+
+        $csrf_token = CsrfToken::generate();
+        $session = new Session();
+        $session->set("csrf_token", $csrf_token);
+
         $data = [];
+        $data["body"]["csrf_token"] = $csrf_token;
 
-        try {
-            $questions = Question::where("quiz_id", $quiz_id);
-            $quiz = Quiz::find($quiz_id);
-        } catch (\PDOException $e) {
-            $data["body"]["message"] = "Database connection error!<br>";
-            // get css stylesheets
-            ob_start();
-            require_once("resources/views/error/style.php");
-            $data["head"]["css"] = ob_get_clean();
-
-            // set header title (tab title)
-            $data["head"]["title"] = "Internal error";
-
-            ob_start();
-            require_once("resources/views/error/500.php");
-            $data["body"]["content"] = ob_get_clean();
-
-            // finally, render page
-            $this->view->render("templates/base.php", $data);
-        }
+        $questions = Question::where("quiz_id", $quiz_id);
+        $quiz = Quiz::find($quiz_id);
 
         $data["body"]["quiz"] = $quiz;
 
@@ -82,6 +72,8 @@ class FulfillmentController
     public function store(int $quiz_id, HttpRequest $request)
     {
         $form_data = $request->getBodyData();
+        $session = $request->getSession();
+
         $date = new \DateTime();
         $timezone = new DateTimeZone("UTC");
         $date->setTimezone($timezone);
@@ -96,6 +88,22 @@ class FulfillmentController
 
             header("Location: $url");
             exit();
+        }
+
+        $url = "/quiz/$quiz_id/fullfilment";
+        if (!isset($form_data["csrf_token"]) || !hash_equals($form_data["csrf_token"], $session->get("csrf_token"))) {
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "Access denied!<br>";
+            $_SESSION["flash_message"]["value"] .= "You token is either missing of was modified!";
+
+            header("Location: $url");
+            exit;
+        }
+
+        // remove token from form_data so it is easier to
+        // loop through it and create answers
+        if (isset($form_data["csrf_token"])) {
+            unset($form_data["csrf_token"]);
         }
 
         $connector = DB::getInstance();
@@ -164,28 +172,16 @@ class FulfillmentController
     public function edit(int $id)
     {
         $questions = null;
+        $csrf_token = CsrfToken::generate();
+        $session = new Session();
+        $session->set("csrf_token", $csrf_token);
+
         $data = [];
+        $data["body"]["csrf_token"] = $csrf_token;
 
-        try {
-            $fulfillment = Fulfillment::find($id);
-            $questions = $fulfillment->questions();
-        } catch (\PDOException $e) {
-            $data["body"]["message"] = "Database connection error!<br>";
-            // get css stylesheets
-            ob_start();
-            require_once("resources/views/error/style.php");
-            $data["head"]["css"] = ob_get_clean();
+        $fulfillment = Fulfillment::find($id);
+        $questions = $fulfillment->questions();
 
-            // set header title (tab title)
-            $data["head"]["title"] = "Internal error";
-
-            ob_start();
-            require_once("resources/views/error/500.php");
-            $data["body"]["content"] = ob_get_clean();
-
-            // finally, render page
-            $this->view->render("templates/base.php", $data);
-        }
         $data["body"]["fulfillment"] = $fulfillment;
 
         // set title
@@ -216,13 +212,7 @@ class FulfillmentController
     public function update(HttpRequest $request, int $id)
     {
         $form_data = $request->getBodyData();
-
-        // update is a PUT request. we add an hidden input so we can do the request
-        // in js. this removes the http method from the request body so we can
-        // easily parse it and use each element as an answer.
-        if (isset($form_data["_method"])) {
-            unset($form_data["_method"]);
-        }
+        $session = $request->getSession();
 
         $fulfillment = Fulfillment::find($id);
         if ($fulfillment === null) {
@@ -232,6 +222,27 @@ class FulfillmentController
 
             header("Location: $url");
             exit();
+        }
+
+        $url = "/fulfillment/{$fulfillment->id}/edit";
+        if (!isset($form_data["csrf_token"]) || !hash_equals($form_data["csrf_token"], $session->get("csrf_token"))) {
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "Access denied!<br>";
+            $_SESSION["flash_message"]["value"] .= "You token is either missing of was modified!";
+
+            header("Location: $url");
+            exit;
+        }
+
+        // update is a PUT request. we add an hidden input so we can do the request
+        // in js. this removes the http method from the request body so we can
+        // easily parse it and use each element as an answer.
+        if (isset($form_data["_method"])) {
+            unset($form_data["_method"]);
+        }
+
+        if (isset($form_data["csrf_token"])) {
+            unset($form_data["csrf_token"]);
         }
 
         $connector = DB::getInstance();
@@ -248,19 +259,16 @@ class FulfillmentController
                 $answer->value = $response;
                 if (!$answer->save()) {
                     $connector->rollback();
-                    $url = "/fulfillment/{$fulfillment->id}/edit";
                     $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
                     $_SESSION["flash_message"]["value"] = "Something went wrong while editing fulfillment!";
 
                     header("Location: $url");
                     exit();
                 }
-
             }
         }
         $connector->commit();
 
-        $url = "/fulfillment/{$fulfillment->id}/edit";
         $_SESSION["flash_message"]["type"] = FlashMessage::OK;
         $_SESSION["flash_message"]["value"] = "Your answers were successfully updated!";
 
@@ -274,6 +282,4 @@ class FulfillmentController
     {
         // TODO: Implement destroy() method.
     }
-
-
 }

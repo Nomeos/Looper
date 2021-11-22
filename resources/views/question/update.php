@@ -5,7 +5,14 @@ use App\lib\FlashMessage;
 $message = FlashMessage::get();
 ?>
 
-<div class="flash_message <?= is_array($message) ? ($message["type"] === FlashMessage::OK ? "ok" : "error") : "" ?>"><?= is_array($message) ? $message["value"] : "" ?></div>
+<?php if (is_array($message)): ?>
+    <div class="flash_message <?= $message["type"] === FlashMessage::OK ? "success" : "error" ?>">
+        <div>
+            <i class="fa <?= $message["type"] === FlashMessage::OK ? "fa-check" : "fa-times-circle"?>"></i>
+            <?= $message["value"]?>
+        </div>
+    </div>
+<?php endif;?>
 
 <div class="pure-g parent-center">
     <div id="update_question_parent" class="pure-u-1-3 wrapper">
@@ -31,6 +38,8 @@ $message = FlashMessage::get();
                         <?php endforeach; ?>
                     </select>
                 </fieldset>
+
+                <input type="hidden" id="csrf_token" name="csrf_token" value="<?= $data["body"]["csrf_token"] ?>"/>
 
                 <button id="update_question" type="submit"
                         class="pure-input-2-5 pure-button pure-button-primary upper-case">Update question

@@ -3,7 +3,14 @@ use App\lib\FlashMessage;
 $message = FlashMessage::get();
 ?>
 
-<div class="flash_message <?= is_array($message) ? ($message["type"] === FlashMessage::OK ? "ok" : "error") : "" ?>"><?= is_array($message) ? $message["value"] : ""?></div>
+<?php if (is_array($message)): ?>
+    <div class="flash_message <?= $message["type"] === FlashMessage::OK ? "success" : "error" ?>">
+        <div>
+            <i class="fa <?= $message["type"] === FlashMessage::OK ? "fa-check" : "fa-times-circle"?>"></i>
+            <?= $message["value"]?>
+        </div>
+    </div>
+<?php endif;?>
 
 <div class="wrapper pure-g">
     <?php foreach ($data["body"]["quiz_list"]["answering"] as $quizzes) : ?>
