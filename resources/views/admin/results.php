@@ -4,14 +4,17 @@
             <thead>
             <tr>
                 <th>Take</th>
-                <th><a><?= $quiz->title ?></a></th>
+                <?php foreach ($quiz->questions() as $question): ?>
+                    <th><a href="#"><?= $question->label ?></a></th>
+                <?php endforeach; ?>
             </tr>
             </thead>
 
             <tbody>
             <?php foreach ($quizFulfillments as $fulfillment): ?>
                 <tr>
-                    <td><a href="/fulfillment/<?= $fulfillment->fulfillment_id ?>"><?= $fulfillment->date ?> UTC</a></td>
+                    <td><a href="/fulfillment/<?= $fulfillment->fulfillment_id ?>"><?= $fulfillment->date ?> UTC</a>
+                    </td>
                     <td class="answer"><i class="fa fa-check short"></i></td>
                 </tr>
             <?php endforeach; ?>
