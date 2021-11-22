@@ -331,15 +331,24 @@ class QuizController extends ResourceController
     public function toClosed(int $id)
     {
         $quiz = null;
+        $quiz_state = null;
         $data = [];
         $url = "/quiz/admin";
 
         $quiz = Quiz::find($id);
 
         if ($quiz === null) {
-
             $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
             $_SESSION["flash_message"]["value"] = "Quiz wasn't found!";
+
+            header("Location: $url");
+            exit;
+        }
+
+        $quiz_state = $quiz->state()->label;
+        if ($quiz_state !== "Building" || $quiz_state !== "Closed") {
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "Your quiz has to be in Answering mode!";
 
             header("Location: $url");
             exit;
