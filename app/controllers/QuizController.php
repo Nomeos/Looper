@@ -2,6 +2,7 @@
 
 namespace App\controllers;
 
+use App\lib\CustomString;
 use App\lib\FlashMessage;
 use App\lib\http\CsrfToken;
 use App\lib\http\HttpRequest;
@@ -106,7 +107,7 @@ class QuizController extends ResourceController
             exit;
         }
 
-        $quiz->title = $form_data["quiz_title"];
+        $quiz->title = CustomString::sanitize($form_data["quiz_title"]);
         $quiz->is_public = false;
         $quiz->quiz_state_id = $default_quiz_state->id;
 

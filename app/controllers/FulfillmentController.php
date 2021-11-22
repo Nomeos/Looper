@@ -2,6 +2,7 @@
 
 namespace App\controllers;
 
+use App\lib\CustomString;
 use App\lib\FlashMessage;
 use App\lib\http\CsrfToken;
 use App\lib\http\Session;
@@ -117,7 +118,10 @@ class FulfillmentController
         // add answers
         $answer = null;
         foreach ($form_data as $question_id => $response) {
-            $answer = Answer::make(["value" => $response, "question_id" => $question_id, "fulfillment_id" => $fulfillment->id]);
+            if (!is_int($question_id)) {
+                return false;
+            }
+            $answer = Answer::make(["value" => CustomString::sanitize($response), "question_id" => CustomString::sanitize($question_id), "fulfillment_id" => $fulfillment->id]);
             if (!$answer->create()) {
                 $connector->rollback();
                 return false;
@@ -256,7 +260,7 @@ class FulfillmentController
             // only update answers whose values were modified
             // reduces database requests
             if ($answer->value !== $response) {
-                $answer->value = $response;
+                $answer->value = CustomString::sanitize($response);
                 if (!$answer->save()) {
                     $connector->rollback();
                     $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
