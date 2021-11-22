@@ -20,7 +20,6 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
@@ -201,13 +200,11 @@ Project Link: [https://github.com/Nomeos/Looper](https://github.com/Nomeos/Loope
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/Nomeos/repo.svg?style=for-the-badge
-[contributors-url]: https://github.com/Nomeos/Looper/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/Nomeos/repo.svg?style=for-the-badge
+[forks-shield]: https://img.shields.io/github/forks/Nomeos/Looper
 [forks-url]: https://github.com/Nomeos/Looper/network/members
-[stars-shield]: https://img.shields.io/github/stars/Nomeos/repo.svg?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/Nomeos/Looper
 [stars-url]: https://github.com/Nomeos/Looper/stargazers
-[issues-shield]: https://img.shields.io/github/issues/Nomeos/repo.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/Nomeos/Looper
 [issues-url]: https://github.com/Nomeos/Looper/issues
-[license-shield]: https://img.shields.io/github/license/Nomeos/repo.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/Nomeos/Looper
 [license-url]: https://github.com/Nomeos/Looper/blob/master/LICENSE
