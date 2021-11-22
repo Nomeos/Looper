@@ -18,16 +18,20 @@ function main() {
                 url = "/quiz/admin";
             }
 
-            doRequest(button)
-                .then(function (response) {
-                    if (response.status !== 200) {
-                        console.log("ERROR");
-                        // ADD ERROR MESSAGE TO HTML PAGE
-                    } else {
-                        window.location.replace(url);
-                    }
-                })
-                .catch(error => console.log("ERROR"));
+            if (confirm('Are you sure?')) {
+                doRequest(button)
+                    .then(function (response) {
+                        if (response.status !== 200) {
+                            console.log("ERROR");
+                            // ADD ERROR MESSAGE TO HTML PAGE
+                        } else {
+                            window.location.replace(url);
+                        }
+                    })
+                    .catch(error => console.log("ERROR"));
+            } else {
+                window.location.href = url;
+            }
         });
     });
 }

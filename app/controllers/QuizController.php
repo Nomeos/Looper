@@ -346,7 +346,7 @@ class QuizController extends ResourceController
         }
 
         $quiz_state = $quiz->state()->label;
-        if ($quiz_state !== "Building" || $quiz_state !== "Closed") {
+        if ($quiz_state === "Building" || $quiz_state === "Closed") {
             $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
             $_SESSION["flash_message"]["value"] = "Your quiz has to be in Answering mode!";
 
