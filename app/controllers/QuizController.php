@@ -285,6 +285,7 @@ class QuizController extends ResourceController
     public function toAnswering(int $id)
     {
         $quiz = null;
+        $questions = null;
         $data = [];
 
         $url = "/quiz/admin";
@@ -305,6 +306,16 @@ class QuizController extends ResourceController
         } else {
             $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
             $_SESSION["flash_message"]["value"] = "Quiz state wasn't found!";
+
+            header("Location: $url");
+            exit;
+        }
+
+        $questions = $quiz->questions();
+        if (count($questions) <= 0) {
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "This quiz as no questions!<br>";
+            $_SESSION["flash_message"]["value"] .= "Before moving it to answering, add some questions!";
 
             header("Location: $url");
             exit;
