@@ -70,7 +70,7 @@ class FulfillmentController
     /**
      * @param int $quiz_id , HttpRequest $request
      */
-    public function store(int $quiz_id, HttpRequest $request)
+    public function store(HttpRequest $request, int $quiz_id)
     {
         $form_data = $request->getBodyData();
         $session = $request->getSession();
@@ -277,13 +277,5 @@ class FulfillmentController
         $_SESSION["flash_message"]["value"] = "Your answers were successfully updated!";
 
         header("Location: $url");
-    }
-
-    /**
-     * @param int $id
-     */
-    public function destroy(int $id)
-    {
-        // TODO: Implement destroy() method.
     }
 }
