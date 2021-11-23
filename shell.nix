@@ -2,7 +2,7 @@
 
 let
     php' = pkgs.php80.buildEnv {
-                extensions = { all, enabled, ... }: with all; [ session pdo ];
+                extensions = { all, enabled, ... }:  enabled ++ [ all.session all.pdo_mysql ];
                 extraConfig = ''
                 [xdebug]
                 zend_extension=${pkgs.php80Extensions.xdebug}/lib/php/extensions/xdebug.so
