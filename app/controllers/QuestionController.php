@@ -2,6 +2,7 @@
 
 namespace App\controllers;
 
+use App\lib\CustomString;
 use App\lib\FlashMessage;
 use App\lib\http\CsrfToken;
 use App\lib\http\Session;
@@ -62,9 +63,9 @@ class QuestionController extends ResourceController
         }
 
         $question = Question::make([
-            "label" => $form_data["question_label"],
-            "question_type_id" => $form_data["question_type_id"],
-            "quiz_id" => $form_data["quiz_id"],
+            "label" => CustomString::sanitize($form_data["question_label"]),
+            "question_type_id" => CustomString::sanitize($form_data["question_type_id"]),
+            "quiz_id" => CustomString::sanitize($form_data["quiz_id"]),
         ]);
 
         $url = "/quiz/{$quiz->id}/edit";
@@ -235,7 +236,7 @@ class QuestionController extends ResourceController
         }
 
         if (isset($form_data["question_label"])) {
-            $question->label = $form_data["question_label"];
+            $question->label = CustomString::sanitize($form_data["question_label"]);
         }
 
         if (isset($form_data["question_type_id"])) {

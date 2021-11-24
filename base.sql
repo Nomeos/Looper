@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS `looper`.`questions`
 CREATE TABLE IF NOT EXISTS `looper`.`answers`
 (
     `id`             INT(11)     NOT NULL AUTO_INCREMENT,
-    `value`          VARCHAR(45) NULL DEFAULT NULL,
+    `value`          LONGTEXT NULL DEFAULT NULL,
     `question_id`    INT(11)     NOT NULL,
     `fulfillment_id` INT(11)     NOT NULL,
     PRIMARY KEY (`id`),

@@ -7,7 +7,9 @@ class Session implements SessionInterface
 
     public function __construct()
     {
-        session_start();
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
     }
 
     /**

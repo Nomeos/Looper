@@ -81,7 +81,7 @@ class Router
                 $request = new HttpRequest();
 
                 $controller = new FulfillmentController();
-                $controller->store($args["id"], $request);
+                $controller->store($request, $args["id"]);
             });
         });
     }

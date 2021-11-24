@@ -1,18 +1,26 @@
 { pkgs ? import <nixpkgs> {} }:
 
 let
-    python = pkgs.python3;
-    php-packages = pkgs.php80Packages;
-    python-with-packages = python.withPackages (p: with p; [
+    php' = pkgs.php80.buildEnv {
+                extensions = { all, enabled, ... }:  enabled ++ [ all.session all.pdo_mysql ];
+                extraConfig = ''
+                [xdebug]
+                zend_extension=${pkgs.php80Extensions.xdebug}/lib/php/extensions/xdebug.so
+                        xdebug.mode=debug
+                        xdebug.client_host=127.0.0.1
+                        xdebug.client_port=9003'';
+    };
+    python' = pkgs.python3.withPackages (p: with p; [
         psutil
     ]);
 in
     pkgs.mkShell {
         buildInputs = [
-            python-with-packages
-            php-packages.composer
+            python'
+            php'
+            php'.packages.composer
         ];
         shellHook = ''
-            PYTHONPATH=${python-with-packages}/${python-with-packages.sitePackages}
+            PYTHONPATH=${python'}/${python'.sitePackages}
         '';
     }

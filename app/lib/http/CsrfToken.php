@@ -6,7 +6,7 @@ class CsrfToken
 {
     public const LENGTH = 32;
 
-    public static function generate()
+    public static function generate(): string
     {
         return bin2hex(random_bytes(static::LENGTH));
     }

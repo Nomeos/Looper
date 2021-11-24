@@ -2,6 +2,7 @@
 
 namespace App\controllers;
 
+use App\lib\CustomString;
 use App\lib\FlashMessage;
 use App\lib\http\CsrfToken;
 use App\lib\http\HttpRequest;
@@ -106,7 +107,7 @@ class QuizController extends ResourceController
             exit;
         }
 
-        $quiz->title = $form_data["quiz_title"];
+        $quiz->title = CustomString::sanitize($form_data["quiz_title"]);
         $quiz->is_public = false;
         $quiz->quiz_state_id = $default_quiz_state->id;
 
@@ -285,6 +286,7 @@ class QuizController extends ResourceController
     public function toAnswering(int $id)
     {
         $quiz = null;
+        $questions = null;
         $data = [];
 
         $url = "/quiz/admin";
@@ -309,6 +311,16 @@ class QuizController extends ResourceController
             header("Location: $url");
             exit;
         }
+
+        $questions = $quiz->questions();
+        if (count($questions) <= 0) {
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "This quiz as no questions!<br>";
+            $_SESSION["flash_message"]["value"] .= "Before moving it to answering, add some questions!";
+
+            header("Location: $url");
+            exit;
+        }
         $quiz->save();
 
         $_SESSION["flash_message"]["type"] = FlashMessage::OK;
@@ -320,15 +332,24 @@ class QuizController extends ResourceController
     public function toClosed(int $id)
     {
         $quiz = null;
+        $quiz_state = null;
         $data = [];
         $url = "/quiz/admin";
 
         $quiz = Quiz::find($id);
 
         if ($quiz === null) {
-
             $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
             $_SESSION["flash_message"]["value"] = "Quiz wasn't found!";
+
+            header("Location: $url");
+            exit;
+        }
+
+        $quiz_state = $quiz->state()->label;
+        if ($quiz_state === "Building" || $quiz_state === "Closed") {
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "Your quiz has to be in Answering mode!";
 
             header("Location: $url");
             exit;
