@@ -23,7 +23,7 @@ EOL;
         $database = DB::getInstance();
         return $database->selectMany($query, ["id" => $this->id], Answer::class);
     }
-
+    
     public function quiz(int $id)
     {
         $query = <<< EOL

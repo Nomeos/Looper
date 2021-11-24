@@ -95,7 +95,60 @@ class QuestionController extends ResourceController
 
     public function show(int $id)
     {
-        // TODO: Implement show() method.
+        $question = null;
+        $question = Question::find($id);
+        $csrf_token = CsrfToken::generate();
+        $session = new Session();
+        $session->set("csrf_token", $csrf_token);
+
+        $answers = $question->answers();
+
+        $data = [];
+        $data["body"]["csrf_token"] = $csrf_token;
+
+        // If there is no quiz with 'id', show proper error message
+        if ($question === null) {
+            http_response_code(404);
+            // get css stylesheets
+            ob_start();
+            require_once("resources/views/error/style.php");
+            $data["head"]["css"] = ob_get_clean();
+
+            // set header title (tab title)
+            $data["head"]["title"] = "Page not found";
+
+            ob_start();
+            require_once("resources/views/error/404.php");
+            $data["body"]["content"] = ob_get_clean();
+
+            // finally, render page
+            $this->view->render("templates/base.php", $data);
+            exit;
+        }
+
+        // set title
+        $data["head"]["title"] = "Show {$question->label}";
+
+        // load quiz into view
+        $data["body"]["question"] = $question;
+
+        // get css stylesheets
+        ob_start();
+        require_once("resources/views/quiz/style.php");
+        require_once("resources/views/question/style.php");
+        $data["head"]["css"] = ob_get_clean();
+
+        // set header title (next to the logo)
+        $data["header"]["title"] = $question->label;
+
+        // get body content
+        ob_start();
+        require_once("resources/views/templates/header.php");
+        require_once("resources/views/quiz/show.php");
+        $data["body"]["content"] = ob_get_clean();
+
+        // finally, render page
+        $this->view->render("templates/base.php", $data);
     }
 
     public function edit(int $id)

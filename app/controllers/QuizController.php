@@ -133,7 +133,7 @@ class QuizController extends ResourceController
      */
     public function show(int $id)
     {
-        // TODO: Implement store() method.
+
     }
 
     /**
@@ -362,7 +362,10 @@ class QuizController extends ResourceController
         $data = [];
 
         $quiz = Quiz::find($id);
-        $quizFulfillments = $quiz->fulfillments($quiz->id);
+        $quizFulfillments = $quiz->fulfillments();
+
+        $data["body"]["fulfillments"] = $quizFulfillments;
+
 
         // set title
         $data["head"]["title"] = "Results";

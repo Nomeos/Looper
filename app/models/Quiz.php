@@ -41,11 +41,11 @@ EOL;
         $database = DB::getInstance();
         return $database->selectMany($query, ["id" => $this->id], Question::class);
     }
-    public function fulfillments(int $id)
+    public function fulfillments()
     {
         $query = <<< EOL
 
-SELECT * FROM fulfillments
+SELECT fulfillments.* FROM fulfillments
 INNER JOIN answers ON answers.fulfillment_id = fulfillments.id
 INNER JOIN questions ON questions.id = answers.question_id
 INNER JOIN quizzes ON quizzes.id = questions.quiz_id
@@ -54,6 +54,6 @@ GROUP BY fulfillments.id
 EOL;
 
         $database = DB::getInstance();
-        return $database->selectMany($query, ["id" => $id], Fulfillment::class);
+        return $database->selectMany($query, ["id" => $this->id], Fulfillment::class);
     }
 }

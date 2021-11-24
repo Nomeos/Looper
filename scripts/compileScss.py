@@ -3,8 +3,8 @@
 import os, subprocess, psutil
 
 def main():
-    scss_path = "./resources/scss"
-    css_path = "./public/assets/css"
+    scss_path = ".\\resources\\scss"
+    css_path = ".\\public\\assets\\css"
     file_path = ""
 
     if not os.path.exists(css_path):
@@ -21,7 +21,7 @@ def main():
     for root, dirs, files in os.walk(scss_path):
         for file in files:
             print(root.replace(scss_path, css_path))
-            subprocess.Popen(["sass", "--watch", root + "/" + file, root.replace(scss_path, css_path) + file.replace("scss", "css")])
+            subprocess.Popen(["sass", "--watch", root + "\\" + file, root.replace(scss_path, css_path) + file.replace("scss", "css")])
 
     exit(0)
 
