@@ -9,6 +9,7 @@ use App\lib\http\HttpRequest;
 use App\lib\http\Session;
 use App\lib\ResourceController;
 use App\models\Answer;
+use App\models\Question;
 use App\models\QuestionType;
 use App\models\Quiz;
 use App\models\QuizState;
@@ -125,6 +126,13 @@ class QuizController extends ResourceController
                 $_SESSION["flash_message"]["value"] .= "There already is a quiz named {$quiz->title}!";
 
                 header("Location: $url");
+                exit();
+            } else if ($e->getCode() === "22001") {
+                $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+                $_SESSION["flash_message"]["value"] = sprintf("Your quiz's length is bigger than %d !", Quiz::MAX_LENGTH);
+
+                header("Location: $url");
+                exit;
             }
         }
     }

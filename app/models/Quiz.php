@@ -17,6 +17,8 @@ class Quiz extends Model
     public int $is_public;
     public int $quiz_state_id;
 
+    public const MAX_LENGTH = 45;
+
     public function state()
     {
         $query = <<< EOL

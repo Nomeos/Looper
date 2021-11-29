@@ -13,6 +13,8 @@ class Question extends Model
     public int $question_type_id;
     public int $quiz_id;
 
+    public const MAX_LABEL_LENGTH = 45;
+
     public function type()
     {
         $query = <<< EOL

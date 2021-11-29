@@ -15,6 +15,7 @@ use App\models\Question;
 use App\models\QuestionType;
 use App\models\Quiz;
 use DateTimeZone;
+use PDOException;
 use Thynkon\SimpleOrm\database\DB;
 
 class FulfillmentController
@@ -122,9 +123,20 @@ class FulfillmentController
                 return false;
             }
             $answer = Answer::make(["value" => CustomString::sanitize($response), "question_id" => CustomString::sanitize($question_id), "fulfillment_id" => $fulfillment->id]);
-            if (!$answer->create()) {
-                $connector->rollback();
-                return false;
+            try {
+                if (!$answer->create()) {
+                    $connector->rollback();
+                    return false;
+                }
+            } catch (\PDOException $e) {
+                if ($e->getCode() === "22001") {
+                    $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+                    $_SESSION["flash_message"]["value"] = sprintf("Your answers' length is bigger than %d !", Question::MAX_LABEL_LENGTH);
+
+                    $connector->rollback();
+                    header("Location: $url");
+                    exit;
+                }
             }
         }
         $connector->commit();
@@ -261,13 +273,24 @@ class FulfillmentController
             // reduces database requests
             if ($answer->value !== $response) {
                 $answer->value = CustomString::sanitize($response);
-                if (!$answer->save()) {
-                    $connector->rollback();
-                    $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-                    $_SESSION["flash_message"]["value"] = "Something went wrong while editing fulfillment!";
+                try {
+                    if (!$answer->save()) {
+                        $connector->rollback();
+                        $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+                        $_SESSION["flash_message"]["value"] = "Something went wrong while editing fulfillment!";
 
-                    header("Location: $url");
-                    exit();
+                        header("Location: $url");
+                        exit();
+                    }
+                } catch (PDOException $e) {
+                    if ($e->getCode() === "22001") {
+                        $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+                        $_SESSION["flash_message"]["value"] = sprintf("Your answers' length is bigger than %d !", Question::MAX_LABEL_LENGTH);
+
+                        $connector->rollback();
+                        header("Location: $url");
+                        exit;
+                    }
                 }
             }
         }

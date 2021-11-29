@@ -81,10 +81,16 @@ class QuestionController extends ResourceController
 
                 header("Location: $url");
                 exit;
+            } else if ($e->getCode() === "22001") {
+                $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+                $_SESSION["flash_message"]["value"] = sprintf("Your question's length is bigger than %d !", Question::MAX_LABEL_LENGTH);
+
+                header("Location: $url");
+                exit;
             }
 
-            // let index.php to show generic error message
-            throwException($e);
+            // let index.php to show generic error message for other exceptions
+            throw $e;
         }
 
         $_SESSION["flash_message"]["type"] = FlashMessage::OK;
