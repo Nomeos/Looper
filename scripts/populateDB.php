@@ -6,9 +6,11 @@ require_once("vendor/autoload.php");
 use ByJG\DbMigration\Database\MySqlDatabase;
 use ByJG\DbMigration\Migration;
 use ByJG\Util\Uri;
+use Db\seeders\DatabaseSeeder;
 
 function main()
 {
+    $seeder = new DatabaseSeeder();
     $connectionUri = new Uri(sprintf('mysql://%s:%s@localhost/looper', USERNAME, PASSWORD));
 
     // Create the Migration instance
@@ -20,7 +22,7 @@ function main()
 
     // Execute migrations (under migrations/up/*.sql)
     $migration->reset();
-    $migration->up(1);
+    $seeder->run();
 }
 
 main();
