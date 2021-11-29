@@ -100,9 +100,9 @@ class QuizController extends ResourceController
 
         $url = "/quiz/create";
         if (!isset($form_data["csrf_token"]) || !hash_equals($form_data["csrf_token"], $session->get("csrf_token"))) {
-            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-            $_SESSION["flash_message"]["value"] = "Access denied!<br>";
-            $_SESSION["flash_message"]["value"] .= "You token is either missing of was modified!";
+            $message = "Access denied!<br>";
+            $message .= "You token is either missing of was modified!";
+            FlashMessage::error($message);
 
             header("Location: $url");
             exit;
@@ -115,21 +115,20 @@ class QuizController extends ResourceController
         $url = "/quiz/create";
         try {
             $quiz->create();
-            $_SESSION["flash_message"]["type"] = FlashMessage::OK;
-            $_SESSION["flash_message"]["value"] = "Quiz was successfully created!";
+            FlashMessage::success("Quiz was successfully created!");
 
             header("Location: $url");
         } catch (\PDOException $e) {
             if ($e->getCode() === "23000") {
-                $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-                $_SESSION["flash_message"]["value"] = "Failed to create a new quiz!<br>";
-                $_SESSION["flash_message"]["value"] .= "There already is a quiz named {$quiz->title}!";
+                $message = "Failed to create a new quiz!<br>";
+                $message .= "There already is a quiz named {$quiz->title}!";
+                FlashMessage::error($message);
 
                 header("Location: $url");
                 exit();
             } else if ($e->getCode() === "22001") {
-                $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-                $_SESSION["flash_message"]["value"] = sprintf("Your quiz's length is bigger than %d !", Quiz::MAX_LENGTH);
+                $message = sprintf("Your quiz's length is bigger than %d !", Quiz::MAX_LENGTH);
+                FlashMessage::error($message);
 
                 header("Location: $url");
                 exit;
@@ -238,16 +237,14 @@ class QuizController extends ResourceController
         $quiz = Quiz::find($id);
 
         if ($quiz === null) {
-            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-            $_SESSION["flash_message"]["value"] = "Quiz wasn't found!";
+            FlashMessage::error("Quiz wasn't found!");
 
             header("Location: $url");
         }
 
         $quiz->delete();
 
-        $_SESSION["flash_message"]["type"] = FlashMessage::OK;
-        $_SESSION["flash_message"]["value"] = "Quiz was successfully deleted!";
+        FlashMessage::success("Quiz was successfully deleted!");
 
         header("Location: $url");
     }
@@ -301,9 +298,7 @@ class QuizController extends ResourceController
         $quiz = Quiz::find($id);
 
         if ($quiz === null) {
-
-            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-            $_SESSION["flash_message"]["value"] = "Quiz wasn't found!";
+            FlashMessage::error("Quiz wasn't found!");
 
             header("Location: $url");
             exit;
@@ -313,8 +308,7 @@ class QuizController extends ResourceController
         if ($nextState[0] !== null) {
             $quiz->quiz_state_id = $nextState[0]->id;
         } else {
-            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-            $_SESSION["flash_message"]["value"] = "Quiz state wasn't found!";
+            FlashMessage::error("Quiz state wasn't found!");
 
             header("Location: $url");
             exit;
@@ -322,17 +316,16 @@ class QuizController extends ResourceController
 
         $questions = $quiz->questions();
         if (count($questions) <= 0) {
-            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-            $_SESSION["flash_message"]["value"] = "This quiz as no questions!<br>";
-            $_SESSION["flash_message"]["value"] .= "Before moving it to answering, add some questions!";
+            $message = "This quiz as no questions!<br>";
+            $message .= "Before moving it to answering, add some questions!";
+            FlashMessage::error($message);
 
             header("Location: $url");
             exit;
         }
         $quiz->save();
 
-        $_SESSION["flash_message"]["type"] = FlashMessage::OK;
-        $_SESSION["flash_message"]["value"] = "Quiz was successfully changed to Answering!";
+        FlashMessage::success("Quiz was successfully changed to Answering!");
 
         header("Location: $url");
     }
@@ -347,8 +340,7 @@ class QuizController extends ResourceController
         $quiz = Quiz::find($id);
 
         if ($quiz === null) {
-            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-            $_SESSION["flash_message"]["value"] = "Quiz wasn't found!";
+            FlashMessage::error("Quiz wasn't found!");
 
             header("Location: $url");
             exit;
@@ -356,8 +348,7 @@ class QuizController extends ResourceController
 
         $quiz_state = $quiz->state()->label;
         if ($quiz_state === "Building" || $quiz_state === "Closed") {
-            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-            $_SESSION["flash_message"]["value"] = "Your quiz has to be in Answering mode!";
+            FlashMessage::error("Your quiz has to be in Answering mode!");
 
             header("Location: $url");
             exit;
@@ -367,16 +358,14 @@ class QuizController extends ResourceController
         if ($nextState[0] !== null) {
             $quiz->quiz_state_id = $nextState[0]->id;
         } else {
-            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-            $_SESSION["flash_message"]["value"] = "Quiz state wasn't found!";
+            FlashMessage::error("Quiz state wasn't found!");
 
             header("Location: $url");
             exit;
         }
         $quiz->save();
 
-        $_SESSION["flash_message"]["type"] = FlashMessage::OK;
-        $_SESSION["flash_message"]["value"] = "Quiz was successfully closed";
+        FlashMessage::success("Quiz was successfully closed");
 
         header("Location: $url");
     }

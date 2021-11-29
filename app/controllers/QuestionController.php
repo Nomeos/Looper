@@ -36,8 +36,7 @@ class QuestionController extends ResourceController
 
         $url = "/quiz/admin";
         if (!isset($form_data["quiz_id"])) {
-            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-            $_SESSION["flash_message"]["value"] = "Quiz id is missing!";
+            FlashMessage::error("Quiz id is missing!");
 
             header("Location: $url");
             exit;
@@ -45,9 +44,9 @@ class QuestionController extends ResourceController
 
         $url = "/quiz/{$form_data["quiz_id"]}/edit";
         if (!isset($form_data["csrf_token"]) || !hash_equals($form_data["csrf_token"], $session->get("csrf_token"))) {
-            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-            $_SESSION["flash_message"]["value"] = "Access denied!<br>";
-            $_SESSION["flash_message"]["value"] .= "You token is either missing of was modified!";
+            $message = "Access denied!<br>";
+            $message .= "You token is either missing of was modified!";
+            FlashMessage::error($message);
 
             header("Location: $url");
             exit;
@@ -55,8 +54,7 @@ class QuestionController extends ResourceController
 
         $quiz = Quiz::find($form_data["quiz_id"]);
         if ($quiz === null) {
-            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-            $_SESSION["flash_message"]["value"] = "There is no quiz with id {$form_data["quiz_id"]}!";
+            FlashMessage::error("There is no quiz with id {$form_data["quiz_id"]}!");
 
             header("Location: $url");
             exit;
@@ -76,14 +74,12 @@ class QuestionController extends ResourceController
             $data["body"]["message"] = "Something went wrong while adding a new question to quiz => {$quiz->title}!";
 
             if ($e->getCode() === "23000") {
-                $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-                $_SESSION["flash_message"]["value"] = "There already is a question named {$question->label} in quiz {$quiz->title}!";
+                FlashMessage::error("There already is a question named {$question->label} in quiz {$quiz->title}!");
 
                 header("Location: $url");
                 exit;
             } else if ($e->getCode() === "22001") {
-                $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-                $_SESSION["flash_message"]["value"] = sprintf("Your question's length is bigger than %d !", Question::MAX_LABEL_LENGTH);
+                FlashMessage::error(sprintf("Your question's length is bigger than %d !", Question::MAX_LABEL_LENGTH));
 
                 header("Location: $url");
                 exit;
@@ -93,8 +89,7 @@ class QuestionController extends ResourceController
             throw $e;
         }
 
-        $_SESSION["flash_message"]["type"] = FlashMessage::OK;
-        $_SESSION["flash_message"]["value"] = "Question => {$question->label} was successfully added to {$quiz->title}!";
+        FlashMessage::success("Question => {$question->label} was successfully added to {$quiz->title}!");
 
         header("Location: $url");
         exit;
@@ -226,16 +221,15 @@ class QuestionController extends ResourceController
 
         $question = Question::find($id);
         if ($question === null) {
-            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-            $_SESSION["flash_message"]["value"] = "Question with id $id does not exist!";
+            FlashMessage::error("Question with id $id does not exist!");
 
             header("Location: $url");
         }
 
         if (!isset($form_data["csrf_token"]) || !hash_equals($form_data["csrf_token"], $session->get("csrf_token"))) {
-            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-            $_SESSION["flash_message"]["value"] = "Access denied!<br>";
-            $_SESSION["flash_message"]["value"] .= "You token is either missing of was modified!";
+            $message = "Access denied!<br>";
+            $message .= "You token is either missing of was modified!";
+            FlashMessage::error($message);
 
             header("Location: $url");
             exit;
@@ -248,8 +242,7 @@ class QuestionController extends ResourceController
         if (isset($form_data["question_type_id"])) {
             $question_type = QuestionType::find($form_data["question_type_id"]);
             if ($question === null) {
-                $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-                $_SESSION["flash_message"]["value"] = "Question type with id $id does not exist!";
+                FlashMessage::error("Question type with id $id does not exist!");
 
                 header("Location: $url");
                 exit;
@@ -264,17 +257,16 @@ class QuestionController extends ResourceController
             $question->save();
         } catch (\PDOException $e) {
             if ($e->getCode() === "23000") {
-                $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-                $_SESSION["flash_message"]["value"] = "Failed to update question!<br>";
-                $_SESSION["flash_message"]["value"] .= "There already is a question named {$question->label}!";
+                $message = "Failed to update question!<br>";
+                $message .= "There already is a question named {$question->label}!";
+                FlashMessage::error($message);
 
                 header("Location: $url");
                 exit;
             }
         }
 
-        $_SESSION["flash_message"]["type"] = FlashMessage::OK;
-        $_SESSION["flash_message"]["value"] = "Question was successfully updated!";
+        FlashMessage::success("Question was successfully updated!");
 
         header("Location: $url");
     }
@@ -290,8 +282,7 @@ class QuestionController extends ResourceController
 
         // If there is no question with 'id', show proper error message
         if ($question === null) {
-            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-            $_SESSION["flash_message"]["value"] = "There is not question with id $id!";
+            FlashMessage::error("There is not question with id $id!");
 
             header("Location: $url");
             exit;
@@ -301,16 +292,13 @@ class QuestionController extends ResourceController
         $url = "/quiz/$quiz_id/edit";
 
         if (!$question->delete()) {
-            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-            $_SESSION["flash_message"]["value"] = "Something went wrong while deleting question {$question->label}!";
+            FlashMessage::error("Something went wrong while deleting question {$question->label}!");
 
             header("Location: $url");
             exit;
         }
 
-        $_SESSION["flash_message"]["type"] = FlashMessage::OK;
-        $_SESSION["flash_message"]["value"] = "Question was successfully deleted!";
-
+        FlashMessage::success("Question was successfully deleted!");
         header("Location: $url");
     }
 }

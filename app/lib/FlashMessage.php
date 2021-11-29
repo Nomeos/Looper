@@ -18,4 +18,20 @@ class FlashMessage
 
         return $message;
     }
+
+    private static function flash(int $type, string $message)
+    {
+        $_SESSION["flash_message"]["type"] = $type;
+        $_SESSION["flash_message"]["value"] = $message;
+    }
+
+    public static function success($message)
+    {
+        static::flash(static::OK, $message);
+    }
+
+    public static function error($message)
+    {
+        static::flash(static::ERROR, $message);
+    }
 }

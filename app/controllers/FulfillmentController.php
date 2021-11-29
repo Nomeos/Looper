@@ -6,7 +6,6 @@ use App\lib\CustomString;
 use App\lib\FlashMessage;
 use App\lib\http\CsrfToken;
 use App\lib\http\Session;
-use App\lib\ResourceController;
 use App\lib\http\HttpRequest;
 use App\lib\View;
 use App\models\Answer;
@@ -85,8 +84,7 @@ class FulfillmentController
         $quiz = Quiz::find($quiz_id);
         if ($quiz === null) {
             $url = "/quiz/answering";
-            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-            $_SESSION["flash_message"]["value"] = "There is no quiz with id {$quiz->id}!";
+            FlashMessage::error("There is no quiz with id {$quiz->id}!");
 
             header("Location: $url");
             exit();
@@ -94,9 +92,9 @@ class FulfillmentController
 
         $url = "/quiz/$quiz_id/fullfilment";
         if (!isset($form_data["csrf_token"]) || !hash_equals($form_data["csrf_token"], $session->get("csrf_token"))) {
-            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-            $_SESSION["flash_message"]["value"] = "Access denied!<br>";
-            $_SESSION["flash_message"]["value"] .= "You token is either missing of was modified!";
+            $message = "Access denied!<br>";
+            $message .= "You token is either missing of was modified!";
+            FlashMessage::error($message);
 
             header("Location: $url");
             exit;
@@ -130,8 +128,7 @@ class FulfillmentController
                 }
             } catch (\PDOException $e) {
                 if ($e->getCode() === "22001") {
-                    $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-                    $_SESSION["flash_message"]["value"] = sprintf("Your answers' length is bigger than %d !", Question::MAX_LABEL_LENGTH);
+                    FlashMessage::error(sprintf("Your answers' length is bigger than %d !", Question::MAX_LABEL_LENGTH));
 
                     $connector->rollback();
                     header("Location: $url");
@@ -142,8 +139,7 @@ class FulfillmentController
         $connector->commit();
 
         $url = "/fulfillment/{$fulfillment->id}/edit";
-        $_SESSION["flash_message"]["type"] = FlashMessage::OK;
-        $_SESSION["flash_message"]["value"] = "Your answers were successfully saved!";
+        FlashMessage::success("Your answers were successfully saved!");
 
         header("Location: $url");
     }
@@ -233,8 +229,7 @@ class FulfillmentController
         $fulfillment = Fulfillment::find($id);
         if ($fulfillment === null) {
             $url = "/quiz/answering";
-            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-            $_SESSION["flash_message"]["value"] = "There is no fulfillment with id {$fulfillment->id}!";
+            FlashMessage::error("There is no fulfillment with id {$fulfillment->id}!");
 
             header("Location: $url");
             exit();
@@ -242,9 +237,9 @@ class FulfillmentController
 
         $url = "/fulfillment/{$fulfillment->id}/edit";
         if (!isset($form_data["csrf_token"]) || !hash_equals($form_data["csrf_token"], $session->get("csrf_token"))) {
-            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-            $_SESSION["flash_message"]["value"] = "Access denied!<br>";
-            $_SESSION["flash_message"]["value"] .= "You token is either missing of was modified!";
+            $message = "Access denied!<br>";
+            $message .= "You token is either missing of was modified!";
+            FlashMessage::error($message);
 
             header("Location: $url");
             exit;
@@ -276,16 +271,14 @@ class FulfillmentController
                 try {
                     if (!$answer->save()) {
                         $connector->rollback();
-                        $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-                        $_SESSION["flash_message"]["value"] = "Something went wrong while editing fulfillment!";
+                        FlashMessage::error("Something went wrong while editing fulfillment!");
 
                         header("Location: $url");
                         exit();
                     }
                 } catch (PDOException $e) {
                     if ($e->getCode() === "22001") {
-                        $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
-                        $_SESSION["flash_message"]["value"] = sprintf("Your answers' length is bigger than %d !", Question::MAX_LABEL_LENGTH);
+                        FlashMessage::error(sprintf("Your answers' length is bigger than %d !", Question::MAX_LABEL_LENGTH));
 
                         $connector->rollback();
                         header("Location: $url");
@@ -296,9 +289,7 @@ class FulfillmentController
         }
         $connector->commit();
 
-        $_SESSION["flash_message"]["type"] = FlashMessage::OK;
-        $_SESSION["flash_message"]["value"] = "Your answers were successfully updated!";
-
+        FlashMessage::success("Your answers were successfully updated!");
         header("Location: $url");
     }
 }
