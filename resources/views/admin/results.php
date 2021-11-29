@@ -14,11 +14,12 @@
             <tbody>
             <?php foreach ($data["body"]["fulfillments"] as $fulfillment): ?>
                 <tr>
-                    <td><a href="/fulfillment/<?= $fulfillment->fulfillment_id ?>"><?= $fulfillment->date ?> UTC</a>
+                    <td>
+                        <a href="/fulfillment/<?= $fulfillment->id ?>"><?= $fulfillment->date ?> UTC</a>
                     </td>
                     <?php foreach ($fulfillment->answers() as $answer) : ?>
                         <?php $value = strlen($answer->value); ?>
-                        <?php if ($value == MIN_CHARACTER_LENGTH): ?>
+                        <?php if ($value === MIN_CHARACTER_LENGTH): ?>
                             <td class="answer"><i class="fa fa-times short"></i></td>
                         <?php elseif ($value <= MAX_CHARACTER_LENGTH): ?>
                             <td class="answer"><i class="fa fa-check short"></i></td>
