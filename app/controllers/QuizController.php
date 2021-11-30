@@ -118,6 +118,7 @@ class QuizController extends ResourceController
             FlashMessage::success("Quiz was successfully created!");
 
             header("Location: $url");
+            exit();
         } catch (\PDOException $e) {
             if ($e->getCode() === "23000") {
                 $message = "Failed to create a new quiz!<br>";
@@ -383,7 +384,6 @@ class QuizController extends ResourceController
         $quizFulfillments = $quiz->fulfillments();
 
         $data["body"]["fulfillments"] = $quizFulfillments;
-
 
         // set title
         $data["head"]["title"] = "Results";

@@ -107,6 +107,7 @@ class QuestionController extends ResourceController
 
         $data = [];
         $data["body"]["csrf_token"] = $csrf_token;
+        $data["body"]["answers"] = $answers;
 
         // If there is no quiz with 'id', show proper error message
         if ($question === null) {
@@ -224,6 +225,7 @@ class QuestionController extends ResourceController
             FlashMessage::error("Question with id $id does not exist!");
 
             header("Location: $url");
+            exit();
         }
 
         if (!isset($form_data["csrf_token"]) || !hash_equals($form_data["csrf_token"], $session->get("csrf_token"))) {

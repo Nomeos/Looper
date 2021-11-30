@@ -38,11 +38,12 @@ class FulfillmentController
         $session = new Session();
         $session->set("csrf_token", $csrf_token);
 
-        $data = [];
-        $data["body"]["csrf_token"] = $csrf_token;
-
         $questions = Question::where("quiz_id", $quiz_id);
         $quiz = Quiz::find($quiz_id);
+
+        $data = [];
+        $data["body"]["csrf_token"] = $csrf_token;
+        $data["body"]["questions"] = $questions;
 
         $data["body"]["quiz"] = $quiz;
 

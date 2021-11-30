@@ -25,7 +25,7 @@ $message = FlashMessage::get();
             </thead>
 
             <tbody>
-            <?php foreach ($answers as $answer): ?>
+            <?php foreach ($data["body"]["answers"] as $answer): ?>
                 <tr>
                     <td><a href="/fulfillment/<?= $answer->fulfillment()->id ?>"><?= $answer->fulfillment()->date ?>
                             UTC</a>

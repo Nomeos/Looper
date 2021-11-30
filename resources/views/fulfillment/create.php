@@ -21,7 +21,7 @@ $message = FlashMessage::get();
             <legend>Your Take</legend>
             <div>If you'd like to come back later to finish, simply submit it with blanks.</div>
             <br>
-            <?php foreach ($questions as $question): ?>
+            <?php foreach ($data["body"]["questions"] as $question): ?>
                 <label for="quiz_title"><?= $question->label ?></label>
                 <?php if ($question->type()->label === "Single line text"): ?>
                     <input name="<?= $question->id ?>" type="text" class="pure-u-1-1"
