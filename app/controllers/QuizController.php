@@ -184,6 +184,16 @@ class QuizController extends ResourceController
             exit;
         }
 
+        $quiz_state = QuizState::where('label', 'Building')[0];
+
+        if ($quiz->quiz_state_id !== $quiz_state->id) {
+            FlashMessage::error("You can't edit a non building quiz!");
+
+            $url = "/";
+            header("Location: $url");
+            exit;
+        }
+
         // set title
         $data["head"]["title"] = "Edit {$quiz->title}";
 
