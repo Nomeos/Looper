@@ -10,6 +10,7 @@ class QuizState extends Model
     protected string $primaryKey = "id";
     public int $id;
     public string $label;
+    public string $slug;
 
     public function quizzes()
     {

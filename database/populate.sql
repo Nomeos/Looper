@@ -1,7 +1,7 @@
 -- Quiz state
-INSERT INTO `looper`.`quiz_states` (`label`) VALUES ('Building');
-INSERT INTO `looper`.`quiz_states` (`label`) VALUES ('Answering');
-INSERT INTO `looper`.`quiz_states` (`label`) VALUES ('Closed');
+INSERT INTO `looper`.`quiz_states` (`label`,`slug`) VALUES ('Building','BUI');
+INSERT INTO `looper`.`quiz_states` (`label`,`slug`) VALUES ('Answering','ANS');
+INSERT INTO `looper`.`quiz_states` (`label`,`slug`) VALUES ('Closed','CLO');
 
 -- Quiz
 INSERT INTO `looper`.`quizzes` (`title`, `is_public`, `quiz_state_id`) VALUES ('Building form', '0', '1');
