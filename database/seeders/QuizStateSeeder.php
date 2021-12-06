@@ -14,13 +14,13 @@ class QuizStateSeeder implements Seeder
      */
     public function run()
     {
-        $quiz_state = QuizState::make(["label" => "Building"]);
+        $quiz_state = QuizState::make(["label" => "Building", "slug" => "BUILD"]);
         $quiz_state->create();
 
-        $quiz_state = QuizState::make(["label" => "Answering"]);
+        $quiz_state = QuizState::make(["label" => "Answering", "slug" => "ANSW"]);
         $quiz_state->create();
 
-        $quiz_state = QuizState::make(["label" => "Closed"]);
+        $quiz_state = QuizState::make(["label" => "Closed", "slug" => "CLOS"]);
         $quiz_state->create();
     }
 }

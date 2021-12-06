@@ -225,7 +225,7 @@ class QuestionController extends ResourceController
             FlashMessage::error("Question with id $id does not exist!");
 
             header("Location: $url");
-            exit();
+            exit;
         }
 
         if (!isset($form_data["csrf_token"]) || !hash_equals($form_data["csrf_token"], $session->get("csrf_token"))) {

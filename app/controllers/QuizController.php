@@ -22,17 +22,13 @@ class QuizController extends ResourceController
      */
     public function index()
     {
-        $quiz_list = null;
         $data = [];
 
-        $quiz_list = Quiz::all();
         // set title
         $data["head"]["title"] = "Looper";
 
         // load quiz list into view
-        $data["body"]["quiz_list"]["answering"] = array_filter($quiz_list, function ($quiz) {
-            return $quiz->state()->label === "Answering";
-        });
+        $data["body"]["quiz_list"]["answering"] = Quiz::filterByState("ANSW");
         // set title
         $data["head"]["title"] = "Looper";
 
@@ -251,6 +247,7 @@ class QuizController extends ResourceController
             FlashMessage::error("Quiz wasn't found!");
 
             header("Location: $url");
+            exit;
         }
 
         $quiz->delete();
@@ -262,24 +259,15 @@ class QuizController extends ResourceController
 
     public function admin()
     {
-        $quiz_list = [];
         $data = [];
-
-        $quiz_list = Quiz::all();
 
         // set title
         $data["head"]["title"] = "Looper";
 
         // load quiz list into view
-        $data["body"]["quiz_list"]["building"] = array_filter($quiz_list, function ($quiz) {
-            return $quiz->state()->label === "Building";
-        });
-        $data["body"]["quiz_list"]["answering"] = array_filter($quiz_list, function ($quiz) {
-            return $quiz->state()->label === "Answering";
-        });
-        $data["body"]["quiz_list"]["closed"] = array_filter($quiz_list, function ($quiz) {
-            return $quiz->state()->label === "Closed";
-        });
+        $data["body"]["quiz_list"]["building"] = Quiz::filterByState("BUILD");
+        $data["body"]["quiz_list"]["answering"] = Quiz::filterByState("ANSW");
+        $data["body"]["quiz_list"]["closed"] = Quiz::filterByState("CLOS");
 
         // get css stylesheets
         ob_start();

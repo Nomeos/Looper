@@ -58,4 +58,17 @@ EOL;
         $database = DB::getInstance();
         return $database->selectMany($query, ["id" => $this->id], Fulfillment::class);
     }
+
+    public static function filterByState(string $state)
+    {
+        $query = <<< EOL
+SELECT quizzes.*
+FROM quizzes
+INNER JOIN quiz_states ON quiz_states.id = quizzes.quiz_state_id
+WHERE quiz_states.slug = :state;
+EOL;
+
+        $database = DB::getInstance();
+        return $database->selectMany($query, ["state" => $state], static::class);
+    }
 }

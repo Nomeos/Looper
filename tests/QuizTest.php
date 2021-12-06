@@ -186,4 +186,10 @@ class QuizTest extends TestCase
             $questions[1]->label
         );
     }
+
+    public function testFilterByState()
+    {
+        $this->assertCount(1, Quiz::filterByState("ANSW"));
+        $this->assertCount(0, Quiz::filterByState("Toto"));
+    }
 }
