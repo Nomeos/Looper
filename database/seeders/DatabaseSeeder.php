@@ -21,13 +21,11 @@ class DatabaseSeeder implements Seeder
     {
         $this->call([
             QuizStateSeeder::class,
-            /*
             QuizSeeder::class,
             QuestionTypeSeeder::class,
             QuestionSeeder::class,
             FulfillmentSeeder::class,
             AnswerSeeder::class,
-            */
         ]);
     }
 
