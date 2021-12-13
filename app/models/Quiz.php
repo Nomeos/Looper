@@ -86,4 +86,19 @@ EOL;
     {
         return $this->state()->slug === "CLOS";
     }
+
+    public static function buildingList()
+    {
+        return static::filterByState("BUILD");
+    }
+
+    public static function answeringList()
+    {
+        return static::filterByState("ANSW");
+    }
+
+    public static function closedList()
+    {
+        return static::filterByState("CLOS");
+    }
 }

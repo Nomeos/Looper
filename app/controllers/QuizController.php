@@ -28,7 +28,7 @@ class QuizController extends ResourceController
         $data["head"]["title"] = "Looper";
 
         // load quiz list into view
-        $data["body"]["quiz_list"]["answering"] = Quiz::filterByState("ANSW");
+        $data["body"]["quiz_list"]["answering"] = Quiz::answeringList();
         // set title
         $data["head"]["title"] = "Looper";
 
@@ -265,9 +265,9 @@ class QuizController extends ResourceController
         $data["head"]["title"] = "Looper";
 
         // load quiz list into view
-        $data["body"]["quiz_list"]["building"] = Quiz::filterByState("BUILD");
-        $data["body"]["quiz_list"]["answering"] = Quiz::filterByState("ANSW");
-        $data["body"]["quiz_list"]["closed"] = Quiz::filterByState("CLOS");
+        $data["body"]["quiz_list"]["building"] = Quiz::buildingList();
+        $data["body"]["quiz_list"]["answering"] = Quiz::answeringList();
+        $data["body"]["quiz_list"]["closed"] = Quiz::closedList();
 
         // get css stylesheets
         ob_start();
