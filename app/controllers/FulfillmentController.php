@@ -193,6 +193,17 @@ class FulfillmentController
         $data["body"]["csrf_token"] = $csrf_token;
 
         $fulfillment = Fulfillment::find($id);
+        $quiz = $fulfillment->quiz();
+        if ($quiz->isClosed()) {
+            $url = "/quiz/answering";
+
+            $message = "Access denied!<br>";
+            $message .= "You are trying to modify a fulfillment whose quiz is closed!";
+            FlashMessage::error($message);
+
+            header("Location: $url");
+            exit;
+        }
         $questions = $fulfillment->questions();
 
         $data["body"]["fulfillment"] = $fulfillment;
@@ -240,6 +251,18 @@ class FulfillmentController
         if (!isset($form_data["csrf_token"]) || !hash_equals($form_data["csrf_token"], $session->get("csrf_token"))) {
             $message = "Access denied!<br>";
             $message .= "You token is either missing of was modified!";
+            FlashMessage::error($message);
+
+            header("Location: $url");
+            exit;
+        }
+
+        $quiz = $fulfillment->quiz();
+        if ($quiz->isClosed()) {
+            $url = "/quiz/answering";
+
+            $message = "Access denied!<br>";
+            $message .= "You are trying to modify a fulfillment whose quiz is closed!";
             FlashMessage::error($message);
 
             header("Location: $url");

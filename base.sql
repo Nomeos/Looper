@@ -28,7 +28,7 @@ DEFAULT CHARACTER SET = utf8mb4;
 CREATE TABLE IF NOT EXISTS `looper`.`quiz_states` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `label` VARCHAR(45) NOT NULL,
-  `slug` VARCHAR(10) NULL,
+  `slug` VARCHAR(10) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `quiz_state_unique` (`label` ASC) VISIBLE,
   UNIQUE INDEX `slug_UNIQUE` (`slug` ASC) VISIBLE)

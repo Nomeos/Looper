@@ -192,4 +192,12 @@ class QuizTest extends TestCase
         $this->assertCount(1, Quiz::filterByState("ANSW"));
         $this->assertCount(0, Quiz::filterByState("Toto"));
     }
+
+    public function testStates()
+    {
+        $quiz = Quiz::find(1);
+        $this->assertTrue($quiz->isBuilding());
+        $quiz = Quiz::find(3);
+        $this->assertFalse($quiz->isAnswering());
+    }
 }

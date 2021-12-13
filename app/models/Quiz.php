@@ -71,4 +71,19 @@ EOL;
         $database = DB::getInstance();
         return $database->selectMany($query, ["state" => $state], static::class);
     }
+
+    public function isBuilding()
+    {
+        return $this->state()->slug === "BUILD";
+    }
+
+    public function isAnswering()
+    {
+        return $this->state()->slug === "ANSW";
+    }
+
+    public function isClosed()
+    {
+        return $this->state()->slug === "CLOS";
+    }
 }
