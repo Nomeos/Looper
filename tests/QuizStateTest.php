@@ -5,6 +5,7 @@ require_once("vendor/autoload.php");
 require_once('.env.php');
 
 use App\lib\db\Seeder;
+use App\models\Quiz;
 use App\models\QuizState;
 use ByJG\DbMigration\Database\MySqlDatabase;
 use ByJG\DbMigration\Exception\DatabaseDoesNotRegistered;
@@ -144,5 +145,26 @@ class QuizStateTest extends TestCase
             2,
             $quizzes
         );
+    }
+
+    public function testDefaultState()
+    {
+        $quiz_state = QuizState::defaultState();
+        $this->assertEquals("BUILD", $quiz_state->slug);
+
+        $quiz_state = QuizState::defaultState();
+        $this->assertNotEquals("CLOS", $quiz_state->slug);
+    }
+
+    public function testNext()
+    {
+        $quiz_state = QuizState::where("slug", "BUILD")[0];
+        $this->assertEquals("ANSW", $quiz_state->next()->slug);
+
+        $quiz_state = QuizState::where("slug", "ANSW")[0];
+        $this->assertEquals("CLOS", $quiz_state->next()->slug);
+
+        $quiz_state = QuizState::where("slug", "BUILD")[0];
+        $this->assertNotEquals("CLOS", $quiz_state->next()->slug);
     }
 }

@@ -24,4 +24,42 @@ EOL;
         return $database->selectMany($query, ["id" => $this->id], Quiz::class);
     }
 
+    public static function defaultState()
+    {
+        $query = <<< EOL
+SELECT *
+FROM quiz_states
+WHERE slug = :slug;
+EOL;
+
+        $database = DB::getInstance();
+        return $database->selectOne($query, ["slug" => "BUILD"], QuizState::class);
+    }
+
+    public function next()
+    {
+        $next_state = null;
+        $slug = null;
+
+        switch ($this->slug) {
+            case "BUILD":
+                $slug = "ANSW";
+                break;
+
+            case "ANSW":
+                $slug = "CLOS";
+                break;
+
+            case "CLOS":
+                // closed is the last state
+                break;
+
+            default:
+                break;
+        }
+
+        $next_state = QuizState::where("slug", $slug)[0];
+        return $next_state;
+    }
+
 }

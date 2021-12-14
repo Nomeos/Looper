@@ -91,7 +91,7 @@ class QuizController extends ResourceController
         $session = $request->getSession();
 
         $quiz = new Quiz();
-        $default_quiz_state = QuizState::where("label", "Building")[0];
+        $default_quiz_state = QuizState::defaultState();
         $form_data = $request->getBodyData();
 
         $url = "/quiz/create";
@@ -273,9 +273,9 @@ class QuizController extends ResourceController
         $data["head"]["title"] = "Looper";
 
         // load quiz list into view
-        $data["body"]["quiz_list"]["building"] = Quiz::buildingList();
+        $data["body"]["quiz_list"]["building"]  = Quiz::buildingList();
         $data["body"]["quiz_list"]["answering"] = Quiz::answeringList();
-        $data["body"]["quiz_list"]["closed"] = Quiz::closedList();
+        $data["body"]["quiz_list"]["closed"]    = Quiz::closedList();
 
         // get css stylesheets
         ob_start();
@@ -311,9 +311,9 @@ class QuizController extends ResourceController
             exit;
         }
 
-        $nextState = QuizState::where("label", "Answering");
-        if ($nextState[0] !== null) {
-            $quiz->quiz_state_id = $nextState[0]->id;
+        $nextState = $quiz->state()->next();
+        if ($nextState !== null) {
+            $quiz->quiz_state_id = $nextState->id;
         } else {
             FlashMessage::error("Quiz state wasn't found!");
 
@@ -340,8 +340,6 @@ class QuizController extends ResourceController
     public function toClosed(int $id)
     {
         $quiz = null;
-        $quiz_state = null;
-        $data = [];
         $url = "/quiz/admin";
 
         $quiz = Quiz::find($id);
@@ -353,17 +351,16 @@ class QuizController extends ResourceController
             exit;
         }
 
-        $quiz_state = $quiz->state()->label;
-        if ($quiz_state === "Building" || $quiz_state === "Closed") {
+        if (!$quiz->isAnswering()) {
             FlashMessage::error("Your quiz has to be in Answering mode!");
 
             header("Location: $url");
             exit;
         }
 
-        $nextState = QuizState::where("label", "Closed");
-        if ($nextState[0] !== null) {
-            $quiz->quiz_state_id = $nextState[0]->id;
+        $nextState = $quiz->state()->next();
+        if ($nextState !== null) {
+            $quiz->quiz_state_id = $nextState->id;
         } else {
             FlashMessage::error("Quiz state wasn't found!");
 
@@ -400,7 +397,7 @@ class QuizController extends ResourceController
         $data["head"]["css"] = ob_get_clean();
 
         // set header title (next to the logo)
-        $data["header"]["title"] = "Exercice: {$quiz->title}";
+        $data["header"]["title"] = "Exercise: {$quiz->title}";
 
         // get body content
         ob_start();
