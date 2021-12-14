@@ -189,6 +189,18 @@ class QuestionController extends ResourceController
             exit;
         }
 
+        $quiz = $question->quiz();
+        if (!$quiz->isBuilding()) {
+            $url = "/quiz/admin";
+
+            $message = "Access denied!<br>";
+            $message .= "You are trying to modify a question whose quiz is not editable anymore!";
+            FlashMessage::error($message);
+
+            header("Location: $url");
+            exit;
+        }
+
         // set title
         $data["head"]["title"] = "Edit {$question->label}";
 
@@ -223,6 +235,18 @@ class QuestionController extends ResourceController
         $question = Question::find($id);
         if ($question === null) {
             FlashMessage::error("Question with id $id does not exist!");
+
+            header("Location: $url");
+            exit;
+        }
+
+        $quiz = $question->quiz();
+        if (!$quiz->isBuilding()) {
+            $url = "/quiz/admin";
+
+            $message = "Access denied!<br>";
+            $message .= "You are trying to modify a question whose quiz is not editable anymore!";
+            FlashMessage::error($message);
 
             header("Location: $url");
             exit;

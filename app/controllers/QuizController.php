@@ -156,6 +156,14 @@ class QuizController extends ResourceController
 
         $quiz = Quiz::find($id);
         $question_types = QuestionType::all();
+        // We know the that we should sort the questions types in the database when calling :all()
+        // but we would the the primaryKey field from the models (which is not static). If we had more time,
+        // we would create a query builder that would make our life easier and our code cleaner.
+        usort($question_types, function ($qt1, $qt2) {
+            // two question types cannot have the same id, that is why we do not return 0
+            return $qt1->id > $qt2->id ? 1 : -1;
+        });
+
 
         $data = [];
         $data["body"]["csrf_token"] = $csrf_token;
