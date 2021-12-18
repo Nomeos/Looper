@@ -256,6 +256,13 @@ class QuizController extends ResourceController
             exit;
         }
 
+        if ($quiz->isAnswering()) {
+            FlashMessage::error("You cannot delete this quiz! Make sure your quiz is in answering mode!");
+
+            header("Location: $url");
+            exit;
+        }
+
         $quiz->delete();
 
         FlashMessage::success("Quiz was successfully deleted!");
