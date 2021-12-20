@@ -190,7 +190,7 @@ class QuestionController extends ResourceController
         }
 
         $quiz = $question->quiz();
-        if (!$quiz->isBuilding()) {
+        if (!$quiz->isEditable()) {
             $url = "/quiz/admin";
 
             $message = "Access denied!<br>";
@@ -241,7 +241,7 @@ class QuestionController extends ResourceController
         }
 
         $quiz = $question->quiz();
-        if (!$quiz->isBuilding()) {
+        if (!$quiz->isEditable()) {
             $url = "/quiz/admin";
 
             $message = "Access denied!<br>";

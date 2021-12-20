@@ -194,11 +194,11 @@ class FulfillmentController
 
         $fulfillment = Fulfillment::find($id);
         $quiz = $fulfillment->quiz();
-        if ($quiz->isClosed()) {
+        if (!$quiz->isAnswerable()) {
             $url = "/quiz/answering";
 
             $message = "Access denied!<br>";
-            $message .= "You are trying to modify a fulfillment whose quiz is closed!";
+            $message .= "Make sure the quiz you are trying to take is in answering mode!";
             FlashMessage::error($message);
 
             header("Location: $url");
@@ -258,11 +258,11 @@ class FulfillmentController
         }
 
         $quiz = $fulfillment->quiz();
-        if ($quiz->isClosed()) {
+        if (!$quiz->isAnswerable()) {
             $url = "/quiz/answering";
 
             $message = "Access denied!<br>";
-            $message .= "You are trying to modify a fulfillment whose quiz is closed!";
+            $message .= "Make sure the quiz you are trying to take is in answering mode!";
             FlashMessage::error($message);
 
             header("Location: $url");
