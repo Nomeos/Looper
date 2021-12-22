@@ -75,7 +75,7 @@
     <li><a href="#hacks-used-in-this-project">Hacks used in this project</a></li>
     <ul>
       <li><a href="#css">Css</a></li>
-      <li><a href="#http-requests">Http requets</a></li>
+      <li><a href="#http-requests">Http requests</a></li>
     </ul>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#documentation">Documentation</a></li>
@@ -323,7 +323,7 @@ The documentation about the routing system, class diagrams, database model and t
 - [class diagrams](doc/classes/classes.pdf)
 - database
   - [conceptual data model](doc/db/cdm/diagram.pdf)
-  - [logical data model](doc/db/cdm/diagram.pdf)
+  - [logical data model](doc/db/ldm/diagram.pdf)
 - [state diagram](doc/state_diagram/state_diagram.pdf)
 
 We use the [same directory structure as laravel](https://laravel.com/docs/8.x/structure).
@@ -344,7 +344,7 @@ Contributions are what make the open source community such an amazing place to l
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the MIT License. See [`LICENSE`](LICENSE) for more information.
 
 
 
