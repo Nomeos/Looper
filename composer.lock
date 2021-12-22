@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ad3d8dfb5f0a1a31483561e1f07d5b6d",
+    "content-hash": "5fac05e3b9909151905d91a856654261",
     "packages": [
         {
             "name": "byjg/anydataset",
@@ -2522,7 +2522,7 @@
         },
         {
             "name": "thynkon/simple-orm",
-            "version": "dev-master",
+            "version": "v1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Thynkon/simple-orm.git",
@@ -2542,7 +2542,6 @@
                 "byjg/migration": "^4.2",
                 "phpunit/phpunit": "^9.5"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -2562,7 +2561,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Thynkon/simple-orm/issues",
-                "source": "https://github.com/Thynkon/simple-orm/tree/master"
+                "source": "https://github.com/Thynkon/simple-orm/tree/v1.1"
             },
             "time": "2021-12-20T10:19:58+00:00"
         },
@@ -2628,9 +2627,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "thynkon/simple-orm": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

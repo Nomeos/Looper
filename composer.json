@@ -11,7 +11,7 @@
     "nikic/fast-route": "^1.3",
     "phpunit/phpunit": "^9.5",
     "byjg/migration": "^4.2",
-    "thynkon/simple-orm": "dev-master",
+    "thynkon/simple-orm": "1.1",
     "ext-pdo": "*"
   },
   "scripts": {
