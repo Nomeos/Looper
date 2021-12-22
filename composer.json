@@ -18,6 +18,9 @@
     "build-css": [
       "./scripts/compileScss.sh"
     ],
+    "build-css-win": [
+      "python ./scripts/compileScss.py"
+    ],
     "populate-db": [
       "php ./scripts/populateDB.php"
     ],

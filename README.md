@@ -171,8 +171,21 @@ To get a local copy up and running follow these simple steps.
     ```
    
 4. Compile scss files to css
+
+   On UNIX-like operating systems:
+
    ```sh
    composer build-css
+   ```
+
+   On Windows
+
+   ```sh
+   pip install -r requirements.txt
+   ```
+
+   ```sh
+   composer build-css-win
    ```
 
 5. Setup database connection
@@ -308,7 +321,9 @@ See the [open issues](https://github.com/Nomeos/Looper/issues) for a list of pro
 The documentation about the routing system, class diagrams, database model and the state diagram can be found under the **doc/** folder:
 - [routing system](doc/routes/routes.pdf)
 - [class diagrams](doc/classes/classes.pdf)
-- [database model](doc/db/diagram.pdf)
+- database
+  - [conceptual data model](doc/db/cdm/diagram.pdf)
+  - [logical data model](doc/db/cdm/diagram.pdf)
 - [state diagram](doc/state_diagram/state_diagram.pdf)
 
 We use the [same directory structure as laravel](https://laravel.com/docs/8.x/structure).
@@ -335,8 +350,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 <!-- CONTACT -->
 ## Contact
-
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email
 
 Project Link: [https://github.com/Nomeos/Looper](https://github.com/Nomeos/Looper)
 
