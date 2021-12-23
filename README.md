@@ -168,6 +168,7 @@ The documentation about the routing system, class diagrams, database model and t
 - [class diagrams](doc/classes/classes.pdf)
 - [database model](doc/db/diagram.pdf)
 - [state diagram](doc/state_diagram/state_diagram.pdf)
+- [retrospective](doc/retrospective/Retrospective.pdf)
 
 We use the [same directory structure as laravel](https://laravel.com/docs/8.x/structure).
 
