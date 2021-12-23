@@ -65,6 +65,9 @@
       </ul>
     </li>
     <li>
+      <a href="#features">Features</a>
+    </li>
+    <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
@@ -112,7 +115,7 @@ There are also 3 types of questions: single line text, list of single lines and 
 ### Architecture
 Like most web applications today, this project uses the MVC model. Interactions with the database are done by templates, html rendering is done by views and all logic is handled by controllers.
 
-We also used a routing system that makes the URLs look nicer. The library we used is called [FastRoute](https://github.com/nikic/FastRoute). It is a simple routing library that allows us to map URLs to php functions (controller methods).
+We also used a routing system that makes the URLs look nicer. The library we used is called [FastRoute](https://github.com/nikic/FastRoute). It is a simple routing library that allows us to map URLs to php functions (controller methods). We used [resource controllers just like Laravel](https://laravel.com/docs/8.x/controllers#actions-handled-by-resource-controller) to handle CRUD requests. For further details, check [our routes diagram](doc/routes/routes.pdf)
 
 For the database modifications, we used [this](https://github.com/byjg/migration) library. It allows us to easily modify our database as most framework migration systems do. We used it because it was much easier to empty the database before doing the unit tests.
 
@@ -120,6 +123,8 @@ For unit testing, we used [the standard PHP library for unit tests](https://phpu
 
 We did not use a template engine or ORM. Instead, we developed [our own](https://github.com/Thynkon/simple-orm). At the end of this project, we realized that we should have created a query builder library to facilitate queries of the template database.
 
+## Features
+A list of all features implemented in this project can be found [here](features.md).
 
 <!-- GETTING STARTED -->
 ## Getting Started
