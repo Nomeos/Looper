@@ -65,6 +65,9 @@
       </ul>
     </li>
     <li>
+      <a href="#features">Features</a>
+    </li>
+    <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
@@ -120,6 +123,8 @@ For unit testing, we used [the standard PHP library for unit tests](https://phpu
 
 We did not use a template engine or ORM. Instead, we developed [our own](https://github.com/Thynkon/simple-orm). At the end of this project, we realized that we should have created a query builder library to facilitate queries of the template database.
 
+## Features
+A list of all features implemented in this project can be found [here](features.md).
 
 <!-- GETTING STARTED -->
 ## Getting Started
