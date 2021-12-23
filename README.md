@@ -153,6 +153,32 @@ To get a local copy up and running follow these simple steps.
   nix-shell shell.nix
   ```
 
+#### [Windows](https://www.microsoft.com/fr-ch/windows)
+- [Chocolatey](https://chocolatey.org/install)
+Just need to follow the steps in Choco's website
+  ```sh
+  - Get-ExecutionPolicy
+  - Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+  ```
+- [PHP](https://www.php.net/)
+  ```sh
+  choco install php
+  ```
+- [Composer](https://getcomposer.org)
+  ```sh
+  choco install composer
+  ```
+
+- [MariaDB](https://mariadb.org/)
+  ```sh
+  choco install mariadb
+  ```
+- [Npm](https://www.npmjs.com)
+  ```sh
+  choco install npm
+  ```
+  
+
 ### Installation
 
 1. Clone the repo
