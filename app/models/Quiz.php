@@ -72,19 +72,34 @@ EOL;
         return $database->selectMany($query, ["state" => $state], static::class);
     }
 
-    public function isBuilding()
+    public function isEditable()
     {
-        return $this->state()->slug === "BUILD";
+        $slug = $this->state()->slug;
+        return $slug === "BUILD";
     }
 
-    public function isAnswering()
+    public function isAnswerable()
     {
-        return $this->state()->slug === "ANSW";
+        $slug = $this->state()->slug;
+        return $slug === "ANSW";
     }
 
-    public function isClosed()
+    public function isRemovable()
     {
-        return $this->state()->slug === "CLOS";
+        $slug = $this->state()->slug;
+        return $slug === "BUILD" || $slug === "CLOS";
+    }
+
+    public function canBeAnswered()
+    {
+        $slug = $this->state()->slug;
+        return $slug === "BUILD";
+    }
+
+    public function canBeClosed()
+    {
+        $slug = $this->state()->slug;
+        return $slug === "ANSW";
     }
 
     public static function buildingList()

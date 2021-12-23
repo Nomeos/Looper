@@ -188,7 +188,7 @@ class QuizController extends ResourceController
             exit;
         }
 
-        if (!$quiz->isBuilding()) {
+        if (!$quiz->isEditable()) {
             FlashMessage::error("You can't edit a non building quiz!");
 
             $url = "/";
@@ -256,7 +256,7 @@ class QuizController extends ResourceController
             exit;
         }
 
-        if ($quiz->isAnswering()) {
+        if (!$quiz->isRemovable()) {
             FlashMessage::error("You cannot delete this quiz! Make sure your quiz is in answering mode!");
 
             header("Location: $url");
@@ -316,6 +316,13 @@ class QuizController extends ResourceController
             exit;
         }
 
+        if (!$quiz->canBeAnswered()) {
+            FlashMessage::error("Your quiz has to be in building mode!");
+
+            header("Location: $url");
+            exit;
+        }
+
         $nextState = $quiz->state()->next();
         if ($nextState !== null) {
             $quiz->quiz_state_id = $nextState->id;
@@ -356,8 +363,8 @@ class QuizController extends ResourceController
             exit;
         }
 
-        if (!$quiz->isAnswering()) {
-            FlashMessage::error("Your quiz has to be in Answering mode!");
+        if (!$quiz->canBeClosed()) {
+            FlashMessage::error("Your quiz has to be in answering mode!");
 
             header("Location: $url");
             exit;

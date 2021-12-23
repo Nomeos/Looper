@@ -193,11 +193,70 @@ class QuizTest extends TestCase
         $this->assertCount(0, Quiz::filterByState("Toto"));
     }
 
-    public function testStates()
+    public function testIsEditable()
     {
+        // building quiz
         $quiz = Quiz::find(1);
-        $this->assertTrue($quiz->isBuilding());
+        $this->assertTrue($quiz->isEditable());
+
+        // answering quiz
+        $quiz = Quiz::find(2);
+        $this->assertFalse($quiz->isEditable());
+
+        // closed quiz
         $quiz = Quiz::find(3);
-        $this->assertFalse($quiz->isAnswering());
+        $this->assertFalse($quiz->isEditable());
+    }
+
+    public function testIsAnswerable()
+    {
+        // building quiz
+        $quiz = Quiz::find(1);
+        $this->assertFalse($quiz->isAnswerable());
+
+        // answering quiz
+        $quiz = Quiz::find(2);
+        $this->assertTrue($quiz->isAnswerable());
+
+        // closed quiz
+        $quiz = Quiz::find(3);
+        $this->assertFalse($quiz->isAnswerable());
+    }
+
+    public function testIsRemovable()
+    {
+        // building quiz
+        $quiz = Quiz::find(1);
+        $this->assertTrue($quiz->isRemovable());
+
+        // answering quiz
+        $quiz = Quiz::find(2);
+        $this->assertFalse($quiz->isRemovable());
+
+        // closed quiz
+        $quiz = Quiz::find(3);
+        $this->assertTrue($quiz->isRemovable());
+    }
+
+    public function testCanBeAnswered()
+    {
+        // building quiz
+        $quiz = Quiz::find(1);
+        $this->assertTrue($quiz->canBeAnswered());
+
+        // building quiz
+        $quiz = Quiz::find(2);
+        $this->assertFalse($quiz->canBeAnswered());
+    }
+
+    public function canBeClosed()
+    {
+        // building quiz
+        $quiz = Quiz::find(1);
+        $this->assertFalse($quiz->canBeClosed());
+
+        // building quiz
+        $quiz = Quiz::find(2);
+        $this->assertTrue($quiz->canBeClosed());
     }
 }
