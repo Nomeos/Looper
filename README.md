@@ -62,6 +62,18 @@
       <ul>
         <li><a href="#built-with">Built With</a></li>
         <li><a href="#architecture">Architecture</a></li>
+        <ul>
+          <li><a href="#libraries">Libraries</a></li>
+          <li><a href="#standard-techniques-used-in-this-project">Standard techniques used in this project</a></li>
+          <ul>
+            <li><a href="#view-rendering">View rendering</a></li>
+            <li><a href="#csrf-protection">CSRF protection</a></li>
+            <li><a href="#http-requests">HTTP requests</a></li>
+            <li><a href="#message-display">Message display</a></li>
+            <li><a href="#database-connection">Database connection</a></li>
+            <li><a href="#seeders">Seeders</a></li>
+          </ul>
+        </ul>
       </ul>
     </li>
     <li>
@@ -115,13 +127,82 @@ There are also 3 types of questions: single line text, list of single lines and 
 ### Architecture
 Like most web applications today, this project uses the MVC model. Interactions with the database are done by templates, html rendering is done by views and all logic is handled by controllers.
 
-We also used a routing system that makes the URLs look nicer. The library we used is called [FastRoute](https://github.com/nikic/FastRoute). It is a simple routing library that allows us to map URLs to php functions (controller methods). We used [resource controllers just like Laravel](https://laravel.com/docs/8.x/controllers#actions-handled-by-resource-controller) to handle CRUD requests. For further details, check [our routes diagram](doc/routes/routes.pdf)
+#### Libraries
+We also used a routing system that makes the URLs look nicer. The library we used is called [FastRoute](https://github.com/nikic/FastRoute). It is a simple routing library that allows us to map URLs to php functions (controller methods). We used [resource controllers just like Laravel](https://laravel.com/docs/8.x/controllers#actions-handled-by-resource-controller) to handle CRUD requests. Like laravel, routes are generated for each resource controller. We did this thanks to our [RouteFactory](doc/classes/classes.pdf). For further details, check [our routes diagram](doc/routes/routes.pdf).
 
 For the database modifications, we used [this](https://github.com/byjg/migration) library. It allows us to easily modify our database as most framework migration systems do. We used it because it was much easier to empty the database before doing the unit tests.
 
 For unit testing, we used [the standard PHP library for unit tests](https://phpunit.de/).
 
 We did not use a template engine or ORM. Instead, we developed [our own](https://github.com/Thynkon/simple-orm). At the end of this project, we realized that we should have created a query builder library to facilitate queries of the template database.
+
+#### Standard techniques used in this project
+
+All classes mentionned above can be found [here](doc/classes/classes.pdf)
+
+##### View rendering
+Like most of modern web applications, we use views in order to follow the [separation of concerns pattern](https://en.wikipedia.org/wiki/Separation_of_concerns).
+
+We created a class called `View` that takes care of rendering a template file with some additional information that we can pass to the view.
+
+##### CSRF protection
+As you might know, CSRFs are a commun practice used by crackers to manipulate http requests. In order to prevent those attacks, we implemented [CSRF tokens](https://portswigger.net/web-security/csrf/tokens).
+
+Before rendering forms, we gerenate a random token and store it in the user's session. Once the token generated, we then display it as an hidden input field. So when a request is made, we check if the providen token is the same stored in the user's session. If it isn't, a proper error message is displayed.
+
+We talk about how we display messages to the user [here]()
+
+##### HTTP requests
+Handling http requests in PHP without using a framework can be a demanding task. Checking wether we should use `$_GET` or `$_POST` to get data from the request is not the best OOP approach.
+
+Thus, we decided to create a `HttpRequest` class that encapsulates a http request. Instead of doing something like
+```php
+$_POST["text"]
+```
+
+we do this
+```php
+$request->getBodyData()["text"];
+```
+
+We can also retrieve the protocol's version as well as the request's uri.
+
+##### Message display
+In order to easily display message to the user, we implemented a technique called [flash message](https://laravel.com/docs/8.x/session#flash-data). It consists of storing the message in the user's session and displaying it in the view.
+
+Here's an example of how to display a message:
+
+- On your controller:
+  ```php
+  FlashMessage::error("YOUR MESSAGE");
+  ```
+
+- On your view:
+  ```php
+  <?php
+
+  use App\lib\FlashMessage;
+
+  $message = FlashMessage::get();
+  ?>
+
+  <?php if (is_array($message)): ?>
+      <div class="flash_message <?= $message["type"] === FlashMessage::OK ? "success" : "error" ?>">
+          <div>
+              <i class="fa <?= $message["type"] === FlashMessage::OK ? "fa-check" : "fa-times-circle" ?>"></i>
+              <?= $message["value"] ?>
+          </div>
+      </div>
+  <?php endif; ?>
+  ```
+
+##### Database connection
+We use an ORM to fetch data from the database. The ORM we use implements the [singleton pattern](https://refactoring.guru/design-patterns/singleton). By implementing it, we are able to drastically reduce the number of database connections since we always return the same connection while handling a http request.
+
+##### Seeders
+While developping this project, we have used fake data so we could implement unit tests. Again, just like most of web frameworks, we used seeders to populate our databse.
+
+All the seeders we used implement an interface that requirements all classes to have a method that populates the database. If you are not familiar with this concept, you may want to read [laravel's documentation](https://laravel.com/docs/8.x/seeding)
 
 ## Features
 A list of all features implemented in this project can be found [here](features.md).
