@@ -200,7 +200,7 @@ Here's an example of how to display a message:
 We use an ORM to fetch data from the database. The ORM we use implements the [singleton pattern](https://refactoring.guru/design-patterns/singleton). By implementing it, we are able to drastically reduce the number of database connections since we always return the same connection while handling a http request.
 
 ##### Seeders
-While developping this project, we have used fake data so we could implement unit tests. Again, just like most of web frameworks, we used seeders to populate our databse.
+During the development of this project, we used dummy data in order to be able to set up unit tests. Again, as with most web frameworks, we used seeders to feed our database.
 
 All the seeders we used implement an interface that requirements all classes to have a method that populates the database. If you are not familiar with this concept, you may want to read [laravel's documentation](https://laravel.com/docs/8.x/seeding)
 
