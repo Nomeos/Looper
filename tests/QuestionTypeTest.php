@@ -106,7 +106,7 @@ class QuestionTypeTest extends TestCase
     {
         $question_type = QuestionType::find(1);
         $question_type->label = "QuestionType1";
-        var_dump($question_type->save());
+        $question_type->save();
 
         $this->assertEquals(
             "QuestionType1",
